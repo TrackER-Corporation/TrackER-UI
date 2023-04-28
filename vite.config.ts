@@ -22,4 +22,15 @@ export default defineConfig({
     environment: "jsdom",
 
   },
+  css: {
+    preprocessorOptions: {
+      less: {
+        modifyVars: {
+          'primary-color': '#1DA57A',
+          'heading-color': '#f00',
+        },
+        javascriptEnabled: true,
+      },
+    },
+  },
 })
