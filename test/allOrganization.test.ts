@@ -1,5 +1,5 @@
 import allOrganizationReducer, { setAllBuildings, setAllOrganization } from "../src/reducers/allOrganization";
-
+import { expect, describe, it } from 'vitest'
 
 describe('allOrganizationSlice', () => {
     it('should return the initial state', () => {

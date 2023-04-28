@@ -1,5 +1,5 @@
 import organizationReducer, { fetchOrganization } from "../src/reducers/organization";
-
+import { expect, describe, it} from 'vitest'
 
 describe('organizationSlice', () => {
     it('should return the initial state', () => {

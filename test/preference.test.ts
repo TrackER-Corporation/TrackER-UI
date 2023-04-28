@@ -1,4 +1,5 @@
 import preferenceReducer, { userPreference, updatePreference } from '../src/reducers/preference';
+import { expect, describe, it} from 'vitest'
 
 describe('preferenceSlice', () => {
     it('should return the initial state', () => {

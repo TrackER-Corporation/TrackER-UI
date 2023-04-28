@@ -1,5 +1,5 @@
 import buildingsReducer, { fetchBuildings } from "../src/reducers/buildings";
-
+import { expect, describe, it} from 'vitest'
 
 describe('buildingsSlice', () => {
     it('should return the initial state', () => {

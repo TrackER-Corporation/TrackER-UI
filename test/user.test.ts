@@ -1,4 +1,5 @@
 import userReducer, { login, logout, updateUser } from '../src/reducers/user';
+import { expect, describe, it} from 'vitest'
 
 describe('userSlice', () => {
     it('should return the initial state', () => {

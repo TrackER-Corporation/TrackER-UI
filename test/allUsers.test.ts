@@ -1,5 +1,5 @@
 import allUserReducer, { setAllUser } from "../src/reducers/allUsers";
-
+import { expect, describe, it} from 'vitest'
 
 describe('allUserSlice', () => {
     it('should return the initial state', () => {
