@@ -1,12 +1,20 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
+import { defineConfig, resolveBaseUrl } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import { resolve } from "path";
 
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+  ],
+  resolve: {
+    mainFields: ["module"],
+  },
   test: {
+    setupFiles: [resolve(__dirname, './setup.ts')],
+    reporters: 'dot',
     coverage: {
       lines: 75,
       branches: 75,
@@ -20,7 +28,6 @@ export default defineConfig({
     },
     globals: true,
     environment: "jsdom",
-
   },
   css: {
     preprocessorOptions: {
