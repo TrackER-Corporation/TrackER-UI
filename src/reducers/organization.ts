@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const organization = localStorage.getItem("organization")
 
 const initialState = {
-    organization: JSON.parse(localStorage.getItem("organization")),
+    organization: organization ? JSON.parse(organization) : {},
 }
 
 export const organizationSlice = createSlice({
