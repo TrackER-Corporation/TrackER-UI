@@ -1,6 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import { isImg, getDelay, getChildrenToRender } from "../../src/Home/utils"
-import { Button } from 'antd';
+import { isImg, getDelay, getChildrenToRender, getSelectedKeys, onComplete } from "../../src/Home/utils"
 
 describe('isImg', () => {
     it('should match valid image URLs', () => {
@@ -56,5 +55,55 @@ describe('getDelay', () => {
         expect(getDelay(0, 2)).toBe(200);
         expect(getDelay(1, 2)).toBe(300);
         expect(getDelay(3, 4)).toBe(700);
+    });
+});
+
+describe('onComplete function', () => {
+    test('should set height to auto if open is true', () => {
+        const e = {
+            target: {
+                style: {},
+            },
+        };
+        onComplete(e, true);
+
+        expect(e.target.style.height).toEqual('auto');
+    });
+
+    test('should not set height to auto if open is false', () => {
+        const e = {
+            target: {
+                style: {},
+            },
+        };
+        onComplete(e, false);
+
+        expect(e.target.style.height).toBeUndefined();
+    });
+});
+
+describe('getSelectedKeys function', () => {
+    test('should return ["item1"] if pathname is / or /Home', () => {
+        window.history.pushState({}, '', '/');
+        expect(getSelectedKeys()).toEqual(['item1']);
+
+        window.history.pushState({}, '', '/Home');
+        expect(getSelectedKeys()).toEqual(['item1']);
+    });
+
+    test('should return ["item0"] if pathname is /Service', () => {
+        window.history.pushState({}, '', '/Service');
+        expect(getSelectedKeys()).toEqual(['item0']);
+    });
+
+    test('should return ["item2"] if pathname is anything else', () => {
+        window.history.pushState({}, '', '/About');
+        expect(getSelectedKeys()).toEqual(['item2']);
+
+        window.history.pushState({}, '', '/Contact');
+        expect(getSelectedKeys()).toEqual(['item2']);
+
+        window.history.pushState({}, '', '/FAQ');
+        expect(getSelectedKeys()).toEqual(['item2']);
     });
 });
