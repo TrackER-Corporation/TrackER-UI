@@ -24,7 +24,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Run tests & coverage
         run: |
-          npm ci
+          npm ci --legacy-peer-deps
           npm run test
           npm run coverage
         env:
