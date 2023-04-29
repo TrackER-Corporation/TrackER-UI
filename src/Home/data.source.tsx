@@ -540,10 +540,10 @@ export const Footer10DataSource = {
         title: { children: 'Company' },
         childWrapper: {
           children: [
-            { href: '#', name: 'link0', children: 'About us' },
-            { href: '#', name: 'link0', children: 'Partnership' },
-            { href: '#', name: 'link0', children: 'Team' },
-            { href: '#', name: 'link0', children: 'FAQ' },
+            { href: 'https://github.com/TrackER-Corporation', name: 'https://github.com/TrackER-Corporation', children: 'About us' },
+            { href: 'https://github.com/TrackER-Corporation', name: 'https://github.com/TrackER-Corporation', children: 'Partnership' },
+            { href: 'https://github.com/TrackER-Corporation', name: 'https://github.com/TrackER-Corporation', children: 'Team' },
+            { href: 'https://github.com/TrackER-Corporation', name: 'https://github.com/TrackER-Corporation', children: 'FAQ' },
           ],
         },
       },
@@ -555,10 +555,10 @@ export const Footer10DataSource = {
         title: { children: 'Social' },
         childWrapper: {
           children: [
-            { href: '#', name: 'link0', children: 'Twitter' },
-            { href: '#', name: 'link0', children: 'Facebook' },
-            { href: '#', name: 'link0', children: 'LinkedIn' },
-            { href: '#', name: 'link1', children: 'Instagram' },
+            { href: 'https://github.com/TrackER-Corporation', name: 'https://github.com/TrackER-Corporation', children: 'Twitter' },
+            { href: 'https://github.com/TrackER-Corporation', name: 'https://github.com/TrackER-Corporation', children: 'Facebook' },
+            { href: 'https://github.com/TrackER-Corporation', name: 'https://github.com/TrackER-Corporation', children: 'LinkedIn' },
+            { href: 'https://github.com/TrackER-Corporation', name: 'https://github.com/TrackER-Corporation', children: 'Instagram' },
           ],
         },
       },
@@ -571,7 +571,7 @@ export const Footer10DataSource = {
         childWrapper: {
           children: [
             { href: 'https://www.dernetsoft.com/', target: "_blank", name: 'link0', children: 'DERNetSoft' },
-            { href: 'https://www.osisoft.com/', target: "_blank", name: 'link1', children: 'OsiSoft' },
+            { href: 'https://www.aveva.com/', target: "_blank", name: 'link1', children: 'Aveva' },
             { href: 'https://www.bloomenergy.com/', target: "_blank", name: 'link1', children: 'Bloom Energy' },
           ],
         },
