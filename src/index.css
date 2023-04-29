@@ -52,7 +52,7 @@ h6,
 }
 
 .iconfont {
-    font-family: "iconfont" !important;
+    font-family: "iconfont", sans-serif !important;
     font-size: 25px !important;
     font-style: normal !important;
     -webkit-font-smoothing: antialiased !important;
