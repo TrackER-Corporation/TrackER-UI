@@ -4,14 +4,19 @@ import { expect, it, describe } from 'vitest'
 import { render } from '@testing-library/react';
 
 import App from "../src/App"
+import { ConfigProvider } from 'antd';
+import { Provider } from 'react-redux';
+import { store } from '../src/store';
 
 describe('AppRoute', () => {
   it('renders route correctly', () => {
     const { getByText } = render(
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <ConfigProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ConfigProvider>
     );
-    expect(getByText("Vite + React")).toBeInTheDocument()
+    expect(getByText("Unlocking the Value of Energy Resources")).toBeInTheDocument()
   });
 });

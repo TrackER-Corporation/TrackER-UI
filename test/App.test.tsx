@@ -1,22 +1,22 @@
 
 import '@testing-library/jest-dom';
 import { expect, describe } from 'vitest'
-import { fireEvent, render } from '@testing-library/react';
-
+import { render } from '@testing-library/react';
 import App from "../src/App"
+import { ConfigProvider } from 'antd';
+import { Provider } from 'react-redux';
+import { store } from '../src/store';
+import React from 'react';
 
 describe('AppRoute', () => {
-    test('renders the correct text', () => {
-        const { getByText } = render(<App />);
-        expect(getByText('Vite + React')).toBeInTheDocument();
-        expect(getByText('count is 0')).toBeInTheDocument();
-        expect(getByText('Click on the Vite and React logos to learn more')).toBeInTheDocument();
-    });
-
-    test('increments count when button is clicked', () => {
-        const { getByText } = render(<App />);
-        const button = getByText('count is 0');
-        fireEvent.click(button);
-        expect(button).toHaveTextContent('count is 1');
+    it('renders the correct text', () => {
+        const { getByText } = render(
+            <ConfigProvider>
+                <Provider store={store}>
+                    <App />
+                </Provider>
+            </ConfigProvider>
+        );
+        expect(getByText("Unlocking the Value of Energy Resources")).toBeInTheDocument()
     });
 });
