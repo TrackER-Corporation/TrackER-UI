@@ -9,15 +9,10 @@ import Nav from './Home/Nav.tsx';
 import Footer from './Home/Footer1.tsx';
 import { isMobile } from 'react-device-detect';
 import 'antd/dist/reset.css';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
+import Service from "./Service/index.tsx";
 
-
-interface AppProps extends ConnectedProps<typeof connector> {
-  show: any;
-  logged: boolean
-  type: string
-}
 
 interface MapProps {
   user: any;
@@ -44,6 +39,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Home />} />
           <Route path="/Home" element={<Home />} />
+          <Route path="/Service" element={<Service />} />
         </Routes>
         <Footer key="Footer1_0" dataSource={Footer10DataSource} isMobile={isMobile} />
       </BrowserRouter>
