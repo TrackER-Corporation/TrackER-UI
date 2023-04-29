@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from './Home/Home.tsx';
+import "./index.css"
+import {
+  Nav30DataSource,
+  Footer10DataSource,
+} from './Home/data.source.tsx';
+import Nav from './Home/Nav.tsx';
+import Footer from './Home/Footer1.tsx';
+import { isMobile } from 'react-device-detect';
+import 'antd/dist/reset.css';
+import { connect, ConnectedProps } from 'react-redux';
+import { useEffect, useState } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface AppProps extends ConnectedProps<typeof connector> {
+  show: any;
+  logged: boolean
+  type: string
 }
 
-export default App
+interface MapProps {
+  user: any;
+  logged: boolean
+  type: string
+}
+
+const App = () => {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (!show) {
+      setTimeout(() => {
+        setShow(true);
+      }, 100);
+    }
+  }, [show]);
+
+  return (
+    <div>
+      <BrowserRouter>
+        <Nav key="Nav3_0" dataSource={Nav30DataSource} isMobile={isMobile} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<Home />} />
+          <Route path="/Home" element={<Home />} />
+        </Routes>
+        <Footer key="Footer1_0" dataSource={Footer10DataSource} isMobile={isMobile} />
+      </BrowserRouter>
+    </div>
+  );
+};
+
+const mapStateToProps = (state: MapProps) => {
+  const { logged } = state.user;
+  const { type } = state.user.user;
+  return { logged, type };
+};
+
+const connector = connect(mapStateToProps);
+
+export default connector(App);
