@@ -1,6 +1,6 @@
 import SignIn from "../../src/Components/SignInForm"
 import React from 'react';
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, vi } from 'vitest'
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from "react-router-dom";
@@ -40,10 +40,10 @@ describe('SignIn', () => {
         fireEvent.click(buttonSU)
         expect(getByText("Building Owner")).toBeInTheDocument()
         const buttonSubLog = queryAllByText("Sign In")
-        buttonSubLog.map(el => {fireEvent.click(el)})
+        buttonSubLog.map(el => { fireEvent.click(el) })
         expect(getByText("Building Owner")).toBeInTheDocument()
         const buttonSubSig = queryAllByText("Sign Up")
-        buttonSubSig.map(el => {fireEvent.click(el)})
+        buttonSubSig.map(el => { fireEvent.click(el) })
         expect(getByText("Building Owner")).toBeInTheDocument()
     });
 
