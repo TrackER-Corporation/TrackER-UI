@@ -12,6 +12,7 @@ import 'antd/dist/reset.css';
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import Service from "./Service/index.tsx";
+import Login from "./Login/Login.tsx";
 
 
 interface MapProps {
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="*" element={<Home />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Service" element={<Service />} />
+          <Route path="/Access" element={<Login />} />
         </Routes>
         <Footer key="Footer1_0" dataSource={Footer10DataSource} isMobile={isMobile} />
       </BrowserRouter>
