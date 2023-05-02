@@ -1,10 +1,11 @@
+import { vi } from "vitest";
 import { handleLoginSubmit, handleSignUpSubmit, signInButton, signUpButton } from "../src/componentsFunctions";
 
 describe('Authentication functions', () => {
     describe('signUpButton', () => {
         it('should call the setError and setSwapPanel functions with the correct arguments', () => {
-            const setError = jest.fn();
-            const setSwapPanel = jest.fn();
+            const setError = vi.fn();
+            const setSwapPanel = vi.fn();
             signUpButton(setError, setSwapPanel);
             expect(setError).toHaveBeenCalledWith([]);
             expect(setSwapPanel).toHaveBeenCalledWith(true);
@@ -13,8 +14,8 @@ describe('Authentication functions', () => {
 
     describe('signInButton', () => {
         it('should call the setError and setSwapPanel functions with the correct arguments', () => {
-            const setError = jest.fn();
-            const setSwapPanel = jest.fn();
+            const setError = vi.fn();
+            const setSwapPanel = vi.fn();
             signInButton(setError, setSwapPanel);
             expect(setError).toHaveBeenCalledWith([]);
             expect(setSwapPanel).toHaveBeenCalledWith(false);
@@ -23,7 +24,7 @@ describe('Authentication functions', () => {
 
     describe('handleLoginSubmit', () => {
         it('should call setError with an error message if email or password is null', () => {
-            const setError = jest.fn();
+            const setError = vi.fn();
             handleLoginSubmit("", 'password', setError);
             expect(setError).toHaveBeenCalledWith(['Fill the form to continue']);
             handleLoginSubmit('email', "", setError);
@@ -31,7 +32,7 @@ describe('Authentication functions', () => {
         });
 
         it('should not call setError if email and password are not null', () => {
-            const setError = jest.fn();
+            const setError = vi.fn();
             handleLoginSubmit('email', 'password', setError);
             expect(setError).not.toHaveBeenCalled();
         });
@@ -39,7 +40,7 @@ describe('Authentication functions', () => {
 
     describe('handleSignUpSubmit', () => {
         it('should call setError with an error message if any required fields are null', () => {
-            const setError = jest.fn();
+            const setError = vi.fn();
             handleSignUpSubmit(null, 'name', 'surname', 'password', 'password', 'email', 'type', setError);
             expect(setError).toHaveBeenCalledWith(['Fill the form to continue']);
             handleSignUpSubmit('event', "", 'surname', 'password', 'password', 'email', 'type', setError);
@@ -55,13 +56,13 @@ describe('Authentication functions', () => {
         });
 
         it('should call setError with an error message if password and passwordConf do not match', () => {
-            const setError = jest.fn();
+            const setError = vi.fn();
             handleSignUpSubmit('event', 'name', 'surname', 'password', 'different', 'email', 'type', setError);
             expect(setError).toHaveBeenCalledWith(['Typed Password are different']);
         });
 
         it('should not call setError if all required fields are present and password and passwordConf match', () => {
-            const setError = jest.fn();
+            const setError = vi.fn();
             handleSignUpSubmit('event', 'name', 'surname', 'password', 'password', 'email', 'type', setError);
             expect(setError).not.toHaveBeenCalled();
         });
