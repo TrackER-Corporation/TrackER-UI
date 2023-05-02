@@ -9,7 +9,7 @@ export const signInButton = (setError: (arg: Array<any>) => void, setSwapPanel: 
 };
 
 export const handleLoginSubmit = (email: string, password: string, setError: (arg: Array<any>) => void) => {
-    if (email === null || password === null) {
+    if (!email || !password) {
         setError(["Fill the form to continue"])
         return
     }
@@ -44,7 +44,7 @@ export const handleSignUpSubmit = (
     type: string,
     setError: (arg: Array<any>) => void
 ) => {
-    if (name === null || surname === null || password === null || passwordConf === null || email === null) {
+    if (!name || !surname || !password || !passwordConf || !email || event == null) {
         setError(["Fill the form to continue"])
         return
     }

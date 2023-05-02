@@ -1,5 +1,7 @@
 import { vi } from "vitest";
 import { handleLoginSubmit, handleSignUpSubmit, signInButton, signUpButton } from "../src/componentsFunctions";
+import { expect, describe, it } from 'vitest'
+import '@testing-library/jest-dom';
 
 describe('Authentication functions', () => {
     describe('signUpButton', () => {
@@ -63,7 +65,7 @@ describe('Authentication functions', () => {
 
         it('should not call setError if all required fields are present and password and passwordConf match', () => {
             const setError = vi.fn();
-            handleSignUpSubmit('event', 'name', 'surname', 'password', 'password', 'email', 'type', setError);
+            handleSignUpSubmit(new Event('event'), 'name', 'surname', 'password', 'password', 'email', 'type', setError);
             expect(setError).not.toHaveBeenCalled();
         });
     });
