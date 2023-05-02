@@ -35,7 +35,6 @@ const SignInForm = () => {
                         <Tabs className="..."
                             defaultActiveKey="Building"
                             type="card"
-                            size="large"
                             style={{ padding: 20 }}
                             animated
                             centered
@@ -97,7 +96,8 @@ const SignInForm = () => {
                                     <Form.Item name="passwordConf" rules={[{ required: true, message: 'Confirm your password!' }]}>
                                         <Input.Password size="large" placeholder="Confirm Password" onChange={e => setPasswordConf(e.target.value)} />
                                     </Form.Item></>,
-                            }]}
+                            },
+                            ]}
                         >
                         </Tabs>
                         <button onClick={(e) => handleSignUpSubmit(e, name, surname, password, passwordConf, email, type, setError)}>Sign Up</button>
