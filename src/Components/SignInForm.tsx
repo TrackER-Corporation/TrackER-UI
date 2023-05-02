@@ -1,12 +1,8 @@
 import "./login.css";
 import { useState } from "react";
 import classnames from "classnames";
-import { login } from "../reducers/user";
-import { fetchBuildings } from "../reducers/buildings";
-//import api from "../api";
-import { Alert, Divider, Form, Input, message, Row, Tabs } from "antd";
+import { Alert, Divider, Form, Input, Row, Tabs } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { userPreference } from "../reducers/preference";
 import { useAppDispatch } from "../hooks";
 import { handleLoginSubmit, handleSignUpSubmit, signInButton, signUpButton } from "../componentsFunctions";
 
@@ -100,7 +96,19 @@ const SignInForm = () => {
                             ]}
                         >
                         </Tabs>
-                        <button onClick={(e) => handleSignUpSubmit(e, name, surname, password, passwordConf, email, type, setError)}>Sign Up</button>
+                        <button onClick={(e) =>
+                            handleSignUpSubmit(
+                                e,
+                                name,
+                                surname,
+                                password,
+                                passwordConf,
+                                email,
+                                type,
+                                company,
+                                setError,
+                                dispatch
+                            )}>Sign Up</button>
                     </Form>
                 </div>
                 <div className="form-container sign-in-container">
@@ -122,7 +130,7 @@ const SignInForm = () => {
                         <Row justify="end" style={{ marginTop: 10, width: "70%" }}>
                             <Link className="basic-form-forgot" to="">Forgot Password?</Link>
                         </Row>
-                        <button style={{ marginTop: 10 }} onClick={() => handleLoginSubmit(email, password, setError)}>Sign In</button>
+                        <button style={{ marginTop: 10 }} onClick={() => handleLoginSubmit(email, password, setError, navigate, dispatch)}>Sign In</button>
                     </Form>
                 </div>
                 <div className="overlay-container">

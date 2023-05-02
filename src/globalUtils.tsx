@@ -1,9 +1,12 @@
 
 import React from 'react';
-import { Button, Col, Row, Carousel as AntCarousel, } from 'antd';
+import { Button, Col, Row, Carousel as AntCarousel, Menu, } from 'antd';
 import QueueAnim, { IObject } from 'rc-queue-anim';
 import { isMobile } from 'react-device-detect';
 import TweenOne from 'rc-tween-one';
+import { GetItem } from './types';
+import { UploadRequestOption } from "rc-upload/lib/interface";
+
 
 
 export const isImg = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?/;
@@ -176,8 +179,6 @@ export const getChildrenToRenderPrice = (dataSource: any, carouselRef: any, curr
     );
 };
 
-
-
 export const renderChildPrice = (dataSource: any, carouselRef: any, current: number, setCurrent: (index: number) => void) => {
     const { Carousel, childWrapper: buttonWrapper } = dataSource;
     const { children: carouselChild, ...carouselProps } = Carousel;
@@ -255,3 +256,56 @@ export const renderChildPrice = (dataSource: any, carouselRef: any, current: num
         </>
     );
 };
+
+
+export const getItem: (label: string, key: string, icon: JSX.Element) => GetItem = (label, key, icon) => ({
+    key,
+    icon,
+    label,
+});
+
+
+async function importAll() {
+    const images: { [key: string]: any } = {};
+    const files = import.meta.glob('../assets/avatars/*.svg');
+    for (const path in files) {
+        const match = path.match(/\.\/(\w+)\.svg$/);
+        if (match) {
+            images[match[1]] = await files[path]();
+        }
+    }
+    return images;
+}
+
+export const avatarImages = await importAll();
+
+export const accountMenu = (user: any, setVisible: (arg: boolean) => void): any => (
+    <Menu style={{ padding: 6, borderRadius: 10, }}
+        items={[{
+            key: '1',
+            label: user?.type === "Building" ? "Change Avatar" : "Change Organization Logo",
+            onClick: () => { setVisible(true) }
+        }]}
+    />)
+
+export const uploadImage = async (file: UploadRequestOption, setCurrent: (arg: any) => void) => {
+    const data = new FormData();
+    data.append("file", file.file);
+    data.append("upload_preset", "lazkktrh");
+    const res = await fetch(
+        `https://api.cloudinary.com/v1_1/dgfnyulqh/image/upload`,
+        {
+            method: "POST",
+            body: data,
+        }
+    );
+    const img = await res.json();
+    if (img) {
+        file.onSuccess && file.onSuccess(img);
+        setCurrent(img.secure_url)
+    }
+    else {
+        file.onError && file.onError(img);
+    }
+}
+
