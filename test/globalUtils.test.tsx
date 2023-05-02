@@ -1,7 +1,9 @@
 import { render } from '@testing-library/react';
 import { animTypePricing, getChildrenToRender, getChildrenToRenderComponent, getChildrenToRenderPrice, getDelay, getSelectedKeys, isImg, onComplete, onTitleClick, renderChildPrice } from '../src/globalUtils';
-import { vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { Feature60DataSource, Feature80DataSource } from '../src/Service/data.source';
+import '@testing-library/jest-dom';
+
 
 describe('renderChildPrice utility function', () => {
     test('renders child components based on data source', () => {
@@ -202,5 +204,4 @@ describe('animTypePricing', () => {
 
         global.isMobile = originalIsMobile;
     });
- 
 });
