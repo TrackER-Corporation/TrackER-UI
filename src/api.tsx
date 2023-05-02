@@ -1,33 +1,32 @@
 import axios from "axios";
-import dotenv from 'dotenv';
+import { Credentials, UserApi } from "./types";
 
-dotenv.config();
-const API_URL = `http://localhost:${process.env.API_URL}/api`;
+const API_URL = `http://localhost:3000/api`;
 
 export default {
     user: {
-        login: (credentials: any) =>
-            axios.post(`${API_URL}/user/login`, { ...credentials })
+        login: (credentials: Credentials) =>
+            axios.post(`${API_URL}/users/login`, { ...credentials })
                 .then((res) => res.data),
-        signUp: (user: any) =>
-            axios.post(`${API_URL}/user/register`, { ...user })
+        signUp: (user: UserApi) =>
+            axios.post(`${API_URL}/users/register`, { ...user })
                 .then((res) => res.data),
         confirm: (token: any) =>
-            axios.post(`${API_URL}/user/confirmation`, { token })
+            axios.post(`${API_URL}/users/confirmation`, { token })
                 .then((res) => res),
         get: (id: string) =>
-            axios.get(`${API_URL}/user/${id}`)
+            axios.get(`${API_URL}/users/${id}`)
                 .then((res) => res.data),
         update: (id: string, data: any) =>
-            axios.put(`${API_URL}/user/${id}`, data),
+            axios.put(`${API_URL}/users/${id}`, data),
         updatePassword: (id: string, data: any) =>
-            axios.put(`${API_URL}/user/password/${id}`, data),
+            axios.put(`${API_URL}/users/password/${id}`, data),
         delete: (id: string) => {
             axios
-                .delete(`${API_URL}/user/${id}`).then(res => res.data)
+                .delete(`${API_URL}/users/${id}`).then(res => res.data)
         },
         fetchAll: () =>
-            axios.get(`${API_URL}/user/all`)
+            axios.get(`${API_URL}/users/all`)
                 .then((res) => res.data),
     },
     activity: {
