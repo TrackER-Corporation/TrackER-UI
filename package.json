@@ -14,11 +14,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
-    "@ant-design/pro-components": "^2.4.9",
-    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@ant-design/plots": "^1.2.5",
-    "@ant-design/pro-layout": "^7.12.1",
-    "@ant-design/pro-utils": "^2.8.3",
+    "@ant-design/pro-components": "^2.4.6",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
