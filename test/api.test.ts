@@ -31,7 +31,7 @@ describe('user', () => {
             axios.post.mockResolvedValueOnce({ data: expectedData });
             const result = await api.user.login(credentials);
             expect(axios.post).toHaveBeenCalledTimes(1);
-            expect(axios.post).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/user/login`, credentials);
+            expect(axios.post).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/users/login`, credentials);
             expect(result).toEqual(expectedData);
         });
     });
@@ -43,7 +43,7 @@ describe('user', () => {
             const result = await api.user.signUp(testUser);
 
             expect(axios.post).toHaveBeenCalledTimes(1);
-            expect(axios.post).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/user/register`, testUser);
+            expect(axios.post).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/users/register`, testUser);
             expect(result).toEqual(expectedData);
         });
     });
@@ -56,7 +56,7 @@ describe('user', () => {
             const result = await api.user.confirm(testToken);
 
             expect(axios.post).toHaveBeenCalledTimes(1);
-            expect(axios.post).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/user/confirmation`, { token: testToken });
+            expect(axios.post).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/users/confirmation`, { token: testToken });
             expect(result).toEqual({ data: expectedData });
         });
     });
@@ -69,7 +69,7 @@ describe('user', () => {
             const result = await api.user.get(testUserId);
 
             expect(axios.get).toHaveBeenCalledTimes(1);
-            expect(axios.get).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/user/${testUserId}`);
+            expect(axios.get).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/users/${testUserId}`);
             expect(result).toEqual(expectedData);
         });
     });
@@ -82,7 +82,7 @@ describe('user', () => {
             const result = await api.user.update(testUserId, { name: 'New Name' });
 
             expect(axios.put).toHaveBeenCalledTimes(1);
-            expect(axios.put).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/user/${testUserId}`, { name: 'New Name' });
+            expect(axios.put).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/users/${testUserId}`, { name: 'New Name' });
             expect(result).toEqual({ data: expectedData });
 
         });
@@ -96,7 +96,7 @@ describe('user', () => {
             const result = await api.user.updatePassword(testUserId, { oldPassword: 'testpassword', newPassword: 'newpassword' });
 
             expect(axios.put).toHaveBeenCalledTimes(1);
-            expect(axios.put).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/user/password/${testUserId}`, { oldPassword: 'testpassword', newPassword: 'newpassword' });
+            expect(axios.put).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/users/password/${testUserId}`, { oldPassword: 'testpassword', newPassword: 'newpassword' });
             expect(result).toEqual({ data: expectedData });
 
         });
@@ -108,7 +108,7 @@ describe('user', () => {
             axios.delete.mockResolvedValueOnce({ data: expectedData });
             const result = await api.user.delete(testUserId);
             expect(axios.delete).toHaveBeenCalledTimes(1);
-            expect(axios.delete).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/user/${testUserId}`);
+            expect(axios.delete).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/users/${testUserId}`);
             expect(result).toEqual(undefined);
         });
     });
@@ -121,7 +121,7 @@ describe('user', () => {
             const result = await api.user.fetchAll();
 
             expect(axios.get).toHaveBeenCalledTimes(1);
-            expect(axios.get).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/user/all`);
+            expect(axios.get).toHaveBeenCalledWith(`http://localhost:${process.env.API_URL}/api/users/all`);
             expect(result).toEqual(expectedData);
         });
     });
