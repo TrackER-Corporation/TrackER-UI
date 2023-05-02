@@ -55,8 +55,11 @@ export default {
                 .then((res) => res.data),
     },
     buildings: {
-        fetchBuildings: (userId: string) =>
-            axios.get(`${API_URL}/building/${userId}`) // to review
+        fetchBuildingsByUserId: (userId: string) =>
+            axios.get(`${API_URL}/building/find/${userId}`)
+                .then((res) => res.data),
+        fetchBuildings: (id: string) =>
+            axios.get(`${API_URL}/building/${id}`)
                 .then((res) => res.data),
         addBuilding: (body: any) =>
             axios.post(`${API_URL}/building/register`, body)
@@ -71,13 +74,13 @@ export default {
             axios.delete(`${API_URL}/building/${userId}`)
                 .then((res) => res.data),
         getBuilding: (id: string) =>
-            axios.get(`${API_URL}/building/${id}`) // to review
+            axios.get(`${API_URL}/building/${id}`)
                 .then((res) => res.data),
         getBuildingsByOrganizationId: (organizationId: string) =>
             axios.get(`${API_URL}/building/organization/${organizationId}`)
                 .then((res) => res.data),
-        getBuilding: () =>
-            axios.get(`${API_URL}/building`)
+        deleteBuildingByUserId: (userId: string) =>
+            axios.delete(`${API_URL}/building/user/${userId}`)
                 .then((res) => res.data),
     },
     organization: {
