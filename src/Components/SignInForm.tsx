@@ -205,6 +205,7 @@ const SignInForm = () => {
                                 onClick={signUpButton}
                                 className="ghost"
                                 id="signIn"
+                                data-testid="signIn"
                             >
                                 Sign Up
                             </button>
@@ -218,6 +219,7 @@ const SignInForm = () => {
                                 onClick={signInButton}
                                 className="ghost"
                                 id="signUp"
+                                data-testid="signUp"
                             >
                                 Sign In
                             </button>

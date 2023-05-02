@@ -23,7 +23,7 @@ export default defineConfig({
       provider: "c8",
       all: true,
       include: ["src/**/*.tsx", "src/**/*.ts", "src/**/**/*.ts", "src/**/**/*.tsx"],
-      exclude: ["src/main.tsx", "src/vite-env.d.ts"],
+      exclude: ["src/main.tsx", "src/vite-env.d.ts", "src/types.ts"],
       reporter: ['text', 'json-summary', 'json'],
     },
     globals: true,
