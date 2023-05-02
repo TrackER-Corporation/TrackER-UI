@@ -1,8 +1,9 @@
 import axios from "axios";
+import dotenv from 'dotenv';
 
-const API_URL = "http://localhost:3000/api";
+dotenv.config();
+const API_URL = `http://localhost:${process.env.API_URL}/api`;
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
     user: {
         login: (credentials: any) =>
