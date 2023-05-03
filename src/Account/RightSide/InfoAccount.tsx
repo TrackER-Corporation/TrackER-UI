@@ -48,8 +48,7 @@ const InfoAccount = ({ user, socket }: any) => {
                     onConfirm={() => {
                         dispatch(logout())
                         socket?.emit("disconnect")
-                    }
-                    }
+                    }}
                     okText="Yes"
                     cancelText="No"
                 >
