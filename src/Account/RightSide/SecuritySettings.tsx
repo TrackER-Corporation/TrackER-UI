@@ -26,7 +26,7 @@ const SecuritySettings = ({ user, updateRoute, socket }: any) => {
                     <GreyParagraph>You can save your all activity logs including unusual activity detected.</GreyParagraph>
                 </Col>
                 <Col style={{ marginRight: "20px" }}>
-                    <Switch defaultChecked={checked} onChange={(val) => updatePref(val, user, dispatch)} />
+                    <Switch data-testid="switch" defaultChecked={checked} onChange={(val) => updatePref(val, user, dispatch)} />
                 </Col>
             </Row>
             <Divider />
