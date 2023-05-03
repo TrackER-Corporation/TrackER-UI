@@ -1,7 +1,5 @@
-import { Col, Divider, message, Row, Switch } from "antd"
-import api from "../../api"
+import { Col, Divider, Row, Switch } from "antd"
 import { AccountSubTitle, AccountTitle, GreyParagraph } from "../../Components/CustomComponents"
-import { updatePreference } from "../../reducers/preference"
 import { AccountActivity } from "../../types"
 import { useAppDispatch } from "../../hooks"
 import { setNotification } from "../../accountUtils"
@@ -23,7 +21,7 @@ const AccountNotification = ({ user }: AccountActivity) => {
                     <GreyParagraph>Receive mails about your account operation.</GreyParagraph>
                 </Col>
                 <Col style={{ marginRight: "20px" }}>
-                    <Switch onClick={(type) => setNotification({ notification: type }, user, dispatch)} />
+                    <Switch data-testid="notification" onClick={(type) => setNotification({ notification: type }, user, dispatch)} />
                 </Col>
             </Row>
             <Divider />
@@ -34,7 +32,7 @@ const AccountNotification = ({ user }: AccountActivity) => {
                     <GreyParagraph>Notify me by email about sales and latest news of TrackER.</GreyParagraph>
                 </Col>
                 <Col style={{ marginRight: "20px" }}>
-                    <Switch onClick={(type) => setNotification({ news: type }, user, dispatch)} />
+                    <Switch data-testid="news" onClick={(type) => setNotification({ news: type }, user, dispatch)} />
                 </Col>
             </Row>
         </div>
