@@ -27,15 +27,19 @@ describe('Authentication functions', () => {
     describe('handleLoginSubmit', () => {
         it('should call setError with an error message if email or password is null', () => {
             const setError = vi.fn();
-            handleLoginSubmit("", 'password', setError);
+            const navigate = vi.fn();
+            const dispatch = vi.fn();
+            handleLoginSubmit("", 'password', setError, navigate, dispatch);
             expect(setError).toHaveBeenCalledWith(['Fill the form to continue']);
-            handleLoginSubmit('email', "", setError);
+            handleLoginSubmit('email', "", setError, navigate, dispatch);
             expect(setError).toHaveBeenCalledWith(['Fill the form to continue']);
         });
 
         it('should not call setError if email and password are not null', () => {
             const setError = vi.fn();
-            handleLoginSubmit('email', 'password', setError);
+            const navigate = vi.fn();
+            const dispatch = vi.fn();
+            handleLoginSubmit('email', 'password', setError, navigate, dispatch);
             expect(setError).not.toHaveBeenCalled();
         });
     });
@@ -43,29 +47,35 @@ describe('Authentication functions', () => {
     describe('handleSignUpSubmit', () => {
         it('should call setError with an error message if any required fields are null', () => {
             const setError = vi.fn();
-            handleSignUpSubmit(null, 'name', 'surname', 'password', 'password', 'email', 'type', setError);
+            const navigate = vi.fn();
+            const dispatch = vi.fn();
+            handleSignUpSubmit(null, 'name', 'surname', 'password', 'password', 'email', 'type', "", setError, navigate, dispatch);
             expect(setError).toHaveBeenCalledWith(['Fill the form to continue']);
-            handleSignUpSubmit('event', "", 'surname', 'password', 'password', 'email', 'type', setError);
+            handleSignUpSubmit('event', "", 'surname', 'password', 'password', 'email', 'type', "", setError, navigate, dispatch);
             expect(setError).toHaveBeenCalledWith(['Fill the form to continue']);
-            handleSignUpSubmit('event', 'name', "", 'password', 'password', 'email', 'type', setError);
+            handleSignUpSubmit('event', 'name', "", 'password', 'password', 'email', 'type', "", setError, navigate, dispatch);
             expect(setError).toHaveBeenCalledWith(['Fill the form to continue']);
-            handleSignUpSubmit('event', 'name', 'surname', "", 'password', 'email', 'type', setError);
+            handleSignUpSubmit('event', 'name', 'surname', "", 'password', 'email', 'type', "", setError, navigate, dispatch);
             expect(setError).toHaveBeenCalledWith(['Fill the form to continue']);
-            handleSignUpSubmit('event', 'name', 'surname', 'password', "", 'email', 'type', setError);
+            handleSignUpSubmit('event', 'name', 'surname', 'password', "", 'email', 'type', "", setError, navigate, dispatch);
             expect(setError).toHaveBeenCalledWith(['Fill the form to continue']);
-            handleSignUpSubmit('event', 'name', 'surname', 'password', 'password', "", 'type', setError);
+            handleSignUpSubmit('event', 'name', 'surname', 'password', 'password', "", 'type', "", setError, navigate, dispatch);
             expect(setError).toHaveBeenCalledWith(['Fill the form to continue']);
         });
 
         it('should call setError with an error message if password and passwordConf do not match', () => {
             const setError = vi.fn();
-            handleSignUpSubmit('event', 'name', 'surname', 'password', 'different', 'email', 'type', setError);
+            const navigate = vi.fn();
+            const dispatch = vi.fn();
+            handleSignUpSubmit('event', 'name', 'surname', 'password', 'different', 'email', 'type', "", setError, navigate, dispatch);
             expect(setError).toHaveBeenCalledWith(['Typed Password are different']);
         });
 
         it('should not call setError if all required fields are present and password and passwordConf match', () => {
             const setError = vi.fn();
-            handleSignUpSubmit(new Event('event'), 'name', 'surname', 'password', 'password', 'email', 'type', setError);
+            const navigate = vi.fn();
+            const dispatch = vi.fn();
+            handleSignUpSubmit(new Event('event'), 'name', 'surname', 'password', 'password', 'email', 'type', "", setError, navigate, dispatch);
             expect(setError).not.toHaveBeenCalled();
         });
     });

@@ -1,7 +1,10 @@
 import { render } from '@testing-library/react';
-import { animTypePricing, getChildrenToRender, getChildrenToRenderComponent, getChildrenToRenderPrice, getDelay, getSelectedKeys, isImg, onComplete, onTitleClick, renderChildPrice } from '../src/globalUtils';
-import { vi } from 'vitest';
+import { animTypePricing, getChildrenToRender, getChildrenToRenderComponent, getChildrenToRenderPrice, getDelay, getSelectedKeys, isImg, onComplete, onTitleClick, renderChildPrice, uploadImage } from '../src/globalUtils';
+import { describe, expect, test, vi } from 'vitest';
 import { Feature60DataSource, Feature80DataSource } from '../src/Service/data.source';
+import '@testing-library/jest-dom';
+import React from 'react';
+
 
 describe('renderChildPrice utility function', () => {
     test('renders child components based on data source', () => {
@@ -106,7 +109,7 @@ describe('onComplete function', () => {
     test('should set height to auto if open is true', () => {
         const e = {
             target: {
-                style: {},
+                style: {} as React.CSSProperties,
             },
         };
         onComplete(e, true);
@@ -117,7 +120,7 @@ describe('onComplete function', () => {
     test('should not set height to auto if open is false', () => {
         const e = {
             target: {
-                style: {},
+                style: {} as React.CSSProperties,
             },
         };
         onComplete(e, false);
@@ -202,5 +205,38 @@ describe('animTypePricing', () => {
 
         global.isMobile = originalIsMobile;
     });
- 
+});
+
+describe('uploadImage function', () => {
+    beforeEach(() => {
+        global.fetch = vi.fn();
+    });
+
+    afterEach(() => {
+        vi.resetAllMocks();
+    });
+
+    it('uploads an image and updates the current state with the secure URL', async () => {
+        const file = {
+            file: new File(['image'], 'test.png'),
+            onSuccess: vi.fn(),
+        };
+        const setCurrent = vi.fn();
+
+        global.fetch.mockResolvedValue({
+            json: vi.fn().mockResolvedValue({ secure_url: 'https://test.com/image.png' }),
+        });
+
+        await uploadImage(file, setCurrent);
+
+        expect(fetch).toHaveBeenCalledWith(
+            'https://api.cloudinary.com/v1_1/dgfnyulqh/image/upload',
+            expect.objectContaining({
+                method: 'POST',
+                body: expect.any(FormData),
+            })
+        );
+        expect(setCurrent).toHaveBeenCalledWith('https://test.com/image.png');
+        expect(file.onSuccess).toHaveBeenCalledWith({ secure_url: 'https://test.com/image.png' });
+    });
 });

@@ -11,10 +11,12 @@ export default defineConfig({
   ],
   resolve: {
     mainFields: ["module"],
+    alias: {
+      '@ant-design/pro-utils': '@ant-design/pro-utils/lib/index.js',
+    },
   },
   test: {
     setupFiles: [resolve(__dirname, './setup.ts')],
-    reporters: 'dot',
     coverage: {
       lines: 65,
       branches: 65,
