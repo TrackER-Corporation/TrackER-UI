@@ -5,37 +5,9 @@ import { useEffect } from "react";
 import { AccountTitle, GreyParagraph } from "../../Components/CustomComponents";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 import { AccountActivity } from "../../types";
-import { fetchActivity } from "../../accountUtils";
-
-const columns: any = [
-    {
-        dataIndex: 'index',
-        valueType: 'indexBorder',
-        width: 50,
-    },
-    {
-        title: 'Country',
-        dataIndex: 'country_name',
-    },
-    {
-        title: 'City',
-        dataIndex: 'city',
-    },
-    {
-        title: 'Ip',
-        dataIndex: 'IPv4',
-        initialValue: 'all',
-    },
-    {
-        title: 'Date',
-        dataIndex: 'date',
-        render: (date: string) => new Date(date).toLocaleString()
-    },
-];
-
+import { activityColumns, fetchActivity } from "../../accountUtils";
 
 const AccountActivity = ({ user }: AccountActivity) => {
-
     const [data, setData] = useState([])
     const [load, setLoad] = useState(true)
 
@@ -45,7 +17,6 @@ const AccountActivity = ({ user }: AccountActivity) => {
 
 
     return (
-
         <div>
             <Col>
                 <AccountTitle>Login Activity</AccountTitle>
@@ -55,7 +26,11 @@ const AccountActivity = ({ user }: AccountActivity) => {
             {load && <LoadingSpinner />}
             <ProTable dataSource={data} rowKey="key" pagination={{
                 hideOnSinglePage: true,
-            }} columns={columns} search={false} options={{ setting: false, reload: false, fullScreen: false, density: false, search: false }} dateFormatter="string" />
+            }} columns={activityColumns}
+                search={false}
+                options={{ setting: false, reload: false, fullScreen: false, density: false, search: false }}
+                dateFormatter="string"
+            />
         </div>
     )
 }

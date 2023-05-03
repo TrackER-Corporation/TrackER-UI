@@ -85,3 +85,30 @@ export const updateUserData = async (user: any, name: string, surname: string, e
             dispatch(updateUser(res.data))
             setVisible(false)
         }).catch(() => message.error("Error on Update Data"))
+
+
+export const activityColumns: any = [
+    {
+        dataIndex: 'index',
+        valueType: 'indexBorder',
+        width: 50,
+    },
+    {
+        title: 'Country',
+        dataIndex: 'country_name',
+    },
+    {
+        title: 'City',
+        dataIndex: 'city',
+    },
+    {
+        title: 'Ip',
+        dataIndex: 'IPv4',
+        initialValue: 'all',
+    },
+    {
+        title: 'Date',
+        dataIndex: 'date',
+        render: (date: string) => new Date(date).toLocaleString()
+    },
+];
