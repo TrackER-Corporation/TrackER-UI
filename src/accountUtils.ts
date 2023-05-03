@@ -4,7 +4,7 @@ import api from "./api";
 import { updatePreference } from "./reducers/preference";
 import { fetchOrganization } from "./reducers/organization";
 import { AppDispatch } from "./store";
-import { logout } from "./reducers/user";
+import { logout, updateUser } from "./reducers/user";
 
 export const draggerProps: DraggerProps = {
     name: 'file',
@@ -51,7 +51,7 @@ export const updatePref = async (value: boolean, user: any, dispatch: AppDispatc
     await api.preference.updatePreference(user._id, { activityLog: value })?.then(data => {
         dispatch((updatePreference(data)))
         message.success("Update Activity Log Preference")
-    }).catch(err => message.error("Error on Update Preference"))
+    }).catch(() => message.error("Error on Update Preference"))
 }
 export const deleteAccount = async (user: any, dispatch: AppDispatch, setShow: (arg: boolean) => void) => {
     await api.user.delete(user._id)
@@ -78,3 +78,10 @@ export const fetchActivity = async (user: any, setData: (arg: any) => void, setL
         setLoad(false)
     }, 300);
 }
+
+export const updateUserData = async (user: any, name: string, surname: string, email: string, dispatch: AppDispatch, setVisible: (arg: boolean) => void) =>
+    await api.user.update(user._id, { name, surname, email })
+        .then(res => {
+            dispatch(updateUser(res.data))
+            setVisible(false)
+        })

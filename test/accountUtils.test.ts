@@ -1,10 +1,8 @@
-import { message } from 'antd';
-import { confirm, confirmPreference, updatePref, deleteAccount, setNotification, fetchActivity } from '../src/accountUtilis';
+import { confirm, confirmPreference, updatePref, deleteAccount, setNotification, fetchActivity } from '../src/accountUtils';
 import { vi } from 'vitest';
 import api from '../src/api';
 import { updatePreference } from '../src/reducers/preference';
 import { fetchOrganization } from '../src/reducers/organization';
-import { logout } from '../src/reducers/user';
 
 vi.mock('../src/api');
 
