@@ -84,4 +84,4 @@ export const updateUserData = async (user: any, name: string, surname: string, e
         .then(res => {
             dispatch(updateUser(res.data))
             setVisible(false)
-        })
+        }).catch(() => message.error("Error on Update Data"))
