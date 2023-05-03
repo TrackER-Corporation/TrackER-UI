@@ -4,7 +4,7 @@ import { AccountSubTitle, AccountTitle, GreyParagraph } from "../../Components/C
 import { updatePreference } from "../../reducers/preference"
 import { AccountActivity } from "../../types"
 import { useAppDispatch } from "../../hooks"
-import { setNotification } from "../../accountUtilis"
+import { setNotification } from "../../accountUtils"
 
 const AccountNotification = ({ user }: AccountActivity) => {
     const dispatch = useAppDispatch()

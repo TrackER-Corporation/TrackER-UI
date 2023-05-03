@@ -1,28 +1,23 @@
 import { Button, Col, Form, Input, Modal } from "antd"
 import { useState } from "react"
-import api from "../../../api"
-import { updateUser } from "../../../reducers/user"
 import { EditAccountModalProps } from "../../../types"
 import { useAppDispatch } from "../../../hooks"
+import { updateUserData } from "../../../accountUtils"
 
 const EditAccountModal = ({ visible, setVisible, user }: EditAccountModalProps) => {
     const dispatch = useAppDispatch()
-    const [name, setName] = useState(user.name)
-    const [surname, setSurname] = useState(user.surname)
-    const [email, setEmail] = useState(user.email)
+    const [name, setName] = useState<string>(user.name)
+    const [surname, setSurname] = useState<string>(user.surname)
+    const [email, setEmail] = useState<string>(user.email)
 
     return (
         <Modal open={visible} style={{ borderRadius: 210 }}
             onCancel={() => setVisible(false)}
             footer={[
                 <Button key="back" onClick={() => setVisible(false)}>Cancel</Button>,
-                <Button key="submit" type="primary" onClick={() => {
-                    api.user.update(user._id, { name, surname, email })
-                        .then(res => {
-                            dispatch(updateUser(res.data))
-                            setVisible(false)
-                        })
-                }}>Update</Button>
+                <Button key="submit" type="primary" onClick={() =>
+                    updateUserData(user, name, surname, email, dispatch, setVisible)
+                }>Update</Button>
             ]}
             title="Edit your personal data">
             <Col>

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { AccountSubTitle } from "../Components/CustomComponents";
 import ImgCrop from 'antd-img-crop';
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { confirm, draggerProps } from "../accountUtilis";
+import { confirm, draggerProps } from "../accountUtils";
 import { uploadImage } from "../globalUtils";
 
 const OrganizationDrawer = ({ user, visible, onClose }: any) => {

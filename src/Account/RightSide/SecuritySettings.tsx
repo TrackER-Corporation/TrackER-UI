@@ -4,7 +4,7 @@ import { useState } from "react"
 import { AccountSubTitle, AccountTitle, GreyParagraph } from "../../Components/CustomComponents"
 import LoadingSpinner from "../../Components/LoadingSpinner"
 import { useAppDispatch, useAppSelector } from "../../hooks"
-import { deleteAccount, updatePref } from "../../accountUtilis"
+import { deleteAccount, updatePref } from "../../accountUtils"
 
 const SecuritySettings = ({ user, updateRoute, socket }: any) => {
 

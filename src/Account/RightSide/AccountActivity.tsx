@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { AccountTitle, GreyParagraph } from "../../Components/CustomComponents";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 import { AccountActivity } from "../../types";
-import { fetchActivity } from "../../accountUtilis";
+import { fetchActivity } from "../../accountUtils";
 
 const columns: any = [
     {

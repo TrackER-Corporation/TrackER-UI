@@ -3,7 +3,7 @@ import { useState } from "react";
 import { AccountSubTitle, AvatarHover } from "../Components/CustomComponents";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { avatarImages } from "../globalUtils";
-import { confirmPreference } from "../accountUtilis";
+import { confirmPreference } from "../accountUtils";
 
 const AvatarDrawer = ({ user, visible, onClose }: any) => {
     const userPreference = useAppSelector((state) => state.preference.preference)
