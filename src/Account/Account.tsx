@@ -10,21 +10,13 @@ import { useState } from "react";
 import AvatarDrawer from "./AvatarDrawer";
 import AccountNotification from "./RightSide/AccountNotification";
 import OrganizationDrawer from "./OrganizationDrawer";
-import { GetItem } from "../types";
-import { accountMenu, getItem } from "../globalUtils";
+import { accountMenu } from "../globalUtils";
+import { accountItems } from "../accountUtils";
 
 const Account = ({ updateRoute, user, avatar, socket }: any) => {
     const navigate = useNavigate()
     const location = useLocation()
     const [visible, setVisible] = useState(false)
-
-    const items: Array<GetItem> = [
-        getItem('Personal Information', '/Profile/Edit', <span className="iconfont anticon ">&#x100e5;</span>,),
-        getItem('Notification', '/Profile/Notification', <span className="iconfont anticon">&#x100d9;</span>),
-        getItem('Activity Monitor', '/Profile/Activity', <span className="iconfont anticon">&#x100e1;</span>),
-        getItem('Security Settings', '/Profile/Security', <span className="iconfont anticon">&#x100df;</span>),
-        getItem('Change Password', '/Profile/Password', <span className="iconfont anticon">&#xe6a9;</span>),
-    ];
 
     return (
         <Layout
@@ -42,6 +34,7 @@ const Account = ({ updateRoute, user, avatar, socket }: any) => {
                 </Breadcrumb>
             </Row>
             <PageHeader
+                data-testid="back"
                 style={{ paddingLeft: 0 }}
                 className="site-page-header"
                 title="Profile"
@@ -53,7 +46,7 @@ const Account = ({ updateRoute, user, avatar, socket }: any) => {
                     <Col md={5} sm={24} xs={24}>
                         <Row justify="end">
                             <Dropdown menu={accountMenu(user, setVisible)}>
-                                <MoreOutlined style={{ fontSize: 23, fontWeight: "bold" }} />
+                                <MoreOutlined data-testid="icon1" style={{ fontSize: 23, fontWeight: "bold" }} />
                             </Dropdown>
                         </Row>
                         <Col style={{ textAlign: "center" }}>
@@ -62,9 +55,10 @@ const Account = ({ updateRoute, user, avatar, socket }: any) => {
                             <p>{user.email}</p>
                         </Col>
                         <Menu
+                            data-testid="menu"
                             onClick={(el) => updateRoute(el.key)}
                             mode="inline"
-                            items={items}
+                            items={accountItems}
                             defaultSelectedKeys={['/']}
                             selectedKeys={[location.pathname]}
                         />
