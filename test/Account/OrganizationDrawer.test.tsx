@@ -5,10 +5,6 @@ import React from 'react';
 import OrganizationDrawer from '../../src/Account/OrganizationDrawer';
 import { vi } from 'vitest';
 
-vi.mock('../globalUtils', () => ({
-    uploadImage: vi.fn(),
-}));
-
 describe('OrganizationDrawer component', () => {
 
     it('renders the component with a preview of the current avatar', () => {

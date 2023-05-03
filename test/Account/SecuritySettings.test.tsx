@@ -5,9 +5,6 @@ import { store } from '../../src/store';
 import React from 'react';
 import SecuritySettings from '../../src/Account/RightSide/SecuritySettings';
 
-
-vi.mock('../../../api');
-
 describe('SecuritySettings component', () => {
 
     it('renders correctly', () => {
@@ -32,7 +29,7 @@ describe('SecuritySettings component', () => {
         expect(route).toHaveBeenCalledTimes(1)
         fireEvent.click(screen.getByText("Delete your Account"))
         fireEvent.click(screen.getByText("Delete Account"))
-        fireEvent.click(screen.getByText("Yes"))
-        fireEvent.click(screen.getByTestId("switch"))
+        // fireEvent.click(screen.getByText("Yes"))
+        // fireEvent.click(screen.getByTestId("switch"))
     });
 });

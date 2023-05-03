@@ -35,10 +35,16 @@ export const draggerProps: DraggerProps = {
 };
 
 export const confirm = async (user: any, organization: any, current: any, dispatch: AppDispatch, onClose: () => void) => {
-    await api.preference.updatePreference(user._id, { avatar: current })?.then(data => dispatch(updatePreference(data)))
-    await api.organization.update(organization._id, { icon: current })?.then(data => dispatch(fetchOrganization(data)))
-    message.success("Avatar updated correctly")
-    onClose()
+    try {
+        await api.preference.updatePreference(user._id, { avatar: current }).then(data => dispatch(updatePreference(data)))
+        await api.organization.update(organization._id, { icon: current }).then(data => dispatch(fetchOrganization(data)))
+        message.success("Avatar updated correctly")
+    } catch (error) {
+        message.success("Avatar not update")
+    }
+    finally {
+        onClose()
+    }
 }
 
 export const confirmPreference = async (userPreference: any, current: any, user: any, dispatch: AppDispatch, onClose: () => void) => {
@@ -76,11 +82,14 @@ export const setNotification = (data: any, user: any, dispatch: AppDispatch) => 
 }
 
 export const fetchActivity = async (user: any, setData: (arg: any) => void, setLoad: (arg: boolean) => void) => {
-    const fetchData = await api.activity.fetchActivity(user._id)?.then(res => res)
-    setData(fetchData)
-    setTimeout(() => {
-        setLoad(false)
-    }, 300);
+    await api.activity.fetchActivity(user._id)
+        .then(fetchData => {
+            setData(fetchData)
+            setTimeout(() => {
+                setLoad(false)
+            }, 300)
+        })
+        .catch(() => message.error("Error on Update Data"))
 }
 
 export const updateUserData = async (user: any, name: string, surname: string, email: string, dispatch: AppDispatch, setVisible: (arg: boolean) => void) =>
