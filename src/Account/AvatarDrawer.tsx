@@ -20,25 +20,30 @@ const AvatarDrawer = ({ user, visible, onClose }: any) => {
                 <Row justify="space-around" gutter={[16, 16]}>
                     <Tooltip title="Default Avatar">
                         <AvatarHover
+                            data-testid="avatar1"
                             style={
                                 current === "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
                                     ? {} :
                                     { boxShadow: "0 2px 2px #000000" }}
-                            size={60} src={"https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"} onClick={() => setCurrent("https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png")} />
+                            size={60} src={"https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"}
+                            onClick={() => setCurrent("https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png")} />
                     </Tooltip>
 
                     {[...Array(38)].map((x, i) =>
                         <Tooltip title={"Avatar-" + (i + 1)}>
                             <AvatarHover
+                                data-testid="avatar2"
                                 style={
                                     current === avatarImages['Avatar-' + (i + 1) + '.svg']
                                         ? {} :
                                         { boxShadow: "0 2px 2px #000000" }}
-                                size={60} src={avatarImages['Avatar-' + (i + 1) + '.svg']} onClick={() => setCurrent(avatarImages['Avatar-' + (i + 1) + '.svg'])} />
+                                size={60} src={avatarImages['Avatar-' + (i + 1) + '.svg']}
+                                onClick={() => setCurrent(avatarImages['Avatar-' + (i + 1) + '.svg'])} />
                         </Tooltip>
                     )}
                     <Tooltip title="No Avatar">
                         <AvatarHover
+                            data-testid="avatar3"
                             style={
                                 current === "" ? {} : { boxShadow: "0 2px 2px #000000" }}
                             size={60} src={""} onClick={() => setCurrent("")} />
