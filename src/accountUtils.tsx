@@ -135,9 +135,9 @@ export const updatePassword = (old: string, userPassword: string, password: stri
 }
 
 export const accountItems: Array<GetItem> = [
-    getItem('Personal Information', '/Profile/Edit', <span className="iconfont anticon " >& #x100e5; </span>,),
-    getItem('Notification', '/Profile/Notification', <span className="iconfont anticon" >& #x100d9; </span>),
-    getItem('Activity Monitor', '/Profile/Activity', <span className="iconfont anticon" >& #x100e1; </span>),
-    getItem('Security Settings', '/Profile/Security', <span className="iconfont anticon" >& #x100df; </span>),
-    getItem('Change Password', '/Profile/Password', <span className="iconfont anticon" >& #xe6a9; </span>),
+    getItem('Personal Information', '/Profile/Edit', <span className="iconfont anticon " >&#x100e5; </span>,),
+    getItem('Notification', '/Profile/Notification', <span className="iconfont anticon" >&#x100d9; </span>),
+    getItem('Activity Monitor', '/Profile/Activity', <span className="iconfont anticon" >&#x100e1; </span>),
+    getItem('Security Settings', '/Profile/Security', <span className="iconfont anticon" >&#x100df; </span>),
+    getItem('Change Password', '/Profile/Password', <span className="iconfont anticon" >&#xe6a9; </span>),
 ];
