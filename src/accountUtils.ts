@@ -5,6 +5,8 @@ import { updatePreference } from "./reducers/preference";
 import { fetchOrganization } from "./reducers/organization";
 import { AppDispatch } from "./store";
 import { logout, updateUser } from "./reducers/user";
+import bcrypt from "bcryptjs"
+
 
 export const draggerProps: DraggerProps = {
     name: 'file',
@@ -112,3 +114,20 @@ export const activityColumns: any = [
         render: (date: string) => new Date(date).toLocaleString()
     },
 ];
+
+const callUpdatePassword = (id: string, password: string, dispatch: AppDispatch) => {
+    api.user.updatePassword(id, { password })
+        .then(res => dispatch(updateUser(res.data)))
+}
+
+export const updatePassword = (old: string, userPassword: string, password: string, confirmPassword: string, id: string, dispatch: AppDispatch) => {
+    bcrypt.compare(old, userPassword).then(res => {
+        if (res)
+            if (password === confirmPassword && password.length > 5)
+                callUpdatePassword(id, password, dispatch)
+            else
+                message.error("Your password must be 6 characters at least")
+        else
+            message.error("This is not your old password")
+    })
+}

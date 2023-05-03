@@ -1,10 +1,8 @@
-import { Button, Col, Divider, Form, Input, message } from "antd"
+import { Button, Col, Divider, Form, Input } from "antd"
 import { useState } from "react"
-import api from "../../api"
 import { AccountTitle, GreyParagraph } from "../../Components/CustomComponents"
-import { updateUser } from "../../reducers/user"
-import bcrypt from "bcryptjs"
 import { useAppDispatch } from "../../hooks"
+import { updatePassword } from "../../accountUtils"
 
 const ChangePassword = ({ user }: any) => {
     const [old, setOld] = useState<string>("")
@@ -42,18 +40,7 @@ const ChangePassword = ({ user }: any) => {
                 <Button
                     style={{ width: "100%", borderRadius: 8, height: 50 }}
                     type="primary"
-                    onClick={() => {
-                        bcrypt.compare(old, user.password).then(res => {
-                            if (res)
-                                if (password === confirmPassword && password.length > 5)
-                                    api.user.updatePassword(user._id, { password })
-                                        .then(res => dispatch(updateUser(res.data)))
-                                else
-                                    message.error("Your password must be 6 characters at least")
-                            else
-                                message.error("This is not your old password")
-                        })
-                    }
+                    onClick={() => { updatePassword(old, user.password, password, confirmPassword, user._id, dispatch) }
                     }>Update</Button>
             </Col>
         </div>
