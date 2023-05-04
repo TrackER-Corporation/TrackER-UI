@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import Service from "./Service/index.tsx";
 import Login from "./Login/Login.tsx";
-
+import DashboardRoutes from "./Consumer/DashboardRoutes.tsx";
 
 interface MapProps {
   user: any;
@@ -21,7 +21,7 @@ interface MapProps {
   type: string
 }
 
-const App = () => {
+const App = ({ logged }: { logged?: boolean }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -34,17 +34,23 @@ const App = () => {
 
   return (
     <div>
-      <BrowserRouter>
-        <Nav key="Nav3_0" dataSource={Nav30DataSource} isMobile={isMobile} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<Home />} />
-          <Route path="/Home" element={<Home />} />
-          <Route path="/Service" element={<Service />} />
-          <Route path="/Access" element={<Login />} />
-        </Routes>
-        <Footer key="Footer1_0" dataSource={Footer10DataSource} isMobile={isMobile} />
-      </BrowserRouter>
+      {show && logged ?
+        <BrowserRouter>
+          <DashboardRoutes />
+        </BrowserRouter>
+        :
+        <BrowserRouter>
+          <Nav key="Nav3_0" dataSource={Nav30DataSource} isMobile={isMobile} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="*" element={<Home />} />
+            <Route path="/Home" element={<Home />} />
+            <Route path="/Service" element={<Service />} />
+            <Route path="/Access" element={<Login />} />
+          </Routes>
+          <Footer key="Footer1_0" dataSource={Footer10DataSource} isMobile={isMobile} />
+        </BrowserRouter>
+      }
     </div>
   );
 };
@@ -57,4 +63,6 @@ const mapStateToProps = (state: MapProps) => {
 
 const connector = connect(mapStateToProps);
 
-export default connector(App);
+const ReturnApp = connector(App)
+
+export default ReturnApp;
