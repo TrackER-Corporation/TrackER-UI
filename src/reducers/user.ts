@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { User } from '../types';
 
 
 const user = localStorage.getItem("user");
 const logged = localStorage.getItem("logged");
 
-const initialState = {
+
+const initialState: User = {
     user: user ? JSON.parse(user) : {},
     logged: logged === "true"
 }
