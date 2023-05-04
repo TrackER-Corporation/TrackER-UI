@@ -6,8 +6,7 @@ import { isMobile } from 'react-device-detect';
 import TweenOne from 'rc-tween-one';
 import { GetItem } from './types';
 import { UploadRequestOption } from "rc-upload/lib/interface";
-
-
+import { MenuProps } from 'antd/lib/menu';
 
 export const isImg = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?/;
 export const getChildrenToRender = (item: any, i: number) => {
@@ -267,7 +266,7 @@ export const getItem: (label: string, key: string, icon: JSX.Element) => GetItem
 
 async function importAll() {
     const images: { [key: string]: any } = {};
-    const files = import.meta.glob('../assets/avatars/*.svg');
+    const files = import.meta.glob('../src/assets/avatars/*.svg');
     for (const path in files) {
         const match = path.match(/\.\/(\w+)\.svg$/);
         if (match) {
@@ -279,14 +278,14 @@ async function importAll() {
 
 export const avatarImages = await importAll();
 
-export const accountMenu = (user: any, setVisible: (arg: boolean) => void): any => (
-    <Menu style={{ padding: 6, borderRadius: 10, }}
-        items={[{
+export const accountMenu = (user: any, setVisible: (arg: boolean) => void): MenuProps['items'] =>
+    [
+        {
             key: '1',
-            label: user?.type === "Building" ? "Change Avatar" : "Change Organization Logo",
+            label: user.type === "Building" ? "Change Avatar" : "Change Organization Logo",
             onClick: () => { setVisible(true) }
-        }]}
-    />)
+        }
+    ];
 
 export const uploadImage = async (file: UploadRequestOption, setCurrent: (arg: any) => void) => {
     const data = new FormData();
