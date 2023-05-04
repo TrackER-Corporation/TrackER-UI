@@ -56,31 +56,31 @@ export default {
     },
     buildings: {
         fetchBuildingsByUserId: (userId: string) =>
-            axios.get(`${API_URL}/building/find/${userId}`)
+            axios.get(`${API_URL}/buildings/find/${userId}`)
                 .then((res) => res.data),
         fetchBuildings: (id: string) =>
-            axios.get(`${API_URL}/building/${id}`)
+            axios.get(`${API_URL}/buildings/${id}`)
                 .then((res) => res.data),
         addBuilding: (body: any) =>
-            axios.post(`${API_URL}/building/register`, body)
+            axios.post(`${API_URL}/buildings/register`, body)
                 .then((res) => res.data),
         updateBuilding: (buildingId: string, body: any) =>
-            axios.put(`${API_URL}/building/${buildingId}`, body)
+            axios.put(`${API_URL}/buildings/${buildingId}`, body)
                 .then((res) => res.data),
         updateBuildingResources: (buildingId: string, body: any) =>
-            axios.put(`${API_URL}/building/resources/${buildingId}`, body)
+            axios.put(`${API_URL}/buildings/resources/${buildingId}`, body)
                 .then((res) => res.data),
         deleteBuilding: (userId: string) =>
-            axios.delete(`${API_URL}/building/${userId}`)
+            axios.delete(`${API_URL}/buildings/${userId}`)
                 .then((res) => res.data),
         getBuilding: (id: string) =>
-            axios.get(`${API_URL}/building/${id}`)
+            axios.get(`${API_URL}/buildings/${id}`)
                 .then((res) => res.data),
         getBuildingsByOrganizationId: (organizationId: string) =>
-            axios.get(`${API_URL}/building/organization/${organizationId}`)
+            axios.get(`${API_URL}/buildings/organization/${organizationId}`)
                 .then((res) => res.data),
         deleteBuildingByUserId: (userId: string) =>
-            axios.delete(`${API_URL}/building/user/${userId}`)
+            axios.delete(`${API_URL}/buildings/user/${userId}`)
                 .then((res) => res.data),
     },
     organization: {
