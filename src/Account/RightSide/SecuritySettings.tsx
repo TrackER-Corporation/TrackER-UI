@@ -6,7 +6,7 @@ import LoadingSpinner from "../../Components/LoadingSpinner"
 import { useAppDispatch, useAppSelector } from "../../hooks"
 import { deleteAccount, updatePref } from "../../accountUtils"
 
-const SecuritySettings = ({ user, updateRoute, socket }: any) => {
+const SecuritySettings = ({ user, updateRoute }: any) => {
 
     const dispatch = useAppDispatch()
     const [show, setShow] = useState(false)
@@ -43,11 +43,11 @@ const SecuritySettings = ({ user, updateRoute, socket }: any) => {
             </Row>
             <Divider />
             <Row justify="space-between" align="middle">
-                <Col>
+                <Col span={15}>
                     <AccountSubTitle>Delete your Account</AccountSubTitle>
                     <GreyParagraph>Remove your account and your personal information from the network.</GreyParagraph>
                 </Col>
-                <Col>
+                <Col >
                     <Popconfirm icon={<QuestionCircleOutlined style={{ color: 'red' }} />} title="Are you sure? This action is not reversible" okText="Yes" cancelText="No" onConfirm={() => deleteAccount(user, dispatch, setShow)}>
                         <Button danger style={{ borderRadius: 6, marginRight: "20px", height: 40 }}>Delete Account</Button>
                     </Popconfirm>

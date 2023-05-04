@@ -17,6 +17,7 @@ const Account = ({ updateRoute, user, avatar, socket }: any) => {
     const navigate = useNavigate()
     const location = useLocation()
     const [visible, setVisible] = useState(false)
+    const items = accountMenu(user, setVisible)
 
     return (
         <Layout
@@ -43,9 +44,9 @@ const Account = ({ updateRoute, user, avatar, socket }: any) => {
             />
             <ProCard style={{ borderRadius: "20px", boxShadow: "0 2px 10px rgba(0,0,0,0.2)" }}>
                 <Row gutter={[16, 16]}>
-                    <Col md={5} sm={24} xs={24}>
+                    <Col md={6} sm={24} xs={24}>
                         <Row justify="end">
-                            <Dropdown menu={accountMenu(user, setVisible)}>
+                            <Dropdown menu={{ items }}>
                                 <MoreOutlined data-testid="icon1" style={{ fontSize: 23, fontWeight: "bold" }} />
                             </Dropdown>
                         </Row>
@@ -66,7 +67,7 @@ const Account = ({ updateRoute, user, avatar, socket }: any) => {
                     <Col md={1} sm={0}>
                         <Space direction="vertical" style={{ width: "100%" }} />
                     </Col>
-                    <Col md={18} sm={24} >
+                    <Col md={15} sm={24} >
                         {location.pathname === "/Profile/Edit" && <InfoAccount socket={socket} user={user} />}
                         {location.pathname === "/Profile/Notification" && <AccountNotification user={user} />}
                         {location.pathname === "/Profile/Activity" && <AccountActivity user={user} />}

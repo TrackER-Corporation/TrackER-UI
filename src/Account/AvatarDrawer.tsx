@@ -11,7 +11,7 @@ const AvatarDrawer = ({ user, visible, onClose }: any) => {
     const dispatch = useAppDispatch()
 
     return (
-        <Drawer title="Change Avatar" size="large" placement="right" visible={visible} onClose={() => onClose()}>
+        <Drawer title="Change Avatar" size="large" placement="right" open={visible} onClose={() => onClose()}>
             <Row justify="center">
                 <Avatar size={200} src={current} />
             </Row>
@@ -28,11 +28,10 @@ const AvatarDrawer = ({ user, visible, onClose }: any) => {
                             size={60} src={"https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"}
                             onClick={() => setCurrent("https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png")} />
                     </Tooltip>
-
-                    {[...Array(38)].map((x, i) =>
+                    {[...Array(38)].map((_, i) =>
                         <Tooltip title={"Avatar-" + (i + 1)}>
                             <AvatarHover
-                                data-testid="avatar2"
+                                data-testid={"avatar" + i}
                                 style={
                                     current === avatarImages['Avatar-' + (i + 1) + '.svg']
                                         ? {} :

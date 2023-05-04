@@ -8,6 +8,7 @@ import { logout, updateUser } from "./reducers/user";
 import bcrypt from "bcryptjs"
 import { getItem } from "./globalUtils";
 import { GetItem } from "./types";
+import IconFont from "./Iconfont";
 
 
 export const draggerProps: DraggerProps = {
@@ -144,9 +145,9 @@ export const updatePassword = (old: string, userPassword: string, password: stri
 }
 
 export const accountItems: Array<GetItem> = [
-    getItem('Personal Information', '/Profile/Edit', <span className="iconfont anticon " >&#x100e5; </span>,),
-    getItem('Notification', '/Profile/Notification', <span className="iconfont anticon" >&#x100d9; </span>),
-    getItem('Activity Monitor', '/Profile/Activity', <span className="iconfont anticon" >&#x100e1; </span>),
-    getItem('Security Settings', '/Profile/Security', <span className="iconfont anticon" >&#x100df; </span>),
-    getItem('Change Password', '/Profile/Password', <span className="iconfont anticon" >&#xe6a9; </span>),
+    getItem('Personal Information', '/Profile/Edit', <IconFont style={{ fontSize: 22, fill: "red" }} type="i-shouye" />),
+    getItem('Notification', '/Profile/Notification', <IconFont style={{ fontSize: 22 }} type="i-bell" />),
+    getItem('Activity Monitor', '/Profile/Activity', <IconFont style={{ fontSize: 22 }} type="i-dingwei" />),
+    getItem('Security Settings', '/Profile/Security', <IconFont style={{ fontSize: 22 }} type="i-shezhi" />),
+    getItem('Change Password', '/Profile/Password', <IconFont style={{ fontSize: 22 }} type="i-lock" />),
 ];
