@@ -6,54 +6,43 @@ interface TableCard {
     buildings: Array<Building>
 }
 
+const columns = [
+    {
+        title: '#',
+        width: 50,
+        dataIndex: 'index',
+        render: (_: any) => <a>{_}</a>,
+    },
+    {
+        title: 'Building Name',
+        dataIndex: 'name',
+    },
+    {
+        title: 'Owner',
+        dataIndex: 'contact',
+    },
+    {
+        title: 'Address',
+        dataIndex: 'address',
+    },
+    {
+        title: 'Size',
+        dataIndex: 'sqft',
+    },
+    {
+        title: 'Type',
+        dataIndex: 'type',
+    },
+    {
+        title: 'Created At',
+        dataIndex: 'date',
+        render: (_: any) => <span>{new Date(_).toDateString()}</span>
+    },
+
+];
+
 const TableCard = ({ buildings }: TableCard) => {
-    const tableListDataSource: any = [];
-    
-    if (buildings === null)
-        return <></>
-    buildings.map((el: Building, i: number) =>
-        tableListDataSource.push({
-            key: el._id,
-            index: i + 1,
-            ...el
-        })
-    )
-
-    const columns = [
-        {
-            title: '#',
-            width: 50,
-            dataIndex: 'index',
-            render: (_: any) => <a>{_}</a>,
-        },
-        {
-            title: 'Building Name',
-            dataIndex: 'name',
-        },
-        {
-            title: 'Owner',
-            dataIndex: 'contact',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-        },
-        {
-            title: 'Size',
-            dataIndex: 'sqft',
-        },
-        {
-            title: 'Type',
-            dataIndex: 'type',
-        },
-        {
-            title: 'Created At',
-            dataIndex: 'date',
-            render: (_: any) => <span>{new Date(_).toDateString()}</span>
-        },
-
-    ];
-
+    if (buildings === null) return <></>
     return (
         <Col span={24}>
             <Card bordered style={{ borderRadius: "10px" }}>
@@ -61,7 +50,14 @@ const TableCard = ({ buildings }: TableCard) => {
                     <Col span={24}>
                         <ProTable
                             headerTitle="Building Portfolio"
-                            dataSource={tableListDataSource}
+                            dataSource={
+                                buildings?.map((el: Building, i: number) =>
+                                ({
+                                    key: el._id,
+                                    index: i + 1,
+                                    ...el
+                                }))
+                            }
                             rowKey="key"
                             pagination={{ hideOnSinglePage: true, }}
                             columns={columns}
