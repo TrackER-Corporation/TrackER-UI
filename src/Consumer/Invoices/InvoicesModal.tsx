@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ElectricInvoices from "./ElectricInvoices";
 import GasInvoices from "./GasInvoices";
 import WaterInvoices from "./WaterInvoices";
-import { Building } from "../../types";
+import { Building, TimeStamp } from "../../types";
 import { useAppSelector } from "../../hooks";
 import { dataInRange } from "../../globalUtils";
 const { TabPane } = Tabs;
@@ -13,7 +13,7 @@ interface InvoicesModal {
     data: any,
     visible: boolean,
     setVisible: (arg: boolean) => void,
-    timeSpan: string,
+    timeSpan: TimeStamp
     building: Building
 }
 
@@ -29,6 +29,8 @@ const InvoicesModal = ({ data, visible, setVisible, timeSpan, building }: Invoic
     const [electricDetail, setElectric] = useState({})
 
     useEffect(() => {
+        if (!allOrganization)
+            return
         const organizationDetail = Object.values(allOrganization)
             .find(el => el._id === building.organizationId)
         if (organizationDetail !== undefined) {
