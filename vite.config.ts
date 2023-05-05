@@ -14,9 +14,6 @@ export default defineConfig({
   },
   resolve: {
     mainFields: ["module"],
-    alias: {
-      '@ant-design/pro-utils': '@ant-design/pro-utils/lib/index.js',
-    },
   },
   test: {
     setupFiles: [resolve(__dirname, './setup.ts')],
@@ -33,6 +30,9 @@ export default defineConfig({
     },
     globals: true,
     environment: "jsdom",
+    deps: {
+      inline: ['vitest-canvas-mock'],
+    },
   },
   css: {
     preprocessorOptions: {
