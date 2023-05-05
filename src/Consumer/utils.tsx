@@ -379,10 +379,6 @@ export const getBills = async (id: string, setBills: (arg: any) => void) => {
     await api.bills.getBillsAggregated(id).then(res => setBills(res))
 }
 
-
-
-
-
 export const headerMenu = (type: string, dispatch: AppDispatch): MenuProps['items'] => {
     let addOn: any = {}
     if (type === "Buildings") {

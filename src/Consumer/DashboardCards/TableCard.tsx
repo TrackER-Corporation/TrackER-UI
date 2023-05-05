@@ -1,12 +1,17 @@
 import { Card, Col, Row } from "antd";
 import { ProTable } from '@ant-design/pro-components';
+import { Building } from "../../types";
 
-const TableCard = ({ buildings }: any) => {
+interface TableCard {
+    buildings: Array<Building>
+}
+
+const TableCard = ({ buildings }: TableCard) => {
     const tableListDataSource: any = [];
-
+    
     if (buildings === null)
         return <></>
-    buildings.map((el: any, i: number) =>
+    buildings.map((el: Building, i: number) =>
         tableListDataSource.push({
             key: el._id,
             index: i + 1,

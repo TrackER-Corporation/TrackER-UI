@@ -85,6 +85,7 @@ export interface Organization {
 
 
 export interface Building {
+    _id: string,
     name: string;
     contact: string;
     userId?: string;
