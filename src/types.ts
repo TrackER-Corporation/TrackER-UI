@@ -112,3 +112,5 @@ export interface Activity {
     IPv4?: string;
     state?: string;
 }
+
+export type TimeStamp = "Weekly" | "Monthly" | "Yearly" | ""
