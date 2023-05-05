@@ -14,6 +14,7 @@ import AddNewBuildings from "./Building/AddNewBuilding";
 import Organizations from "./Organizations/Organizations";
 import Account from "../Account/Account";
 import Invoices from "./Invoices/Invoices";
+import { MenuProps } from "antd/lib/menu";
 
 export const statebar = (type: string, color: any) => ({
     options: {
@@ -378,7 +379,11 @@ export const getBills = async (id: string, setBills: (arg: any) => void) => {
     await api.bills.getBillsAggregated(id).then(res => setBills(res))
 }
 
-export const headerMenu = (type: string, dispatch: AppDispatch) => {
+
+
+
+
+export const headerMenu = (type: string, dispatch: AppDispatch): MenuProps['items'] => {
     let addOn: any = {}
     if (type === "Buildings") {
         addOn = { type: "divider" },
@@ -408,46 +413,41 @@ export const headerMenu = (type: string, dispatch: AppDispatch) => {
         }
     }
 
-    return (
-        <Menu
-            style={{ borderRadius: 10 }}
-            items={[
-                {
-                    key: '1',
-                    type: 'group',
-                    children: [
-                        {
-                            key: '1-1',
-                            label: (
-                                <LinkHover to="/Profile/Edit">View Profile</LinkHover>
-                            ),
-                        },
-                        {
-                            key: '1-2',
-                            label: (
-                                <LinkHover to="/Profile/Security">Settings</LinkHover>
-                            ),
-                        },],
-                    label: <h3>Profile Settings</h3>
-                },
-                addOn,
-                {
-                    type: "divider",
-                },
-                {
-                    key: '3',
-                    type: 'group',
-                    children: [
-                        {
-                            key: '3-1',
-                            label: (
-                                <div onClick={() => dispatch(logout())}>Logout</div>
-                            ),
-                        }],
-                    label: <h3 >Exit Profile</h3>,
-                },
-            ]}
-        />)
+    return [{
+        key: '1',
+        type: 'group',
+        children: [
+            {
+                key: '1-1',
+                label: (
+                    <LinkHover to="/Profile/Edit">View Profile</LinkHover>
+                ),
+            },
+            {
+                key: '1-2',
+                label: (
+                    <LinkHover to="/Profile/Security">Settings</LinkHover>
+                ),
+            },],
+        label: <h3>Profile Settings</h3>
+    },
+        addOn,
+    {
+        type: "divider",
+    },
+    {
+        key: '3',
+        type: 'group',
+        children: [
+            {
+                key: '3-1',
+                label: (
+                    <div onClick={() => dispatch(logout())}>Logout</div>
+                ),
+            }],
+        label: <h3 >Exit Profile</h3>,
+    },
+    ]
 }
 
 

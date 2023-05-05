@@ -4,10 +4,15 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import IconFont from "../../Iconfont";
 import { headerMenu } from "../utils";
 
-const Header = ({ avatar }: any) => {
+interface Header {
+    avatar: string
+}
+
+const Header = ({ avatar }: Header) => {
     const dispatch = useAppDispatch()
     const user = useAppSelector((state) => state.user.user)
     const type = user.type
+    const items = headerMenu(type, dispatch)
 
     return (
         <Row justify="center" style={{ marginTop: "15px" }}>
@@ -32,7 +37,7 @@ const Header = ({ avatar }: any) => {
                 </Row>
                 <Space>
                     <Dropdown
-                        menu={headerMenu(type, dispatch) as any}
+                        menu={{ items }}
                         placement="bottomRight"
                         overlayStyle={{ borderRadius: 10 }}
                     >
