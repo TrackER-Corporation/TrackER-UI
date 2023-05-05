@@ -5,7 +5,7 @@ import api from "../../api";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import InvoicesModal from "./InvoicesModal";
 import { PageHeader } from "@ant-design/pro-components";
-import { UserProps } from "../../types";
+import { Building, UserProps } from "../../types";
 import { useAppSelector } from "../../hooks";
 import Empty from "../../Components/Empty";
 
@@ -15,13 +15,13 @@ interface Invoices {
 
 const Invoices = ({ user }: Invoices) => {
     const filter = useLocation().pathname.split("/")[2]
+    const navigate = useNavigate()
     const buildings = useAppSelector(state => state.buildings.buildings)
     const [bills, setBills] = useState([])
     const [data, setData] = useState({})
     const [timeSpan, setTimeSpan] = useState("")
     const [visible, setVisible] = useState(false)
-    const navigate = useNavigate()
-    const [building, setBuilding] = useState({})
+    const [building, setBuilding] = useState<Building>(buildings[0])
 
     const getBillsAggregated = async () =>
         await api.bills.getBillsAggregated(user._id)
@@ -121,7 +121,13 @@ const Invoices = ({ user }: Invoices) => {
                     </Row>
                 </Col>
             </Row>
-            <InvoicesModal visible={visible} setVisible={setVisible} data={data} timespan={timeSpan} building={building} />
+            <InvoicesModal
+                visible={visible}
+                setVisible={setVisible}
+                data={data}
+                timeSpan={timeSpan}
+                building={building}
+            />
         </Layout>
     )
 }

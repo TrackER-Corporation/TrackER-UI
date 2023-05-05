@@ -1,79 +1,10 @@
-import { PageHeader } from "@ant-design/pro-components"
-import { Breadcrumb, Card, Carousel, Col, Divider, Empty, Layout, Row, Statistic } from "antd"
+import { Col, Divider, Row } from "antd"
 import { useEffect, useState } from "react"
 import ReactApexChart from "react-apexcharts"
-import IconFont from "../../Iconfont"
+import { InvoicesProps, optionsLine, pieOptions } from "./utilsInvoices"
+import InvoicesWrapper from "./InvoicesWrapper"
 
-const optionsLine = {
-    legend: {
-        position: "top",
-        horizontalAlign: "center",
-        align: "right"
-    },
-    chart: {
-        id: 'area-datetime',
-        type: 'area',
-        autoSelected: 'selection',
-        animations: {
-            enabled: true,
-            easing: 'easein',
-            speed: 800,
-            animateGradually: {
-                enabled: true,
-                delay: 150
-            },
-        },
-        toolbar: { show: true, },
-    },
-    colors: ['#008ffb'],
-    stroke: {
-        curve: 'smooth',
-        width: 2,
-        lineCap: 'butt',
-    },
-    dataLabels: {
-        enabled: false
-    },
-
-    xaxis: {
-        type: 'datetime',
-        tooltip: {
-            enabled: false
-        },
-        labels: {
-            show: true,
-            datetimeUTC: false,
-            datetimeFormatter: {
-                year: 'yyyy',
-                month: "MMM 'yy",
-                day: 'dd MMM',
-                hour: 'HH:mm',
-            },
-        },
-    },
-    tooltip: {
-        enabled: true,
-        followCursor: true,
-        theme: "light",
-        x: {
-            show: true,
-            format: "dd-MM-yyyy HH:mm"
-        },
-        y: {
-            formatter: function (val) {
-                return val + "l"
-            },
-            title: {
-                formatter: () => {
-                    return "Water Usage"
-                },
-            },
-        }
-    }
-
-}
-
-const WaterInvoices = ({ bills, cost, aggregated, filtered }: any) => {
+const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => {
     const [metricCubic, setMetric] = useState(true)
     const [waterSum, setWaterSum] = useState(0)
     const [totalTaxCost, setTotalTax] = useState(0)
@@ -81,82 +12,6 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: any) => {
     const [supplier, setSupplier] = useState(0)
     const [delivery, setDelivery] = useState(0)
     const [allWaterLine, setAllWaterLine] = useState([])
-
-    const options = {
-        noData: {
-            text: "You have no data...",
-            align: 'center',
-            verticalAlign: 'middle',
-            offsetX: 0,
-            offsetY: 0,
-            style: {
-                color: "blue",
-                fontSize: '12px',
-            }
-        },
-        chart: {
-            height: 390,
-            type: 'pie',
-        },
-        plotOptions: {
-            polarArea: {
-                offsetY: 0,
-                startAngle: 0,
-                endAngle: 270,
-                hollow: {
-                    margin: 10,
-                    size: '40%',
-                    background: 'transparent',
-                },
-                dataLabels: {
-                    name: {
-                        fontSize: '14px',
-                        show: true,
-
-                    },
-                }
-            }
-        },
-        labels: ["Organization Cost", "Tax Cost", "Delivery Cost", "Supplier Cost"],
-        colors: ["#1984f5", "#00c2f6", "#00cbc8", "#00cbff",],
-        value: {
-            formatter: function (value: number) { return Number(value).toFixed(2) + " €" },
-        },
-        tooltip: {
-            enabled: true,
-            y: {
-                formatter: function (value: number) { return Number(value).toFixed(2) + " €" },
-            },
-
-        },
-        legend: {
-            show: true,
-            fontSize: '16px',
-            position: 'right',
-            labels: {
-                useSeriesColors: true,
-            },
-            markers: {
-                size: 0
-            },
-            formatter: function (seriesName, opts) {
-                let res = opts.w.globals.series[opts.seriesIndex].toFixed(2) + " €"
-                return seriesName + " " + res
-            },
-            itemMargin: {
-                vertical: 3
-            }
-        },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                legend: {
-                    show: false
-                }
-            }
-        }]
-    }
-
 
     useEffect(() => {
         if (bills === null)
@@ -216,69 +71,47 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: any) => {
     }, [filtered, aggregated, metricCubic, bills, cost])
 
     return (
-        <Layout
-            className="site-layout-background"
-            style={{
-                paddingLeft: 24,
-                paddingRight: 24,
+        <InvoicesWrapper
+            title="Water Supplier Details"
+            bills={bills}
+            change={metricCubic}
+            delivery={delivery}
+            multiplier={0.0001666667}
+            setChange={setMetric}
+            supplier={supplier}
+            totalEarning={totalEarning}
+            totalSum={waterSum}
+            totalTaxCost={totalTaxCost}
+            changeTitle={{
+                first: "Liter/Hours (l/h)",
+                second: "Liter"
             }}
-        >
-            <Row gutter={[16, 16]} style={{ marginTop: "32px" }}>
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>{window.location.pathname.split("/")[1]}</Breadcrumb.Item>
-                </Breadcrumb>
-            </Row>
-            <PageHeader
-                style={{ paddingLeft: 0 }}
-                className="site-page-header"
-                title="Water Supplier Details"
-                subTitle="Check your supplier earnings and productions"
-            />
-            {Object.keys(bills).length === 0 ?
-                <Card style={{ borderRadius: 20, marginBottom: 32, boxShadow: "0 2px 4px rgba(0,0,0,0.2)", }}>
-                    < Empty />
-                </Card>
-                :
-                <Card style={{ borderRadius: 20, marginBottom: 32, boxShadow: "0 2px 4px rgba(0,0,0,0.2)", }}>
-                    <Row align="top" gutter={[32, 32]}>
-                        <Col md={6} sm={12}>
-                            <Statistic title="Total Water Usage" value={metricCubic ? waterSum * 0.0001666667 : waterSum} suffix={metricCubic ? "Liter/Hours (l/h)" : "Liter"} precision={4} />
-                            <Row align="middle">
-                                <IconFont type="i-arrow_up_down_circle" onClick={() => setMetric(!metricCubic)} style={{ color: "blue", marginRight: 6, cursor: "pointer" }} />
-                                <p style={{ color: "grey", fontSize: "18px", fontWeight: "lighter", margin: 0 }}>{!metricCubic ? "Literr/Hours (l/h)" : "Liter"}</p>
-                            </Row>
-                        </Col>
-                        <Col md={6} sm={12} style={{ height: 90 }} >
-                            <Statistic title="Organization Cost" value={totalEarning} suffix={"Euro (€)"} precision={2} />
-                        </Col>
-                        <Col md={6} sm={12} style={{ height: 90 }} >
-                            <Statistic title="Total Delivery Cost" value={delivery} suffix={"Euro (€)"} precision={2} />
-                        </Col>
-                        <Col md={6} sm={12} style={{ height: 90 }} >
-                            <Carousel autoplay dots={false} autoplaySpeed={3500}>
-                                <Statistic title="Total Tax Cost" value={totalTaxCost.toFixed(2)} suffix={"Euro (€)"} precision={2} />
-                                <Statistic title="Total Supplier Cost" value={supplier} suffix={"Euro (€)"} precision={2} />
-                            </Carousel>
-                        </Col>
-                    </Row>
+            chart={
+                <Row style={{ marginTop: 32 }} justify="center" align="middle">
+                    <Col span={24}>
+                        <p style={{ fontSize: 18, fontWeight: 500 }}> Water Usage</p>
+                        <ReactApexChart
+                            options={optionsLine("Water Usage", "l", "#008ffb")}
+                            series={allWaterLine}
+                            type="line"
+                            height={320}
+                        />
+                    </Col>
                     <Divider />
-
-                    <Row style={{ marginTop: 32 }} justify="center" align="middle">
-                        <Col span={24}>
-                            <p style={{ fontSize: 18, fontWeight: 500 }}> Water Usage</p>
-                            <ReactApexChart options={optionsLine} series={allWaterLine} type="line" height={320} />
-                        </Col>
-                        <Divider />
-                        <Col span={24}>
-                            <p style={{ fontSize: 18, fontWeight: 500 }}> Cost Overview</p>
-                            <Row justify="center">
-                                <ReactApexChart options={options} series={[totalEarning, totalTaxCost, delivery, supplier]} type="pie" width={700} />
-                            </Row>
-                        </Col>
-                    </Row>
-                </Card>}
-        </Layout>
+                    <Col span={24}>
+                        <p style={{ fontSize: 18, fontWeight: 500 }}> Cost Overview</p>
+                        <Row justify="center">
+                            <ReactApexChart
+                                options={pieOptions}
+                                series={[totalEarning, totalTaxCost, delivery, supplier]}
+                                type="pie"
+                                width={700}
+                            />
+                        </Row>
+                    </Col>
+                </Row>
+            }
+        />
     )
 }
 export default WaterInvoices
