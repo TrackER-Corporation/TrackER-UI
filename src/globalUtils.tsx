@@ -7,6 +7,7 @@ import TweenOne from 'rc-tween-one';
 import { GetItem } from './types';
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { MenuProps } from 'antd/lib/menu';
+import moment from 'moment';
 
 export const isImg = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?/;
 export const getChildrenToRender = (item: any, i: number) => {
@@ -308,3 +309,17 @@ export const uploadImage = async (file: UploadRequestOption, setCurrent: (arg: a
     }
 }
 
+
+export const dataInRange = (
+    el: any,
+    elec: Array<any>,
+    gas: Array<any>,
+    water: Array<any>,
+    momentSpan: moment.Moment,
+) => {
+    if (moment(el.date).isBetween(momentSpan, undefined, 'day')) {
+        elec.push([moment.utc(el.date).local().format(), el.electric])
+        gas.push([moment.utc(el.date).local().format(), el.gas])
+        water.push([moment.utc(el.date).local().format(), el.water])
+    }
+}
