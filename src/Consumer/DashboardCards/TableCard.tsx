@@ -42,7 +42,7 @@ const columns = [
 ];
 
 const TableCard = ({ buildings }: TableCard) => {
-    if (buildings === null) return <></>
+    if (buildings.length === 0) return <></>
     return (
         <Col span={24}>
             <Card bordered style={{ borderRadius: "10px" }}>
