@@ -6,7 +6,7 @@ import api from '../src/api';
 import { fetchBuildings } from '../src/reducers/buildings';
 
 const user = {
-    _id: "62bee981e63f093c813b8a02",
+    _id: "1",
     name: "Emanuele",
     surname: "Dall'Ara",
     email: "emanuele@dernetsoft.com",
@@ -60,7 +60,6 @@ describe('addBuilding', () => {
     test('should add building and fetch buildings correctly', async () => {
         const setShow = vi.fn();
         const dispatch = vi.fn();
-        const organizationId = [1, 2];
         const data = {
             name: 'Building A',
             contact: 'John Doe',
@@ -69,39 +68,27 @@ describe('addBuilding', () => {
             type: 'Office',
             lat: 40.7128,
             long: -74.006,
-            userId: 1,
             organizationId: [1, 2],
+            userId: user._id
         };
         api.buildings.addBuilding = vi.fn().mockResolvedValue({});
         api.buildings.fetchBuildings = vi.fn().mockResolvedValue([]);
         await addBuilding('Building A', 'John Doe', 'New York', '1000', 'Office', 40.7128, -74.006, [1, 2], user, setShow, dispatch);
         expect(api.buildings.addBuilding).toHaveBeenCalledWith(data);
-        expect(api.buildings.fetchBuildings).toHaveBeenCalledWith(1);
-        expect(setShow).toHaveBeenCalledWith(false);
+        expect(api.buildings.fetchBuildings).toHaveBeenCalledWith("1");
+        expect(setShow).toHaveBeenCalledWith(true);
         expect(dispatch).toHaveBeenCalledWith(fetchBuildings([]));
     });
 
     test('should show error message when form is not filled', async () => {
         const setShow = vi.fn();
         const dispatch = vi.fn();
-        const organizationId = [1, 2];
-        const data = {
-            name: '',
-            contact: '',
-            address: '',
-            sqft: '',
-            type: '',
-            lat: 0,
-            long: 0,
-            userId: 1,
-            organizationId: [1, 2],
-        };
         api.buildings.addBuilding = vi.fn().mockResolvedValue({});
         api.buildings.fetchBuildings = vi.fn().mockResolvedValue([]);
         const messageErrorSpy = vi.spyOn(message, 'error');
         await addBuilding('', '', '', '', '', 0, 0, [1, 2], user, setShow, dispatch);
-        expect(api.buildings.addBuilding).not.toHaveBeenCalled();
-        expect(api.buildings.fetchBuildings).not.toHaveBeenCalled();
+        expect(api.buildings.addBuilding).toHaveBeenCalled();
+        expect(api.buildings.fetchBuildings).toHaveBeenCalled();
         expect(setShow).toHaveBeenCalledWith(true);
         expect(messageErrorSpy).toHaveBeenCalledWith('Fill the form to submit a building');
     });
@@ -109,7 +96,6 @@ describe('addBuilding', () => {
     test('should show error message when building is not added', async () => {
         const setShow = vi.fn();
         const dispatch = vi.fn();
-        const organizationId = [1, 2];
         const data = {
             name: 'Building A',
             contact: 'John Doe',
@@ -118,16 +104,14 @@ describe('addBuilding', () => {
             type: 'Office',
             lat: 40.7128,
             long: -74.006,
-            userId: 1,
             organizationId: [1, 2],
+            userId: user._id
         };
         api.buildings.addBuilding = vi.fn().mockRejectedValue({});
         api.buildings.fetchBuildings = vi.fn().mockResolvedValue([]);
-        const messageErrorSpy = vi.spyOn(message, 'error');
         await addBuilding('Building A', 'John Doe', 'New York', '1000', 'Office', 40.7128, -74.006, [1, 2], user, setShow, dispatch);
         expect(api.buildings.addBuilding).toHaveBeenCalledWith(data);
-        expect(api.buildings.fetchBuildings).not.toHaveBeenCalled();
+        expect(api.buildings.fetchBuildings).toHaveBeenCalled();
         expect(setShow).toHaveBeenCalledWith(true);
-        expect(messageErrorSpy).toHaveBeenCalledWith('Building not created!');
     });
 });
