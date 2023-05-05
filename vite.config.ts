@@ -31,7 +31,10 @@ export default defineConfig({
         "src/types.ts",
         "src/Consumer/Charts/*.tsx",
         "src/Consumer/Chart.tsx",
-        "src/Consumer/DashboardCards/ExpensiveChart.tsx"
+        "src/Consumer/DashboardCards/ExpensiveChart.tsx",
+        "src/Consumer/DashboardCards/LineCard.tsx",
+        "src/Consumer/DashboardCards/RevenueCard.tsx",
+
       ],
       reporter: ['text', 'json-summary', 'json'],
     },
