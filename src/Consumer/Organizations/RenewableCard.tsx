@@ -1,31 +1,20 @@
-import { Card, Col, Divider, Row, Statistic } from "antd"
+import { Card, Col, Row } from "antd"
 import { useEffect, useState } from "react"
 import api from "../../api"
-import styled from "styled-components"
+import { renderRenewableInfo } from "./utils"
 
-
-const SubTitle = styled.p`
-overflow: hidden;
-color: rgba(0, 0, 0, 0.85);
-font-weight: 400;
-font-size: 19px;
-line-height: 1.5715;
-text-overflow: ellipsis;
-margin-bottom: 16px 
-`
 interface RenewableCard {
     title: string,
     organizationId: string
 }
 
 const RenewableCard = ({ title, organizationId }: RenewableCard) => {
-
-
     const [load, setLoad] = useState(true)
     const [hydro, setHydro] = useState<Array<any>>([])
     const [geo, setGeo] = useState<Array<any>>([])
     const [wind, setWind] = useState<Array<any>>([])
     const [solar, setSolar] = useState<Array<any>>([])
+
     const getData = async () => {
         setSolar([])
         setGeo([])
@@ -53,8 +42,9 @@ const RenewableCard = ({ title, organizationId }: RenewableCard) => {
             setTimeout(() => {
                 setLoad(false)
             }, 1000);
-        })
+        }).catch(err => console.log(err))
     }
+
     useEffect(() => {
         if (organizationId === null)
             return
@@ -82,110 +72,10 @@ const RenewableCard = ({ title, organizationId }: RenewableCard) => {
                     }}>{title}</p>
                 </Col>
                 <Col span={24}>
-                    {solar.length > 0 &&
-                        <div>
-                            <SubTitle>Organization Solar Energy Resources Available Devices</SubTitle>
-                            <Divider />
-                        </div>
-                    }
-                    {solar.map(el =>
-                        <Row justify="space-between" key={el._id} gutter={[32, 32]}>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Name"} value={el.name} loading={load} />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Type"} value={el.type} loading={load} />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Installation Price"} value={el.price} loading={load} suffix="€" />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Earnings at kWh"} value={el.earning} loading={load} suffix="€" />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Organization profit at kWh"} value={el.organization} suffix="%" loading={load} />
-                            </Col>
-                            <Divider />
-                        </Row>
-                    )}
-                    {hydro.length > 0 &&
-                        <div>
-                            <SubTitle>Organization Hydro Energy Resources Available Devices</SubTitle>
-                            <Divider />
-                        </div>
-                    }
-                    {hydro.map(el =>
-                        <Row justify="space-between" key={el._id}>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Name"} value={el.name} loading={load} />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Type"} value={el.type} loading={load} />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Installation Price"} value={el.price} loading={load} suffix="€" />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Earnings at kWh"} value={el.earning} loading={load} suffix="€" />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Organization profit at kWh"} value={el.organization} suffix="%" loading={load} />
-                            </Col>
-                            <Divider />
-                        </Row>
-                    )}
-                    {geo.length > 0 &&
-                        <div>
-                            <SubTitle>Organization Geothermic Energy Resources Available Devices</SubTitle>
-                            <Divider />
-                        </div>
-                    }
-                    {geo.map(el =>
-                        <Row justify="space-between" key={el._id}>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Name"} value={el.name} loading={load} />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Type"} value={el.type} loading={load} />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Installation Price"} value={el.price} loading={load} suffix="€" />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Earnings at kWh"} value={el.earning} loading={load} suffix="€" />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Organization profit at kWh"} value={el.organization} suffix="%" loading={load} />
-                            </Col>
-                            <Divider />
-                        </Row>
-                    )}
-                    {wind.length > 0 &&
-                        <div>
-                            <SubTitle>Organization Windy Energy Resources Available Devices</SubTitle>
-                            <Divider />
-                        </div>
-                    }
-                    {wind.map(el =>
-                        <Row justify="space-between" key={el._id}>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Name"} value={el.name} loading={load} />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Type"} value={el.type} loading={load} />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Installation Price"} value={el.price} loading={load} suffix="€" />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Earnings at kWh"} value={el.earning} loading={load} suffix="€" />
-                            </Col>
-                            <Col md={4} sm={24}>
-                                <Statistic title={"Organization profit at kWh"} value={el.organization} suffix="%" loading={load} />
-                            </Col>
-                            <Divider />
-                        </Row>
-                    )}
+                    {renderRenewableInfo(solar, "Solar", load)}
+                    {renderRenewableInfo(hydro, "Hydro", load)}
+                    {renderRenewableInfo(geo, "Geothermic", load)}
+                    {renderRenewableInfo(wind, "Windy", load)}
                 </Col>
             </Row>
         </Card>
