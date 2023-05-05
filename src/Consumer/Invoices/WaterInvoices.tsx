@@ -11,34 +11,28 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => 
     const [totalEarning, setTotalEarning] = useState(0)
     const [supplier, setSupplier] = useState(0)
     const [delivery, setDelivery] = useState(0)
-    const [allWaterLine, setAllWaterLine] = useState([])
+    const [allWaterLine, setAllWaterLine] = useState<any>([])
 
     useEffect(() => {
-        if (bills === null)
-            return
+        if (bills === null) return
         setWaterSum(0)
         setAllWaterLine([])
-        if (bills.hasOwnProperty("all")) {
-            setWaterSum(Number(bills.totalGas).toFixed(2))
-        }
-        else filtered.map(el => setWaterSum(old => old + el[1]))
-
+        if ("all" in bills) setWaterSum((bills.totalGas).toFixed(2))
+        else filtered.map((el: any) => setWaterSum(old => old + el[1]))
+        
         let totalWater = 0
         if (aggregated === undefined) {
-            filtered.forEach(el => {
-                totalWater = +totalWater + +el[1]
-            })
-            if (filtered.length === 0)
-                return
+            filtered.forEach((el: any) => totalWater += el[1])
+            if (filtered.length === 0) return
         } else {
-            Object.values(aggregated).map(el => {
-                totalWater = +totalWater + +el.water
+            Object.values(aggregated).map((el: any) => {
+                totalWater += el.water
             })
         }
 
-        setWaterSum(Number(totalWater).toFixed(2))
+        setWaterSum(Number(totalWater.toFixed(2)))
         if (cost !== undefined && Object.keys(cost).length > 0) {
-            cost.forEach(el => {
+            cost.forEach((el: any) => {
                 if (el.name === "Water Cost at kWh") {
                     setTotalEarning(totalWater * 0.0001666667 * el.price)
                 }
@@ -54,14 +48,14 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => 
             });
         }
 
-        let tmp = []
+        const tmp: Array<any> = []
         if (aggregated === undefined) {
-            filtered.forEach(el => {
+            filtered.forEach((el: any) => {
                 tmp.push([el[0], el[1]])
             })
             setAllWaterLine([{ data: tmp }])
         } else {
-            Object.values(aggregated).map(el => {
+            Object.values(aggregated).map((el: any) => {
                 tmp.push([el.date, el.water])
             })
             setAllWaterLine([{ data: tmp }])

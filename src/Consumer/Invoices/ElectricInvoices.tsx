@@ -18,7 +18,7 @@ const ElectricInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) 
             return
         setAllElectricLine([])
         setElectricSum(0)
-        if (bills.hasOwnProperty("all"))
+        if ("all" in bills)
             setElectricSum(bills.totalElectric.toFixed(2))
         else
             filtered.map((el: any) => setElectricSum(old => old + el[1]))
