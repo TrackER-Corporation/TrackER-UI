@@ -5,7 +5,7 @@ import api from "../../api";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import InvoicesModal from "./InvoicesModal";
 import { PageHeader } from "@ant-design/pro-components";
-import { Building, UserProps } from "../../types";
+import { Building, TimeStamp, UserProps } from "../../types";
 import { useAppSelector } from "../../hooks";
 import Empty from "../../Components/Empty";
 
@@ -14,12 +14,12 @@ interface Invoices {
 }
 
 const Invoices = ({ user }: Invoices) => {
-    const filter = useLocation().pathname.split("/")[2]
+    const filter = useLocation().pathname.split("/")[2] as TimeStamp
     const navigate = useNavigate()
     const buildings = useAppSelector(state => state.buildings.buildings)
     const [bills, setBills] = useState([])
     const [data, setData] = useState({})
-    const [timeSpan, setTimeSpan] = useState("")
+    const [timeSpan, setTimeSpan] = useState<TimeStamp>("")
     const [visible, setVisible] = useState(false)
     const [building, setBuilding] = useState<Building>(buildings[0])
 
