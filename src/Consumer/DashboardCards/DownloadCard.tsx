@@ -6,13 +6,14 @@ import { useNavigate } from "react-router-dom";
 const DownloadCard = () => {
     const navigate = useNavigate()
     return (
-        <ProCard bordered style={{
-            borderRadius: "10px",
-            backgroundImage: 'url("http://yoda.hypeople.studio/yoda-admin-template/react/static/media/analytics-download-bg.e499d6fb.png")',
-            backgroundSize: "cover",
-            backgroundPosition: "right center",
-            height: "194px"
-        }}>
+        <ProCard bordered
+            style={{
+                borderRadius: "10px",
+                backgroundImage: 'url("http://yoda.hypeople.studio/yoda-admin-template/react/static/media/analytics-download-bg.e499d6fb.png")',
+                backgroundSize: "cover",
+                backgroundPosition: "right center",
+                height: "194px"
+            }}>
             <Row align="middle" justify="space-between">
                 <Col>
                     <CardTitle style={{ color: "white", whiteSpace: "pre-wrap" }}>
