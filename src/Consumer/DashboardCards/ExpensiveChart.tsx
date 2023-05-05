@@ -170,7 +170,7 @@ const ExpensiveChart = ({ bills }: any) => {
                         </TabPane>
                     </Tabs>
                 </Drawer>
-                <Modal width={1200} visible={showModal} onCancel={() => setModal(false)}>
+                <Modal width={1200} open={showModal} onCancel={() => setModal(false)}>
                     <BuildingsProductionCard />
                 </Modal>
             </ProCard>
