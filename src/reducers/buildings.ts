@@ -5,7 +5,7 @@ import { Building } from '../types'
 const buildings = localStorage.getItem("buildings")
 
 interface InitState {
-    buildings: Building
+    buildings: Array<Building>
 }
 
 const initialState: InitState = {

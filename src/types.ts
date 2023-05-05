@@ -73,6 +73,7 @@ export interface Renewable {
 }
 
 export interface Organization {
+    _id: string,
     name: string;
     description?: string;
     userId?: string;
@@ -82,7 +83,6 @@ export interface Organization {
     details?: any;
     createAt: Date;
 }
-
 
 export interface Building {
     _id: string,

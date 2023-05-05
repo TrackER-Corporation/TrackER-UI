@@ -11,7 +11,7 @@ interface IconFontProps {
     className?: string
     onClick?: () => void
 }
-const IconFont = ({ type, style, className = "", onClick }: IconFontProps) =>
-    <CreateIconFont onClick={onClick} style={style} type={type} className={className} />
+const IconFont = ({ type, style, className = "", onClick, ...props }: IconFontProps) =>
+    <CreateIconFont {...props} onClick={onClick} style={style} type={type} className={className} />
 
 export default IconFont;
