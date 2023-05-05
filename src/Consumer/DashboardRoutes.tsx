@@ -10,7 +10,7 @@ import { LinkHover } from "../Components/CustomComponents";
 import { setAllOrganization } from "../reducers/allOrganization";
 import { setAllUser } from "../reducers/allUsers";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { DefaultRoute, MenuLayout, defaultLogo, defaultProps } from "./utils";
+import { DefaultRoute, defaultLogo, defaultProps } from "./utils";
 import api from "../api";
 import "./Dashboard.less"
 
@@ -64,10 +64,7 @@ const DashboardRoutes = () => {
 
     useEffect(() => {
         window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            console.log(width)
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
+        return () => window.removeEventListener('resize', handleWindowSizeChange);
     }, []);
 
     return (
@@ -79,10 +76,6 @@ const DashboardRoutes = () => {
             navTheme="light"
             menu={{ defaultOpenAll: true }}
             waterMarkProps={{ content: 'TrackER', }}
-            headerRender={() =>
-                width >= 768 ? <Header avatar={userAvatar} /> :
-                    MenuLayout(navigate, pathname, userAvatar, setPathname, user, allOrganization, allUser)
-            }
             footerRender={() =>
                 <DefaultFooter style={{ backgroundColor: "#f7fafd", }}
                     copyright="2023 by TrackER All Rights Reserved"
@@ -123,6 +116,7 @@ const DashboardRoutes = () => {
             )}
             {...settings}
         >
+            {width >= 768 && <Header avatar={userAvatar} />}
             {DefaultRoute(navigate, userAvatar, setPathname, user, allOrganization, allUser)}
         </ProLayout >
     );
