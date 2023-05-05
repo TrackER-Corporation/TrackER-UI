@@ -3,7 +3,7 @@ import { ProCard } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
 
 interface BannerCard {
-    name: string
+    name?: string
 }
 
 const BannerCard = ({ name = "default" }: BannerCard) => {

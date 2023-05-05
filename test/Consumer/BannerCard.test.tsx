@@ -1,8 +1,8 @@
 import React from 'react';
 import { describe, expect, it } from 'vitest';
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom'
-import Header from "../../src/Consumer/Header/Header"
+import BannerCard from "../../src/Consumer/DashboardCards/BannerCard"
 import { BrowserRouter } from 'react-router-dom';
 import { store } from '../../src/store';
 import { Provider } from 'react-redux';
@@ -13,10 +13,11 @@ describe('Header component', () => {
         const { baseElement } = render(
             <Provider store={store}>
                 <BrowserRouter>
-                    <Header avatar='' />
+                    <BannerCard name="" />
                 </BrowserRouter>
             </Provider>
         );
         expect(baseElement).toBeValid();
+        fireEvent.click(screen.getByText("See now"))
     });
 })
