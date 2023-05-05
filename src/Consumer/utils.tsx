@@ -7,7 +7,7 @@ import { logout } from "../reducers/user";
 import { AppDispatch } from "../store";
 import { DefaultFooter, ProLayout } from "@ant-design/pro-components";
 import { GithubOutlined } from "@ant-design/icons";
-import { Organization, UserProps } from "../types";
+import { Building, Organization, UserProps } from "../types";
 import Dashboard from "./Dashboard";
 import BuildingsTab from "./Building/BuildingsTab";
 import AddNewBuildings from "./Building/AddNewBuilding";
@@ -563,3 +563,101 @@ export const MenuLayout = (
     >
         {DefaultRoute(navigate, userAvatar, setPathname, user, allOrganization, allUser)}
     </ProLayout >
+
+
+export const renderIcon = (building: Building) => {
+    switch (building.type) {
+        case "Residential":
+            return <Row align="middle"> <IconFont type="i--house" /> {building.name}</Row>
+        case "Factory":
+            return <Row align="middle"><IconFont type="i-factory" /> {building.name} </Row >
+
+        case "Skyscraper":
+            return <Row align="middle"><IconFont type="i--skyline" /> {building.name} </Row >
+
+        case "School":
+            return <Row align="middle"><IconFont type="i-school" /> {building.name}</Row >
+
+        case "University":
+            return <Row align="middle"><IconFont type="i-university" /> {building.name} </Row >
+
+        case "Hospital":
+            return <Row align="middle"><IconFont type="i-ambulance" /> {building.name} </Row >
+
+        case "Police Station":
+            return <Row align="middle"><IconFont type="i-police" /> {building.name} </Row >
+
+        case "Bank":
+            return <Row align="middle"><IconFont type="i-bank" /> {building.name} </Row >
+
+        case "Shopping Mall":
+            return <Row align="middle"><IconFont type="i--shopping-mal" /> {building.name} </Row >
+
+        case "Court":
+            return <Row align="middle"><IconFont type="i-museum" /> {building.name} </Row >
+
+        case "Airport":
+            return <Row align="middle"><IconFont type="i-airport" /> {building.name} </Row >
+
+        case "City Hall":
+            return <Row align="middle"><IconFont type="i--orthodoxian" /> {building.name} </Row >
+        default:
+    }
+}
+
+export const fetchResources = async (
+    id: string,
+    oldId: string,
+    setOldId: (arg: string) => void,
+    setResourceApi: (arg: any) => void,
+    setBills: (arg: any) => void,
+) => {
+    if (id === oldId) return
+    setOldId(id)
+    await api.renewable.fetchResourcesByBuildingId(id).then(res => setResourceApi(res))
+    await api.bills.getBillsRenewable(id).then(res => setBills(res))
+}
+
+interface EnergyBills {
+    totalSolar: number;
+    totalHydro: number;
+    totalGeo: number;
+    totalWind: number;
+}
+
+
+export const getTotal = (energySourceType: string | undefined, bills: EnergyBills): number => {
+    if (energySourceType === undefined) return 0;
+
+    switch (energySourceType) {
+        case "Solar":
+            return bills.totalSolar / 1000;
+        case "Hydro":
+            return bills.totalHydro / 1000;
+        case "Geo":
+            return bills.totalGeo / 1000;
+        case "Wind":
+            return bills.totalWind / 1000;
+        default:
+            return 0;
+    }
+};
+
+export const getIcon = (resources: any) => {
+    if (resources.resourcesType === undefined)
+        return
+    if (resources.resourcesType.includes("Solar"))
+        return (
+            <Row justify="center" align="middle">
+                <h3 style={{ margin: 0, marginRight: 20, fontWeight: 500 }}>{resources.name}</h3>
+                <div >
+                    <span className={"anticon iconfontMedium2"} style={{ color: "#1196db" }}>&#xe65f;</span>
+                </div>
+            </Row>)
+    if (resources.resourcesType.includes("Wind"))
+        return <span className={"anticon iconfontMedium2"} style={{ color: "#1196db" }}>&#xe661;</span>
+    if (resources.resourcesType.includes("Geo"))
+        return <span className={"anticon iconfontMedium2"} style={{ color: "#1196db" }}>&#xe64b;</span>
+    if (resources.resourcesType.includes("Hydro"))
+        return <span className={"anticon iconfontMedium2"} style={{ color: "#1196db" }}>&#xe650;</span>
+}
