@@ -1,6 +1,8 @@
 import { Divider } from "antd"
 import { Col, Row, Statistic } from "antd"
 import styled from "styled-components"
+import { Organization } from "../../types"
+import { ListItemLayout, ListSize } from "antd/es/list"
 
 
 const SubTitle = styled.p`
@@ -43,3 +45,25 @@ export const renderRenewableInfo = (type: Array<any>, title: string, load: boole
             </>
         }
     </>
+
+export const organizationProps = (expandedRowKeys: any, setExpandedRowKeys: any, allOrganization: Array<Organization>) => ({
+    rowKey: 'title',
+    headerTitle: 'Registered Organization',
+    cardProps: { style: { borderRadius: 20, boxShadow: "0 2px 10px rgba(0,0,0,0.2)" } },
+    cardBordered: true,
+    tableStyle: { borderRadius: 20 },
+    style: { borderRadius: 20 },
+    expandable: { expandedRowKeys, onExpandedRowsChange: setExpandedRowKeys },
+    onRow: (_: Organization, rowIndex: number | undefined) => ({
+        onClick: () => {
+            if (expandedRowKeys.includes(rowIndex))
+                setExpandedRowKeys([])
+            else
+                setExpandedRowKeys([rowIndex])
+        },
+    }),
+    dataSource: allOrganization,
+    itemLayout: 'vertical' as ListItemLayout,
+    size: 'large' as ListSize,
+    split: true,
+});

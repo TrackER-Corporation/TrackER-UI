@@ -81,7 +81,7 @@ export interface Organization {
     icon?: string;
     customers?: Array<UserProps>;
     details?: any;
-    createAt: Date;
+    createAt?: Date;
 }
 
 export interface Building {

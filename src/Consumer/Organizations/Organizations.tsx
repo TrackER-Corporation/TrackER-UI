@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import RenewableCard from "./RenewableCard";
 import IconFont from "../../Iconfont";
 import { Organization, UserProps } from "../../types";
+import { organizationProps } from "./utils";
 
 interface Organizations {
     allOrganization: Array<Organization>,
@@ -38,22 +39,8 @@ const Organizations = ({ allOrganization, allUser }: Organizations) => {
             />
             <Row style={{ marginTop: 12 }}>
                 <Col span={24}>
-                    <ProList rowKey="title" headerTitle="Registered Organization" cardProps={{ style: { borderRadius: 20, boxShadow: "0 2px 10px rgba(0,0,0,0.2)" } }} cardBordered tableStyle={{ borderRadius: 20 }} style={{ borderRadius: 20 }}
-                        expandable={{ expandedRowKeys, onExpandedRowsChange: setExpandedRowKeys }}
-                        onRow={(_, rowIndex) => {
-                            return {
-                                onClick: () => {
-                                    if (expandedRowKeys.includes(rowIndex))
-                                        setExpandedRowKeys([])
-                                    else
-                                        setExpandedRowKeys([rowIndex])
-                                },
-                            };
-                        }}
-                        dataSource={allOrganization}
-                        itemLayout="vertical"
-                        size="large"
-                        split
+                    <ProList
+                        {...organizationProps(expandedRowKeys, setExpandedRowKeys, allOrganization)}
                         metas={{
                             title: {
                                 render: (_, data: any) => (
@@ -73,20 +60,21 @@ const Organizations = ({ allOrganization, allUser }: Organizations) => {
 
                                 ),
                             },
-                            subTitle: {
-                                dataIndex: 'description'
-                            },
+                            subTitle: { dataIndex: 'description' },
                             content: {
-                                render: (_, data: any) => {
+                                render: (_, data) => {
                                     const { electric, water, gas, resources } = data.details
-                                    const owner = allUser.find((el: any) =>
+                                    const owner = allUser.find((el) =>
                                         el._id === data.userId
                                     )
                                     return (
                                         <Col span={24} style={{ marginBottom: 32 }}>
                                             <Row gutter={[64, 64]} justify="center" align="middle">
                                                 <Tooltip placement="bottom" title={data.name + " Logo"}>
-                                                    <Avatar size={240} src={data.icon} style={{ boxShadow: "0 19px 38px rgba(0,0,0,0.30), 0 10px 12px rgba(0,0,0,0.22)" }} />
+                                                    <Avatar size={240}
+                                                        src={data.icon}
+                                                        style={{ boxShadow: "0 19px 38px rgba(0,0,0,0.30), 0 10px 12px rgba(0,0,0,0.22)" }}
+                                                    />
                                                 </Tooltip>
                                                 <Col span={14} style={{ marginLeft: 22 }}>
                                                     <p style={{ fontSize: 17 }}>Owner: {owner?.name + " " + owner?.surname} </p>
