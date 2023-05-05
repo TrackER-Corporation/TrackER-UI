@@ -2,16 +2,23 @@ import { Button, Col, Row } from "antd";
 import { ProCard } from "@ant-design/pro-components";
 import { useNavigate } from "react-router-dom";
 
-const BannerCard = ({ name = "default" }) => {
+interface BannerCard {
+    name: string
+}
+
+const BannerCard = ({ name = "default" }: BannerCard) => {
     const navigate = useNavigate()
     return (
-        <ProCard colSpan={12} bordered style={{
-            borderRadius: "10px",
-            backgroundImage: 'url("http://yoda.hypeople.studio/yoda-admin-template/react/static/media/analytics-payment-bg.55fb02f6.svg")',
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat'
-        }}>
+        <ProCard
+            colSpan={12}
+            bordered
+            style={{
+                borderRadius: "10px",
+                backgroundImage: 'url("http://yoda.hypeople.studio/yoda-admin-template/react/static/media/analytics-payment-bg.55fb02f6.svg")',
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat'
+            }}>
             <Row justify="space-between" align="middle" >
                 <Col>
                     <h4 style={{ fontSize: "20px", fontWeight: 500, color: "#2d3436" }}>{name}</h4>

@@ -7,41 +7,42 @@ import moment from "moment";
 import { useState } from "react";
 import IconFont from "../../Iconfont";
 import { ApexOptions } from "apexcharts";
+
+
+const options: ApexOptions = {
+    noData: {
+        text: "You have no data...",
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+            color: "blue",
+            fontSize: '12px',
+        }
+    },
+    colors: ["#ffcf45", "#19e396", "#008ffb"],
+    chart: {
+        type: 'radar',
+        dropShadow: {
+            enabled: true,
+        },
+        animations: {
+            enabled: true,
+        },
+        toolbar: { show: false, },
+    },
+    stroke: {
+        width: 1
+    },
+    fill: {
+        opacity: 0.4
+    }, yaxis: {
+        show: false,
+    },
+}
+
 const RevenueCard = ({ bills = {} }) => {
-
-    const options: ApexOptions = {
-        noData: {
-            text: "You have no data...",
-            align: 'center',
-            verticalAlign: 'middle',
-            offsetX: 0,
-            offsetY: 0,
-            style: {
-                color: "blue",
-                fontSize: '12px',
-            }
-        },
-        colors: ["#ffcf45", "#19e396", "#008ffb"],
-        chart: {
-            type: 'radar',
-            dropShadow: {
-                enabled: true,
-            },
-            animations: {
-                enabled: true,
-            },
-            toolbar: { show: false, },
-        },
-        stroke: {
-            width: 1
-        },
-        fill: {
-            opacity: 0.4
-        }, yaxis: {
-            show: false,
-        },
-    }
-
     const [electric, setElectric]: any = useState({})
     const [gas, setGas]: any = useState({})
     const [water, setWater]: any = useState({})
