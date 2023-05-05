@@ -4,9 +4,9 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom'
 import RenewableCard from "../../src/Consumer/Organizations/RenewableCard"
 
-describe('TypeCard component', () => {
+describe('Renewable component', () => {
 
-    it('renders the TypeCard component', () => {
+    it('renders the Renewable component', () => {
         const { baseElement } = render(<RenewableCard organizationId='1235' title='test' />);
         expect(baseElement).toBeValid();
     });
