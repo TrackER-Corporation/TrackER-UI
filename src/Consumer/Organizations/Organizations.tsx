@@ -5,7 +5,14 @@ import TypeCard from "./TypeCard";
 import { useNavigate } from "react-router-dom";
 import RenewableCard from "./RenewableCard";
 import IconFont from "../../Iconfont";
-const Organizations = ({ allOrganization, allUser }: any) => {
+import { Organization, UserProps } from "../../types";
+
+interface Organizations {
+    allOrganization: Array<Organization>,
+    allUser: Array<UserProps>
+}
+
+const Organizations = ({ allOrganization, allUser }: Organizations) => {
     const [expandedRowKeys, setExpandedRowKeys] = useState<any>([]);
     const navigate = useNavigate()
     return (
@@ -82,7 +89,7 @@ const Organizations = ({ allOrganization, allUser }: any) => {
                                                     <Avatar size={240} src={data.icon} style={{ boxShadow: "0 19px 38px rgba(0,0,0,0.30), 0 10px 12px rgba(0,0,0,0.22)" }} />
                                                 </Tooltip>
                                                 <Col span={14} style={{ marginLeft: 22 }}>
-                                                    <p style={{ fontSize: 17 }}>Owner: {owner.name + " " + owner.surname} </p>
+                                                    <p style={{ fontSize: 17 }}>Owner: {owner?.name + " " + owner?.surname} </p>
                                                     <Row>
                                                         <p style={{ fontSize: 17 }}>Created at: {new Date(data.createAt).toLocaleDateString()}</p>
                                                         <p style={{ fontSize: 17, marginLeft: 32 }}>Total Registered Buildings: {data.customers.length}</p>

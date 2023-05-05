@@ -13,8 +13,12 @@ line-height: 1.5715;
 text-overflow: ellipsis;
 margin-bottom: 16px 
 `
+interface RenewableCard {
+    title: string,
+    organizationId: string
+}
 
-const RenewableCard = ({ title, organizationId }: any) => {
+const RenewableCard = ({ title, organizationId }: RenewableCard) => {
 
 
     const [load, setLoad] = useState(true)

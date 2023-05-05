@@ -5,7 +5,7 @@ const organizationData = localStorage.getItem("allOrganization");
 const allBuildingsData = localStorage.getItem("allBuildings");
 
 interface InitState {
-    organization: Organization
+    organization: Array<Organization>
     allBuildings: Array<Building>
 }
 

@@ -31,7 +31,7 @@ const AvatarDrawer = ({ user, visible, onClose }: any) => {
                     {[...Array(38)].map((_, i) =>
                         <Tooltip title={"Avatar-" + (i + 1)}>
                             <AvatarHover
-                                data-testid={"avatar" + i}
+                                data-testid={"avatar" + (i + 1)}
                                 style={
                                     current === avatarImages['Avatar-' + (i + 1) + '.svg']
                                         ? {} :

@@ -68,13 +68,11 @@ const getData = (data: any) => {
 const Dashboard = () => {
   const user = useAppSelector((state) => state.user.user)
   const buildings = useAppSelector((state) => state.buildings.buildings)
-  const organization = useAppSelector((state) => state.organization.organization)
   const [bills, setBills] = useState<any>({})
   const [gas, setGas] = useState({})
   const [water, setWater] = useState({})
   const [electric, setElectric] = useState({})
   const day = moment().subtract(31, 'days');
-  const [renewable, setRenewable] = useState<any>([])
   const [solar, setSolar] = useState({})
   const [wind, setWind] = useState({})
   const [hydro, setHydro] = useState({})
@@ -85,13 +83,13 @@ const Dashboard = () => {
 
   const getBillsRenewable = async (id: string) => {
     await api.bills.getBillsRenewable(id).then(res => {
-      setRenewable((old: any) => [...old, { res, id }])
-      const type = Object.values(buildings).filter((el: any) => el._id === id)
+
+      const type = Object.values(buildings).filter((el) => el._id === id)
       let sumSolar = 0
       let sumWind = 0
       let sumHydro = 0
       let sumGeo = 0
-      type.forEach((el: any) => el.resources.forEach((el: any) => {
+      type.forEach((el) => el.resources.forEach((el: any) => {
         switch (Object.keys(el)[0]) {
           case "Solar":
             sumSolar += res.totalSolar

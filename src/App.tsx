@@ -14,12 +14,8 @@ import { useEffect, useState } from 'react';
 import Service from "./Service/index.tsx";
 import Login from "./Login/Login.tsx";
 import DashboardRoutes from "./Consumer/DashboardRoutes.tsx";
+import { RootState } from "./store.ts";
 
-interface MapProps {
-  user: any;
-  logged: boolean
-  type: string
-}
 
 const App = ({ logged }: { logged?: boolean }) => {
   const [show, setShow] = useState(false);
@@ -55,9 +51,9 @@ const App = ({ logged }: { logged?: boolean }) => {
   );
 };
 
-const mapStateToProps = (state: MapProps) => {
-  const { logged } = state.user;
-  const { type } = state.user.user;
+const mapStateToProps = (state: RootState) => {
+  const logged = state.user.logged;
+  const type = state.user.user.type;
   return { logged, type };
 };
 

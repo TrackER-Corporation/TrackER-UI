@@ -33,6 +33,6 @@ const config = {
     },
 };
 
-const Chart = () => <Gauge {...config} height={200} />;
+const Chart = () => <Gauge data-testid="chart" {...config} height={200} />;
 
 export default Chart

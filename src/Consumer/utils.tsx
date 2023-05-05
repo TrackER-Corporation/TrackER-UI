@@ -1,10 +1,19 @@
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, Route, Routes } from "react-router-dom";
 import IconFont from "../Iconfont";
 import api from "../api";
-import { Menu } from "antd";
+import { Avatar, Col, Menu, Row } from "antd";
 import { LinkHover } from "../Components/CustomComponents";
 import { logout } from "../reducers/user";
 import { AppDispatch } from "../store";
+import { DefaultFooter, ProLayout } from "@ant-design/pro-components";
+import { GithubOutlined } from "@ant-design/icons";
+import { Organization, UserProps } from "../types";
+import Dashboard from "./Dashboard";
+import BuildingsTab from "./Building/BuildingsTab";
+import AddNewBuildings from "./Building/AddNewBuilding";
+import Organizations from "./Organizations/Organizations";
+import Account from "../Account/Account";
+import Invoices from "./Invoices/Invoices";
 
 export const statebar = (type: string, color: any) => ({
     options: {
@@ -441,3 +450,120 @@ export const headerMenu = (type: string, dispatch: AppDispatch) => {
         />)
 }
 
+
+export const DefaultRoute = (
+    navigate: NavigateFunction,
+    userAvatar: string,
+    setPathname: (arg: string) => void,
+    user: UserProps,
+    allOrganization: Array<Organization>,
+    allUser: Array<UserProps>
+) =>
+    <Routes >
+        <Route path="*" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/buildings" element={<BuildingsTab
+            updateRoute={() => {
+                setPathname("/building/New");
+                navigate("/building/New")
+            }} />} />
+        <Route path="/building/New" element={<AddNewBuildings {...user} />} />
+        <Route path="/Organizations"
+            element={
+                <Organizations
+                    allOrganization={allOrganization}
+                    allUser={allUser}
+                />
+            }
+        />
+        <Route path="/Invoices/Weekly" element={<Invoices user={user} />} />
+        <Route path="/Invoices/Monthly" element={<Invoices user={user} />} />
+        <Route path="/Invoices/Yearly" element={<Invoices user={user} />} />
+        <Route path="/Profile/Edit"
+            element={<Account avatar={userAvatar} user={user} updateRoute={(val: string) => {
+                setPathname(val);
+                navigate(val)
+            }} />} />
+        <Route path="/Profile/Notification"
+            element={<Account avatar={userAvatar} user={user} updateRoute={(val: string) => {
+                setPathname(val);
+                navigate(val)
+            }} />} />
+        <Route path="/Profile/Activity" element={<Account avatar={userAvatar}
+            user={user} updateRoute={(val: string) => {
+                setPathname(val);
+                navigate(val)
+            }} />} />
+        <Route path="/Profile/Security" element={<Account avatar={userAvatar} user={user}
+            updateRoute={(val: string) => {
+                setPathname(val);
+                navigate(val)
+            }} />} />
+        <Route path="/Profile/Password" element={<Account avatar={userAvatar} user={user}
+            updateRoute={(val: string) => {
+                setPathname(val);
+                navigate(val)
+            }} />} />
+    </Routes>
+
+const settings = { fixSiderbar: true, };
+
+export const MenuLayout = (
+    navigate: NavigateFunction,
+    pathname: string,
+    userAvatar: string,
+    setPathname: (arg: string) => void,
+    user: UserProps,
+    allOrganization: Array<Organization>,
+    allUser: Array<UserProps>
+) =>
+    <ProLayout
+        logo={defaultLogo(navigate)}
+        title="TrackER"
+        {...defaultProps}
+        location={{ pathname }}
+        navTheme="light"
+        menu={{ defaultOpenAll: true }}
+        waterMarkProps={{ content: 'TrackER', }}
+        footerRender={() =>
+            <DefaultFooter style={{ backgroundColor: "#f7fafd", }}
+                copyright="2023 by TrackER All Rights Reserved"
+                links={[
+                    {
+                        key: 'github',
+                        title: <GithubOutlined />,
+                        href: 'https://github.com/TrackER-Corporation',
+                        blankTarget: true,
+                    },]}
+            />
+        }
+        menuFooterRender={(props: any) =>
+            <Row
+                justify="center"
+                style={{ marginBottom: 20 }}
+                gutter={[16, 16]}
+            >
+                <Col style={{ alignSelf: "center" }}>
+                    <Avatar size={40} src={userAvatar} />
+                </Col>
+                {props?.collapsed &&
+                    <Col style={{ alignSelf: "center", }}>
+                        <div>{user.name} {user.surname} <br></br>
+                            <LinkHover to="/Profile/Edit" >View Profile</LinkHover>
+                        </div>
+                    </Col>
+                }
+            </Row>
+        }
+        menuItemRender={(item: any, dom: any) => (
+            <p onClick={() => {
+                setPathname(item.path || '/Dashboard');
+                navigate(item.path, { replace: true });
+            }}>
+                {dom}
+            </p>
+        )}
+        {...settings}
+    >
+        {DefaultRoute(navigate, userAvatar, setPathname, user, allOrganization, allUser)}
+    </ProLayout >

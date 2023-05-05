@@ -1,16 +1,23 @@
 import { Card, Col, Row, Statistic } from "antd"
 import { useState } from "react";
 
+interface DataType {
+    name: string
+    price: number | string
+}
+
 interface TypeCard {
-    title: string
-    data: any
+    title?: string
+    data?: Array<DataType>
 }
 
 const TypeCard = ({ title, data }: TypeCard) => {
     const [load, setLoad] = useState(true)
+
     setTimeout(() => {
         setLoad(false)
     }, 1000);
+
     return (
         <Card style={{
             borderRadius: 20,
@@ -30,18 +37,12 @@ const TypeCard = ({ title, data }: TypeCard) => {
                         margin: 0
                     }}>{title}</p>
                 </Col>
-                <Col span={12}>
-                    <Statistic suffix="€" title={data[0].name} value={data[0].price} loading={load} />
-                </Col>
-                <Col span={12}>
-                    <Statistic suffix="€" title={data[1].name} value={data[1].price} loading={load} />
-                </Col>
-                <Col span={12}>
-                    <Statistic suffix="€" title={data[2].name} value={data[2].price} loading={load} />
-                </Col>
-                <Col span={12}>
-                    <Statistic suffix="€" title={data[3].name} value={data[3].price} loading={load} />
-                </Col>
+
+                {data?.map(el =>
+                    <Col span={12}>
+                        <Statistic suffix="€" title={el.name} value={el.price} loading={load} />
+                    </Col>
+                )}
             </Row>
         </Card>
     )
