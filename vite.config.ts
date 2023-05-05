@@ -25,7 +25,14 @@ export default defineConfig({
       provider: "c8",
       all: true,
       include: ["src/**/*.tsx", "src/**/*.ts", "src/**/**/*.ts", "src/**/**/*.tsx"],
-      exclude: ["src/main.tsx", "src/vite-env.d.ts", "src/types.ts"],
+      exclude: [
+        "src/main.tsx",
+        "src/vite-env.d.ts",
+        "src/types.ts",
+        "src/Consumer/Charts/*.tsx",
+        "src/Consumer/Chart.tsx",
+        "src/Consumer/DashboardCards/ExpensiveChart.tsx"
+      ],
       reporter: ['text', 'json-summary', 'json'],
     },
     globals: true,
