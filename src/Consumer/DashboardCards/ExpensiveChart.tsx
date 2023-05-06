@@ -157,7 +157,7 @@ const ExpensiveChart = ({ bills }: any) => {
                         </RowHover>
                     )
                 })}
-                <Drawer destroyOnClose width={1000} visible={showDrawer} onClose={() => setDrawer(false)}>
+                <Drawer destroyOnClose width={1000} open={showDrawer} onClose={() => setDrawer(false)}>
                     <Tabs defaultActiveKey="1" centered>
                         <TabPane tab="Electric" key="1">
                             <ElectricInvoices bills={bills} cost={electricDetail} aggregated={bills.aggregated} />
