@@ -1,124 +1,50 @@
-import { Avatar, Col, Layout, Row, } from "antd";
 import { useEffect } from "react";
-import BannerCard from "./DashboardCards/BannerCard";
-import ReactApexChart from "react-apexcharts";
-import LineCard from "./DashboardCards/LineCard";
-import StatsCard from "./DashboardCards/StatsCard";
-import { getData, statebar } from "./utils";
-import ExpensiveChart from "./DashboardCards/ExpensiveChart";
+import { Avatar, Col, Layout, Row, } from "antd";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ProCard } from "@ant-design/pro-components";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import { getBillsAggregated, getBillsRenewable, getData, statebar } from "./utils";
+import { useAppSelector } from "../hooks";
+import { avatarImages } from "../globalUtils";
+import { ApexOptions } from "apexcharts";
+import ReactApexChart from "react-apexcharts";
+import BannerCard from "./DashboardCards/BannerCard";
+import LineCard from "./DashboardCards/LineCard";
+import StatsCard from "./DashboardCards/StatsCard";
+import ExpensiveChart from "./DashboardCards/ExpensiveChart";
 import TableCard from "./DashboardCards/TableCard";
 import RevenueCard from "./DashboardCards/RevenueCard";
 import EarningsCard from "./DashboardCards/EarningsCard";
 import DownloadCard from "./DashboardCards/DownloadCard";
-import api from "../api";
-import { useState } from "react";
-import moment from "moment"
-import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../hooks";
-import { ApexOptions } from "apexcharts";
-import { avatarImages } from "../globalUtils";
-
-
 
 const Dashboard = () => {
   const user = useAppSelector((state) => state.user.user)
   const buildings = useAppSelector((state) => state.buildings.buildings)
   const [bills, setBills] = useState<any>({})
-  const [gas, setGas] = useState({})
-  const [water, setWater] = useState({})
-  const [electric, setElectric] = useState({})
-  const day = moment().subtract(31, 'days');
-  const [solar, setSolar] = useState({})
-  const [wind, setWind] = useState({})
-  const [hydro, setHydro] = useState({})
-  const [geo, setGeo] = useState({})
   const [totalRen, setTotalRen] = useState(0)
+  const [energy, setEnergy] = useState({
+    gas: { name: "Gas", data: [0] },
+    water: { name: "Water", data: [0] },
+    electric: { name: "Electric", data: [0] },
+    solar: { name: "Solar", data: 0 },
+    wind: { name: "Wind", data: 0 },
+    hydro: { name: "Hydro", data: 0 },
+    geo: { name: "Geo", data: 0 },
+  });
 
   const navigate = useNavigate();
 
-  const getBillsRenewable = async (id: string) => {
-    await api.bills.getBillsRenewable(id).then(res => {
-
-      const type = Object.values(buildings).filter((el) => el._id === id)
-      let sumSolar = 0
-      let sumWind = 0
-      let sumHydro = 0
-      let sumGeo = 0
-      type.forEach((el) => el.resources?.forEach((el: any) => {
-        switch (Object.keys(el)[0]) {
-          case "Solar":
-            sumSolar += res.totalSolar
-            break;
-          case "Hydro":
-            sumHydro += res.totalHydro
-            break;
-          case "Wind":
-            sumWind += res.totalWind
-            break;
-          case "Geo":
-            sumGeo += res.totalGeo
-            break;
-          default:
-            break
-        }
-      }))
-      setSolar({ name: "Solar", data: [sumSolar] })
-      setHydro({ name: "Hydro", data: [sumHydro] })
-      setGeo({ name: "Geo", data: [sumGeo] })
-      setWind({ name: "Wind", data: [sumWind] })
-      setTotalRen(sumSolar + sumGeo + sumHydro + sumWind)
-    })
-  }
-
-  const getBillsAggregated = async () => {
-    await api.bills.getBillsAggregated(user._id).then(res => {
-      console.log(res)
-      setBills(res)
-      let oldMoment = moment("01/01/17", "MM/D/YYYY")
-      const billDates = Object.values(res.aggregated).filter((el: any) => moment(el.date).isBetween(day, undefined))
-      let water: any = []
-      let gas: any = []
-      let electric: any = []
-      let sumGas = 0
-      let sumWater = 0
-      let sumElectric = 0
-      billDates.map((el: any) => {
-        if (moment(el.date).isSame(oldMoment, "day")) {
-          sumWater = +sumWater + +el.water
-          sumElectric = +sumElectric + +el.electric
-          sumGas = +sumGas + +el.gas
-          oldMoment = el.date
-        } else {
-          water.push(Number(sumWater).toFixed(3))
-          electric.push(Number(sumElectric).toFixed(3))
-          gas.push(Number(sumGas).toFixed(3))
-          sumWater = Number(el.water)
-          sumElectric = Number(el.electric)
-          sumGas = Number(el.gas)
-          oldMoment = el.date
-        }
-      })
-      electric.shift()
-      gas.shift()
-      water.shift()
-      electric = electric.slice(-3)
-      gas = gas.slice(-3)
-      water = water.slice(-3)
-
-      setWater({ name: "Water", data: water })
-      setGas({ name: "Gas", data: gas })
-      setElectric({ name: "Electric", data: electric })
-    })
-  }
 
   useEffect(() => {
-    if (buildings === null || buildings === undefined)
-      return
-    const ids = Object.values(buildings).filter((el: any) => el.resources.length !== 0).map((el: any) => el._id)
-    getBillsAggregated()
-    ids.forEach(id => getBillsRenewable(id))
+    if (buildings === null || buildings === undefined) return
+
+    const ids = Object.values(buildings).filter((el: any) =>
+      el.resources.length !== 0).map((el: any) => el._id)
+
+    getBillsAggregated(user._id, setBills, energy, setEnergy)
+
+    ids.forEach(id => getBillsRenewable(id, buildings, energy, setEnergy, setTotalRen))
   }, [user, buildings])
 
   return (
@@ -143,7 +69,7 @@ const Dashboard = () => {
               <StatsCard
                 color={"#ebfafa"}
                 chart={<ReactApexChart options={statebar("Water", "#008ffb").options as ApexOptions}
-                  series={[water] as ApexAxisChartSeries}
+                  series={[energy.water] as ApexAxisChartSeries}
                   type="bar" height={150} />}
               />
             </Col>
@@ -152,7 +78,7 @@ const Dashboard = () => {
                 color={"#fff9e9"}
                 chart={<ReactApexChart
                   options={statebar("Electric", "#ffcf45").options as ApexOptions}
-                  series={[electric] as ApexAxisChartSeries}
+                  series={[energy.electric] as ApexAxisChartSeries}
                   type="bar" height={150} />}
               />
             </Col>
@@ -162,7 +88,7 @@ const Dashboard = () => {
                 chart={
                   <ReactApexChart
                     options={statebar("Gas", "#19e396").options as ApexOptions}
-                    series={[gas] as ApexAxisChartSeries} type="bar"
+                    series={[energy.gas] as ApexAxisChartSeries} type="bar"
                     height={150} />}
               />
             </Col>
@@ -200,7 +126,10 @@ const Dashboard = () => {
             </ProCard>
           </Row>
           <Row style={{ marginTop: "32px" }}>
-            <EarningsCard series={[solar, hydro, wind, geo]} total={(totalRen / 1000).toFixed(2)} />
+            <EarningsCard
+              series={[energy.solar, energy.hydro, energy.wind, energy.geo]}
+              total={Number((totalRen / 1000).toFixed(2))}
+            />
           </Row>
           <Row style={{ marginTop: "32px" }}>
             <TableCard buildings={buildings} />
