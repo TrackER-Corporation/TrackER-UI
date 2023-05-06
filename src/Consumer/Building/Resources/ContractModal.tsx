@@ -27,22 +27,23 @@ const ContractModal = ({ visible, setVisible, data, buildingId }: ContractModal)
                 title="Contract Rules"
                 subTitle="Read and check the contract"
             />
-            <Collapse defaultActiveKey={['1', "2"]} expandIconPosition="right" bordered={false}>
-                <Collapse.Panel header={<h1>Terms of Service</h1>} key="1" extra={getExtra(true)}>
+            <Collapse defaultActiveKey={['1', "2"]} expandIconPosition="end" bordered={false}>
+                <Collapse.Panel data-testid="collapse1" header={<h1>Terms of Service</h1>} key="1" extra={getExtra(true)}>
                     <Col span={24} style={{ overflow: "auto" }}>
                         {eula}
                         <Row justify="end" style={{ marginTop: 32 }}>
-                            <Checkbox onChange={(e) => setCheck1(e.target.checked)}>
+                            <Checkbox data-testid="check1" onChange={(e) => setCheck1(e.target.checked)}>
                                 <p style={{ fontSize: 16 }}>I accept the <b>Terms of Service</b></p>
                             </Checkbox>
                         </Row>
                     </Col>
                 </Collapse.Panel>
-                <Collapse.Panel header={<h1>Privacy Policy</h1>} key="2" extra={getExtra()}>
+                <Collapse.Panel data-testid="collapse2" header={<h1>Privacy Policy</h1>} key="2" extra={getExtra()}>
                     <Col span={24} style={{ overflow: "auto" }}>
                         {privacy}
                         <Row justify="end" style={{ marginTop: 32 }}>
                             <Checkbox
+                                data-testid="check2"
                                 onChange={(e) => setCheck2(e.target.checked)}>
                                 <p style={{ fontSize: 16 }}>I agree to the <b>Privacy Policy</b></p>
                             </Checkbox>
