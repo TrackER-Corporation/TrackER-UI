@@ -42,7 +42,7 @@ const columns = [
 ];
 
 const TableCard = ({ buildings }: TableCard) => {
-    if (buildings.length === 0) return <></>
+    if (!Array.isArray(buildings) || buildings.length === 0) return <></>
     return (
         <Col span={24}>
             <Card bordered style={{ borderRadius: "10px" }}>
@@ -51,7 +51,7 @@ const TableCard = ({ buildings }: TableCard) => {
                         <ProTable
                             headerTitle="Building Portfolio"
                             dataSource={
-                                buildings?.map((el: Building, i: number) =>
+                                buildings.map((el: Building, i: number) =>
                                 ({
                                     key: el._id,
                                     index: i + 1,

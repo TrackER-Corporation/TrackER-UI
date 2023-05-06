@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import ContractModal from "./ContractModal";
 import { useAppSelector } from "../../../hooks";
 import { getRenewable, resourcesColumns } from "./utils";
+import { Building } from "../../../types";
 
 interface ResourcesContent {
     data: any,
     type: string,
-    building: any
+    building: Building
 }
 
 const ResourcesContent = ({ data, type, building }: ResourcesContent) => {
@@ -29,7 +30,12 @@ const ResourcesContent = ({ data, type, building }: ResourcesContent) => {
                 search={false}
                 dateFormatter="string"
             />
-            <ContractModal data={selected} visible={visible} setVisible={setVisible} buildingId={building._id} />
+            <ContractModal
+                data={selected}
+                visible={visible}
+                setVisible={setVisible}
+                buildingId={building._id}
+            />
         </>
     )
 }

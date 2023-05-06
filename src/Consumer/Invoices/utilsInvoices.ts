@@ -64,12 +64,8 @@ export const optionsLine = (title: string, suffix: string, color: string): ApexO
             format: "dd-MM-yyyy HH:mm"
         },
         y: {
-            formatter: function (val: number) {
-                return val + suffix
-            },
-            title: {
-                formatter: () => title
-            },
+            formatter: function (val: number) { return val + suffix },
+            title: { formatter: () => title },
         }
     }
 })
@@ -90,28 +86,8 @@ export const pieOptions: ApexOptions = {
         height: 390,
         type: 'pie',
     },
-    plotOptions: {
-        polarArea: {
-            // offsetY: 0,
-            // startAngle: 0,
-            // endAngle: 270,
-            // hollow: {
-            //     margin: 10,
-            //     size: '40%',
-            //     background: 'transparent',
-            // },
-            // dataLabels: {
-            //     name: {
-            //         fontSize: '14px',
-            //         show: true,
-
-            //     },
-            // }
-        }
-    },
     labels: ["Organization Cost", "Tax Cost", "Delivery Cost", "Supplier Cost"],
     colors: ["#1984f5", "#00c2f6", "#00cbc8", "#00cbff",],
-    // value: { formatter: function (value: number) { return value + " €" }, },
     tooltip: {
         enabled: true,
         y: { formatter: function (value: number) { return value + " €" }, },
@@ -123,15 +99,8 @@ export const pieOptions: ApexOptions = {
         labels: {
             useSeriesColors: true,
         },
-        // markers: {
-        //     size: 0
-        // },
-        formatter: function (seriesName: string, opts: any) {
-            return seriesName + " " + opts.w.globals.series[opts.seriesIndex].toFixed(2) + " €"
-        },
-        itemMargin: {
-            vertical: 3
-        }
+        formatter: (seriesName: string, opts?: any) => seriesName + " " + opts.w.globals.series[opts.seriesIndex].toFixed(2) + " €",
+        itemMargin: { vertical: 3 }
     },
     responsive: [{
         breakpoint: 480,

@@ -84,23 +84,23 @@ const Organizations = ({ allOrganization, allUser }: Organizations) => {
                                                     </Row>
                                                     <Slider value={data.customers.length} marks={{ 0: 'Small', 25: 'Medium', 70: 'Large', }} />
                                                 </Col>
-                                                {electric.length > 0 &&
+                                                {electric?.length > 0 &&
                                                     <Col md={12} sm={24}>
                                                         <TypeCard title="Electric Plan" data={electric} />
                                                     </Col>
                                                 }
 
-                                                {gas.length > 0 &&
+                                                {gas?.length > 0 &&
                                                     <Col md={12} sm={24}>
                                                         <TypeCard title="Gas Plan" data={gas} />
                                                     </Col>
                                                 }
-                                                {water.length > 0 &&
+                                                {water?.length > 0 &&
                                                     <Col md={12} sm={24}>
                                                         <TypeCard title="Water Plan" data={water} />
                                                     </Col>
                                                 }
-                                                {resources.length > 0 &&
+                                                {resources?.length > 0 &&
                                                     <Col span={24}>
                                                         <RenewableCard title="Renewable Installation Cost and Earnings" organizationId={data._id} />
                                                     </Col>

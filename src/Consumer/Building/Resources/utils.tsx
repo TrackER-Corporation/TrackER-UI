@@ -255,10 +255,10 @@ export const check = async (
             default:
                 break;
         }
-        await api.buildings.updateBuildingResources(buildingId, { resource: obj })
+        await api.buildings.updateBuildingResources(buildingId, { resource: obj }).catch(err => console.log(err))
         await api.renewable.updateResourcesBuildingsByBuildingId(data._id, { building: buildingId }).then(() => {
             message.success("Devices Request Submitted!")
-        })
+        }).catch(err => console.log(err))
     }
     else
         message.error("You have to accept both condition to submit this request")
@@ -367,7 +367,7 @@ export const resourcesColumns = (allOrganization: object, setSelected: (arg: any
 export const getRenewable = async (setDataTable: (arg: any) => void, type: string) =>
     await api.renewable.fetchAll().then(({ data }) =>
         setDataTable(data.filter((element: any) => element.resourcesType === type))
-    )
+    ).catch((err) => console.log(err))
 
 export const getKey = (defaultActiveKey: string) => {
     switch (defaultActiveKey) {
