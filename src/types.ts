@@ -114,3 +114,4 @@ export interface Activity {
 }
 
 export type TimeStamp = "Weekly" | "Monthly" | "Yearly" | ""
+export type EnergyType = "Solar" | "Hydro" | "Geo" | "Wind"
