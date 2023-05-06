@@ -4,14 +4,14 @@ import BannerCard from "./DashboardCards/BannerCard";
 import ReactApexChart from "react-apexcharts";
 import LineCard from "./DashboardCards/LineCard";
 import StatsCard from "./DashboardCards/StatsCard";
-import { statebar } from "./utils";
+import { getData, statebar } from "./utils";
 import ExpensiveChart from "./DashboardCards/ExpensiveChart";
 import { ProCard } from "@ant-design/pro-components";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import TableCard from "./DashboardCards/TableCard";
 import RevenueCard from "./DashboardCards/RevenueCard";
 import EarningsCard from "./DashboardCards/EarningsCard";
-import DownloadCard from "./DashboardCards/DowloadCard";
+import DownloadCard from "./DashboardCards/DownloadCard";
 import api from "../api";
 import { useState } from "react";
 import moment from "moment"
@@ -21,49 +21,6 @@ import { ApexOptions } from "apexcharts";
 import { avatarImages } from "../globalUtils";
 
 
-const getData = (data: any) => {
-  if (data === undefined) return []
-  if (Object.keys(data).length === 0) return []
-  let series = []
-  let electric: any = []
-  let gas: any = []
-  let water: any = []
-  Object.values(data.aggregated).forEach((el: any) => {
-    electric.push({
-      x: moment.utc(el.date).local().format(),
-      y: el.electric === undefined ? null : el.electric
-    })
-    gas.push({
-      x: moment.utc(el.date).local().format(),
-      y: el.gas === undefined ? null : el.gas
-    })
-    water.push({
-      x: moment.utc(el.date).local().format(),
-      y: el.water === undefined ? null : el.water
-    })
-  })
-  electric = {
-    type: 'area',
-    name: "Electric",
-    data: electric
-  }
-  gas = {
-    type: 'area',
-    name: "Gas",
-    data: gas
-  }
-  water = {
-    type: 'area',
-    name: "Water",
-    data: water
-  }
-  series = [
-    electric,
-    gas,
-    water,
-  ]
-  return series
-}
 
 const Dashboard = () => {
   const user = useAppSelector((state) => state.user.user)
@@ -89,7 +46,7 @@ const Dashboard = () => {
       let sumWind = 0
       let sumHydro = 0
       let sumGeo = 0
-      type.forEach((el) => el.resources.forEach((el: any) => {
+      type.forEach((el) => el.resources?.forEach((el: any) => {
         switch (Object.keys(el)[0]) {
           case "Solar":
             sumSolar += res.totalSolar
@@ -106,7 +63,6 @@ const Dashboard = () => {
           default:
             break
         }
-
       }))
       setSolar({ name: "Solar", data: [sumSolar] })
       setHydro({ name: "Hydro", data: [sumHydro] })
@@ -118,6 +74,7 @@ const Dashboard = () => {
 
   const getBillsAggregated = async () => {
     await api.bills.getBillsAggregated(user._id).then(res => {
+      console.log(res)
       setBills(res)
       let oldMoment = moment("01/01/17", "MM/D/YYYY")
       const billDates = Object.values(res.aggregated).filter((el: any) => moment(el.date).isBetween(day, undefined))
@@ -202,10 +159,11 @@ const Dashboard = () => {
             <Col lg={8} md={8} xs={8}>
               <StatsCard
                 color={"#ebfafa"}
-                chart={<ReactApexChart
-                  options={statebar("Gas", "#19e396").options as ApexOptions}
-                  series={[gas] as ApexAxisChartSeries} type="bar"
-                  height={150} />}
+                chart={
+                  <ReactApexChart
+                    options={statebar("Gas", "#19e396").options as ApexOptions}
+                    series={[gas] as ApexAxisChartSeries} type="bar"
+                    height={150} />}
               />
             </Col>
           </Row>

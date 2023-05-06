@@ -661,3 +661,46 @@ export const getIcon = (resources: any) => {
     if (resources.resourcesType.includes("Hydro"))
         return <span className={"anticon iconfontMedium2"} style={{ color: "#1196db" }}>&#xe650;</span>
 }
+
+export const getData = (data: any) => {
+    if (data === undefined || Object.keys(data).length === 0) return []
+    let series = []
+    let electric: any = []
+    let gas: any = []
+    let water: any = []
+    // Object.values(data.aggregated).forEach((el: any) => {
+    //   electric.push({
+    //     x: moment.utc(el.date).local().format(),
+    //     y: el.electric === undefined ? null : el.electric
+    //   })
+    //   gas.push({
+    //     x: moment.utc(el.date).local().format(),
+    //     y: el.gas === undefined ? null : el.gas
+    //   })
+    //   water.push({
+    //     x: moment.utc(el.date).local().format(),
+    //     y: el.water === undefined ? null : el.water
+    //   })
+    // })
+    electric = {
+        type: 'area',
+        name: "Electric",
+        data: electric
+    }
+    gas = {
+        type: 'area',
+        name: "Gas",
+        data: gas
+    }
+    water = {
+        type: 'area',
+        name: "Water",
+        data: water
+    }
+    series = [
+        electric,
+        gas,
+        water,
+    ]
+    return series
+}
