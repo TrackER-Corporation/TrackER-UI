@@ -323,3 +323,5 @@ export const dataInRange = (
         water.push([moment.utc(el.date).local().format(), el.water])
     }
 }
+
+export const getWindowSize = () => window.innerWidth
