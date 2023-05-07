@@ -1,9 +1,10 @@
 import { render } from '@testing-library/react';
-import { animTypePricing, getChildrenToRender, getChildrenToRenderComponent, getChildrenToRenderPrice, getDelay, getSelectedKeys, isImg, onComplete, onTitleClick, renderChildPrice, uploadImage } from '../src/globalUtils';
+import { accountMenu, animTypePricing, dataInRange, getChildrenToRender, getChildrenToRenderComponent, getChildrenToRenderPrice, getDelay, getSelectedKeys, isImg, onComplete, onTitleClick, renderChildPrice, uploadImage } from '../src/globalUtils';
 import { describe, expect, test, vi } from 'vitest';
 import { Feature60DataSource, Feature80DataSource } from '../src/Service/data.source';
 import '@testing-library/jest-dom';
 import React from 'react';
+import moment from 'moment';
 
 
 describe('renderChildPrice utility function', () => {
@@ -240,3 +241,100 @@ describe('uploadImage function', () => {
         expect(file.onSuccess).toHaveBeenCalledWith({ secure_url: 'https://test.com/image.png' });
     });
 });
+
+
+describe('dataInRange function', () => {
+    test('dataInRange should not push data into arrays if date is outside momentSpan', () => {
+        const el = {
+            date: '2022-01-01',
+            electric: 100,
+            gas: 50,
+            water: 25
+        };
+        const elec = [];
+        const gas = [];
+        const water = [];
+        const momentSpan = moment('2022-01-01');
+        dataInRange(el, elec, gas, water, momentSpan);
+        expect(elec).toEqual([]);
+        expect(gas).toEqual([]);
+        expect(water).toEqual([]);
+
+    });
+
+    test('dataInRange should push data into arrays if date is within momentSpan', () => {
+        const el = {
+            date: '2022-02-01',
+            electric: 100,
+            gas: 50,
+            water: 25
+        };
+        const elec = [];
+        const gas = [];
+        const water = [];
+        const momentSpan = moment('2022-01-01');
+
+        dataInRange(el, elec, gas, water, momentSpan);
+
+        expect(elec).toEqual([[moment.utc(el.date).local().format(), el.electric]]);
+        expect(gas).toEqual([[moment.utc(el.date).local().format(), el.gas]]);
+        expect(water).toEqual([[moment.utc(el.date).local().format(), el.water]]);
+    });
+})
+
+
+
+describe('accountMenu', () => {
+    it('should return menu item for changing avatar when user type is Building', () => {
+        const user = {
+            name: 'John',
+            surname: 'Doe',
+            email: 'john.doe@example.com',
+            type: 'Building',
+            password: 'oldpassword',
+            _id: '123',
+            token: ""
+        };
+
+        const setVisible = vi.fn();
+        const expected = [
+            {
+                key: '1',
+                label: 'Change Avatar',
+                onClick: () => { setVisible(true) },
+            },
+        ];
+        expect(setVisible).toHaveBeenCalledTimes(0);
+        const actual = accountMenu(user, setVisible);
+        actual[0].onClick();
+        expect(setVisible).toHaveBeenCalledTimes(1);
+        expect(setVisible).toHaveBeenCalledWith(true);
+    });
+
+    it('should return menu item for changing organization logo when user type is not Building', () => {
+        const user = {
+            name: 'John',
+            surname: 'Doe',
+            email: 'john.doe@example.com',
+            type: 'basic',
+            password: 'oldpassword',
+            _id: '123',
+            token: ""
+        };
+
+        const setVisible = vi.fn();
+        const expected = [
+            {
+                key: '1',
+                label: 'Change Organization Logo',
+                onClick: () => setVisible(true),
+            },
+        ];
+        expect(setVisible).toHaveBeenCalledTimes(0);
+        const actual = accountMenu(user, setVisible);
+        actual[0].onClick();
+        expect(setVisible).toHaveBeenCalledTimes(1);
+        expect(setVisible).toHaveBeenCalledWith(true);
+    });
+});
+

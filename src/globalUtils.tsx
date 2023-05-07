@@ -4,7 +4,7 @@ import { Button, Col, Row, Carousel as AntCarousel, Menu, } from 'antd';
 import QueueAnim, { IObject } from 'rc-queue-anim';
 import { isMobile } from 'react-device-detect';
 import TweenOne from 'rc-tween-one';
-import { GetItem } from './types';
+import { GetItem, User, UserProps } from './types';
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { MenuProps } from 'antd/lib/menu';
 import moment from 'moment';
@@ -279,12 +279,12 @@ async function importAll() {
 
 export const avatarImages = await importAll();
 
-export const accountMenu = (user: any, setVisible: (arg: boolean) => void): MenuProps['items'] =>
+export const accountMenu = (user: UserProps, setVisible: (arg: boolean) => void): MenuProps['items'] =>
     [
         {
             key: '1',
             label: user.type === "Building" ? "Change Avatar" : "Change Organization Logo",
-            onClick: () => { setVisible(true) }
+            onClick: () => setVisible(true)
         }
     ];
 
