@@ -9,9 +9,11 @@ interface BuildingOptions {
 const BuildingOptions = ({ setType, placeholder = "Building Type" }: BuildingOptions) =>
     <Select
         // filterSort={(optionA, optionB) => optionA.value?.toString().toLowerCase().localeCompare(optionB.value?.toString().toLowerCase())}
-        showSearch
         data-testid="select"
-        placeholder={<Row align="middle">{placeholder}</Row>} size="large" onChange={(val) => setType(val)}
+        showSearch
+        placeholder={<Row align="middle">{placeholder}</Row>}
+        size="large"
+        onChange={(val) => setType(val)}
         options={[
             { value: 'Residential', label: <Row align="middle"><IconFont type="i--house" />Residential</Row> },
             { value: 'Factory', label: <Row align="middle"><IconFont type="i-factory" /> Factory</Row> },
