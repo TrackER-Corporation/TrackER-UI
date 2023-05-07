@@ -15,7 +15,19 @@ interface EditBuildingModal {
     updateBuilding: (arg: string) => void
 }
 
-const EditBuildingModal = ({ setName, setContact, setType, buildingId, name, contact, address, type, visible, setVisible, updateBuilding }: EditBuildingModal) =>
+const EditBuildingModal = ({
+    setName,
+    setContact,
+    setType,
+    buildingId,
+    name,
+    contact,
+    address,
+    type,
+    visible,
+    setVisible,
+    updateBuilding
+}: EditBuildingModal) =>
     <Modal destroyOnClose title="Edit Building" open={visible}
         onOk={() => { setVisible(false); updateBuilding(buildingId) }}
         onCancel={() => setVisible(false)} >
