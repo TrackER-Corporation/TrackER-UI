@@ -21,11 +21,11 @@ const ElectricInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) 
         if ("all" in bills)
             setElectricSum(bills.totalElectric.toFixed(2))
         else
-            filtered.map((el: any) => setElectricSum(old => old + el[1]))
+            filtered?.map((el: any) => setElectricSum(old => old + el[1]))
 
 
         if (cost !== undefined && Object.keys(cost).length > 0) {
-            cost.forEach((el: any) => {
+            cost?.forEach((el: any) => {
                 if (el.name === "Electricity Cost at kWh") {
                     setTotalEarning((electricSum * 0.0833333 / 1000 * el.price))
                 }
@@ -42,7 +42,7 @@ const ElectricInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) 
         }
         const tmp: Array<any> = []
         if (aggregated === undefined) {
-            filtered.forEach((el: any) => {
+            filtered?.forEach((el: any) => {
                 tmp.push([el[0], el[1]])
             })
             setAllElectricLine([{ data: tmp }])

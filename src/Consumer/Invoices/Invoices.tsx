@@ -25,7 +25,7 @@ const Invoices = ({ user }: Invoices) => {
 
     const getBillsAggregated = async () =>
         await api.bills.getBillsAggregated(user._id)
-            .then(res => setBills(res.all))
+            .then(res => setBills(res.all)).catch(err => setBills([]))
 
     useEffect(() => {
         getBillsAggregated()

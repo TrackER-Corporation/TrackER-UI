@@ -2,7 +2,7 @@ import { Col, Row } from "antd";
 
 interface StatsCard {
     chart: JSX.Element,
-    color: string
+    color?: string
 }
 
 const StatsCard = ({ chart, color = "#FFFFFF" }: StatsCard) =>

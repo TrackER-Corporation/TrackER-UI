@@ -11,10 +11,11 @@ import RenewableCards from "./RenewableCards";
 import ResourcesModal from "./Resources/ResourcesModal";
 import { useAppSelector } from "../../hooks";
 import { ApexOptions } from "apexcharts";
+import { Building } from "../../types";
 
 interface BuildingCard {
     bills: any,
-    item: any,
+    item: Building,
     setIsModalVisible: (arg: boolean) => void,
     setContact: (arg: string) => void,
     setName: (arg: string) => void,
@@ -22,7 +23,7 @@ interface BuildingCard {
     setType: (arg: string) => void,
     setBuildingId: (arg: string) => void,
     deleteBuilding: (arg: string) => void,
-    showBills: (arg1: string, arg2: string) => boolean,
+    showBills: (arg1: string, arg2: string) => boolean | undefined,
     getData: any
 }
 
@@ -74,7 +75,7 @@ const BuildingCard = ({ bills, item, setIsModalVisible, setContact, setName, set
             >
                 <Row justify="space-between" gutter={[32, 32]} style={{ marginBottom: "32px", padding: "16px" }}>
                     <Col md={12} sm={24} >
-                        <MapboxMap lat={item.lat} lng={item.long} />
+                        <MapboxMap lat={Number(item.lat)} lng={Number(item.long)} />
                     </Col>
                     <Col md={12} sm={24}>
                         <ProForm grid layout="vertical" rowProps={{ gutter: [32, 32], }} submitter={{

@@ -21,9 +21,9 @@ const GasInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => {
         if ("all" in bills)
             setGasSum((bills.totalGas).toFixed(2))
         else
-            filtered.map((el: any) => setGasSum(old => old + el[1]))
+            filtered?.map((el: any) => setGasSum(old => old + el[1]))
         if (cost !== undefined && Object.keys(cost).length > 0) {
-            cost.forEach((el: any) => {
+            cost?.forEach((el: any) => {
                 if (el.name === "Gas Cost at m³") {
                     setTotalEarning(gasSum * 0.0454249414 / 1000 * el.price)
                 }
@@ -40,12 +40,12 @@ const GasInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => {
         }
         const tmp: any = []
         if (aggregated === undefined) {
-            filtered.forEach((el: any) => {
+            filtered?.forEach((el: any) => {
                 tmp.push([el[0], el[1]])
             })
             setAllGasLine([{ data: tmp }])
         } else {
-            Object.values(aggregated).map((el: any) => tmp.push([el.date, el.gas]))
+            Object.values(aggregated)?.map((el: any) => tmp.push([el.date, el.gas]))
             setAllGasLine([{ data: tmp }])
 
         }

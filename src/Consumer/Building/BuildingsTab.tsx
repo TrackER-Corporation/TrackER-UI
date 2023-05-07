@@ -27,7 +27,7 @@ const BuildingTab = ({ updateRoute }: any) => {
     const [bills, setBills] = useState<any>([])
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [filter, setFilter] = useState("Address");
-    const [buildingsFilter, setBuildingsFilter] = useState<any>(buildings);
+    const [buildingsFilter, setBuildingsFilter] = useState(buildings);
     const [name, setName] = useState("")
     const [contact, setContact] = useState("")
     const [address, setAddress] = useState("")
@@ -75,7 +75,7 @@ const BuildingTab = ({ updateRoute }: any) => {
     }
 
     const showBills = (type: string, orgId: string) =>
-        allOrg.find((el: any) => el._id === orgId).type.includes(type)
+        allOrg.find((el) => el._id === orgId)?.type?.includes(type)
 
 
     const renderItem = () => {
@@ -95,10 +95,10 @@ const BuildingTab = ({ updateRoute }: any) => {
     };
 
     const renderBuildings = (element: string) => {
-        const res = buildings.find((el: any) =>
-            filter === "Address" ? el.address === element : el.name === element,
+        const res = buildings.find((el) =>
+            filter === "Address" ? el.address === element : el.name === element
         )
-        setBuildingsFilter([res])
+        res ? setBuildingsFilter([res]) : setBuildingsFilter([])
     };
 
     const updateBuilding = async (buildingId: string) => {
@@ -185,7 +185,7 @@ const BuildingTab = ({ updateRoute }: any) => {
                         </Empty>
                     </Card>
                     :
-                    buildingsFilter.map((item: any) =>
+                    buildingsFilter.map((item) =>
                         <BuildingCard
                             key={item._id}
                             bills={bills}
