@@ -21,7 +21,8 @@ describe('TableCard component', () => {
                     address: "string",
                     type: "string",
                     lat: "string",
-                    long: ""
+                    long: "",
+                    organizationId: ""
                 }]}
             />);
         expect(baseElement).toBeValid();
