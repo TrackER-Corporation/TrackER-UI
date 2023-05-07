@@ -70,3 +70,25 @@ if (typeof Worker === "undefined") {
         terminate() { null }
     };
 }
+
+
+vi.mock('mapbox-gl', () => {
+    const mapboxglMock = {
+        Map: vi.fn(() => ({
+            addControl: vi.fn()
+        })),
+        Marker: vi.fn(() => ({
+            setLngLat: vi.fn(() => ({
+                addTo: vi.fn()
+            }))
+        })),
+        NavigationControl: vi.fn(),
+        FullscreenControl: vi.fn(),
+        addControl: vi.fn(),
+    };
+    return {
+        __esModule: true,
+        default: mapboxglMock,
+        ...mapboxglMock
+    };
+});
