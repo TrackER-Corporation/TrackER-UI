@@ -6,17 +6,19 @@ import ResourcesContent from "../../src/Consumer/Building/Resources/ResourcesCon
 import { store } from '../../src/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { Building } from '../../src/types';
 
 describe('Renewable component', () => {
 
-    const building = {
+    const building: Building = {
         _id: "string",
         name: "string",
         contact: "string",
         address: "string",
         type: "string",
         lat: "string",
-        long: ""
+        long: "",
+        organizationId: "12"
     }
 
     it('renders the Renewable component', () => {

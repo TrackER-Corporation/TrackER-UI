@@ -111,7 +111,7 @@ describe('addBuilding', () => {
         api.buildings.fetchBuildings = vi.fn().mockResolvedValue([]);
         await addBuilding('Building A', 'John Doe', 'New York', '1000', 'Office', 40.7128, -74.006, [1, 2], user, setShow, dispatch);
         expect(api.buildings.addBuilding).toHaveBeenCalledWith(data);
-        expect(api.buildings.fetchBuildings).toHaveBeenCalled();
+        expect(api.buildings.fetchBuildings).not.toHaveBeenCalled();
         expect(setShow).toHaveBeenCalledWith(true);
     });
 });

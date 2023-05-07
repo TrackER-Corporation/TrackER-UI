@@ -1,9 +1,7 @@
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { Provider } from 'react-redux';
 import AccountActivity from '../../src/Account/RightSide/AccountActivity';
-import { store } from '../../src/store';
-import { describe, it, vi } from 'vitest';
+import { describe, it } from 'vitest';
 
 
 describe('AccountActivity component', () => {
