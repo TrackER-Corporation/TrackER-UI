@@ -41,11 +41,19 @@ const Invoices = ({ user }: Invoices) => {
             }}
         >
             <Row gutter={[16, 16]} >
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>Invoices</Breadcrumb.Item>
-                    <Breadcrumb.Item>{filter}</Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: 'Home',
+                        },
+                        {
+                            title: <a>Invoices</a>
+                        },
+                        {
+                            title: <a>{filter}</a>
+                        },
+                    ]}
+                />
             </Row>
             <PageHeader
                 style={{ paddingLeft: 0 }}

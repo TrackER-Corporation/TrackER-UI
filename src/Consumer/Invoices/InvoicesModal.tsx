@@ -1,4 +1,4 @@
-import { Modal, Tabs } from "antd"
+import { Modal, Tabs, TabsProps } from "antd"
 import moment from "moment";
 import { useEffect, useState } from "react";
 import ElectricInvoices from "./ElectricInvoices";
@@ -7,7 +7,6 @@ import WaterInvoices from "./WaterInvoices";
 import { Building, TimeStamp } from "../../types";
 import { useAppSelector } from "../../hooks";
 import { dataInRange } from "../../globalUtils";
-const { TabPane } = Tabs;
 
 interface InvoicesModal {
     data: any,
@@ -64,20 +63,37 @@ const InvoicesModal = ({ data, visible, setVisible, timeSpan, building }: Invoic
                 break;
         }
     });
+    const items: TabsProps['items'] = [
+        {
+            key: '1',
+            label: `Electric`,
+            children: <ElectricInvoices bills={data} cost={electricDetail} filtered={elec} />,
+        },
+        {
+            key: '2',
+            label: `Gas`,
+            children: <GasInvoices bills={data} cost={gasDetail} filtered={gas} />
+        },
+        {
+            key: '3',
+            label: `Water`,
+            children: <WaterInvoices bills={data} cost={waterDetail} filtered={water} />
+        },
+    ];
+
 
     return (
-        <Modal destroyOnClose open={visible} width={1200} onOk={() => setVisible(!visible)} onCancel={() => setVisible(!visible)}>
-            <Tabs defaultActiveKey="1" centered destroyInactiveTabPane>
-                <TabPane tab="Electric" key="1">
-                    <ElectricInvoices bills={data} cost={electricDetail} filtered={elec} />
-                </TabPane>
-                <TabPane tab="Gas" key="2">
-                    <GasInvoices bills={data} cost={gasDetail} filtered={gas} />
-                </TabPane>
-                <TabPane tab="Water" key="3">
-                    <WaterInvoices bills={data} cost={waterDetail} filtered={water} />
-                </TabPane>
-            </Tabs>
+        <Modal destroyOnClose open={visible}
+            width={1200}
+            onOk={() => setVisible(!visible)}
+            onCancel={() => setVisible(!visible)}
+        >
+            <Tabs
+                defaultActiveKey="1"
+                centered
+                destroyInactiveTabPane
+                items={items}
+            />
         </Modal>
     )
 }

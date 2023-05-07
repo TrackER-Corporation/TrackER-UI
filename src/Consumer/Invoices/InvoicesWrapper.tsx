@@ -1,7 +1,5 @@
 import { PageHeader } from "@ant-design/pro-components"
 import { Breadcrumb, Card, Carousel, Col, Divider, Empty, Layout, Row, Statistic } from "antd"
-import ReactApexChart from "react-apexcharts"
-import { pieOptions } from "./utilsInvoices"
 import IconFont from "../../Iconfont"
 
 interface ChangeTitle {
@@ -49,10 +47,16 @@ const InvoicesWrapper = ({
             }}
         >
             <Row gutter={[16, 16]} style={{ marginTop: "32px" }}>
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>{window.location.pathname.split("/")[1]}</Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: 'Home',
+                        },
+                        {
+                            title: <a>{window.location.pathname.split("/")[1]}</a>
+                        },
+                    ]}
+                />
             </Row>
             <PageHeader
                 style={{ paddingLeft: 0 }}

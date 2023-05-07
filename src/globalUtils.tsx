@@ -1,10 +1,10 @@
 
 import React from 'react';
-import { Button, Col, Row, Carousel as AntCarousel, Menu, } from 'antd';
+import { Button, Col, Row, Carousel as AntCarousel, } from 'antd';
 import QueueAnim, { IObject } from 'rc-queue-anim';
 import { isMobile } from 'react-device-detect';
 import TweenOne from 'rc-tween-one';
-import { GetItem, User, UserProps } from './types';
+import { GetItem, UserProps } from './types';
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { MenuProps } from 'antd/lib/menu';
 import moment from 'moment';

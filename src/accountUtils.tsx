@@ -90,7 +90,10 @@ export const fetchActivity = async (user: any, setData: (arg: any) => void, setL
                 setLoad(false)
             }, 300)
         })
-        .catch(() => message.error("Error on Update Data"))
+        .catch(() => {
+            message.error("Error on Update Data")
+            setLoad(false)
+        })
 }
 
 export const updateUserData = async (user: any, name: string, surname: string, email: string, dispatch: AppDispatch, setVisible: (arg: boolean) => void) =>
@@ -98,7 +101,10 @@ export const updateUserData = async (user: any, name: string, surname: string, e
         .then(res => {
             dispatch(updateUser(res.data))
             setVisible(false)
-        }).catch(() => message.error("Error on Update Data"))
+        }).catch(() => {
+            message.error("Error on Update Data")
+            setVisible(false)
+        })
 
 
 export const activityColumns: any = [

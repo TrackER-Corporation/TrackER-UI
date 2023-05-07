@@ -12,8 +12,15 @@ import AccountNotification from "./RightSide/AccountNotification";
 import OrganizationDrawer from "./OrganizationDrawer";
 import { accountMenu } from "../globalUtils";
 import { accountItems } from "../accountUtils";
+import { UserProps } from "../types";
 
-const Account = ({ updateRoute, user, avatar, socket }: any) => {
+interface AccountProps {
+    updateRoute: any,
+    user: UserProps,
+    avatar: string
+}
+
+const Account = ({ updateRoute, user, avatar }: AccountProps) => {
     const navigate = useNavigate()
     const location = useLocation()
     const [visible, setVisible] = useState(false)
@@ -28,11 +35,19 @@ const Account = ({ updateRoute, user, avatar, socket }: any) => {
             }}
         >
             <Row gutter={[16, 16]} style={{ marginTop: "32px" }}>
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>Profile</Breadcrumb.Item>
-                    <Breadcrumb.Item>{window.location.pathname.split("/")[2]}</Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: 'Home',
+                        },
+                        {
+                            title: <a>Profile</a>
+                        },
+                        {
+                            title: <a>{window.location.pathname.split("/")[2]}</a>
+                        }
+                    ]}
+                />
             </Row>
             <PageHeader
                 data-testid="back"
@@ -68,17 +83,17 @@ const Account = ({ updateRoute, user, avatar, socket }: any) => {
                         <Space direction="vertical" style={{ width: "100%" }} />
                     </Col>
                     <Col md={15} sm={24} >
-                        {location.pathname === "/Profile/Edit" && <InfoAccount socket={socket} user={user} />}
+                        {location.pathname === "/Profile/Edit" && <InfoAccount user={user} />}
                         {location.pathname === "/Profile/Notification" && <AccountNotification user={user} />}
                         {location.pathname === "/Profile/Activity" && <AccountActivity user={user} />}
-                        {location.pathname === "/Profile/Security" && <SecuritySettings socket={socket} user={user} updateRoute={() => updateRoute("/Profile/Password")} />}
+                        {location.pathname === "/Profile/Security" && <SecuritySettings user={user} updateRoute={() => updateRoute("/Profile/Password")} />}
                         {location.pathname === "/Profile/Password" && <ChangePassword user={user} />}
                     </Col>
                 </Row>
             </ProCard>
             {user.type === "Building" && <AvatarDrawer user={user} visible={visible} onClose={() => setVisible(false)} />}
             {user.type === "Vendor" && <OrganizationDrawer user={user} visible={visible} onClose={() => setVisible(false)} />}
-        </Layout>
+        </Layout >
     )
 }
 export default Account

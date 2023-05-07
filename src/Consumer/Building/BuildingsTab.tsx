@@ -14,7 +14,6 @@ import "./style.css"
 import { getBills } from "../utils";
 import { deleteBuilding } from "./utils";
 
-const { Option } = Select;
 const { Search } = Input;
 
 interface BuildingTabProps {
@@ -108,10 +107,16 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
         >
             {show && <LoadingSpinner message={myMessage}></LoadingSpinner>}
             <Row gutter={[16, 16]} >
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>Buildings</Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: 'Home',
+                        },
+                        {
+                            title: <a>Buildings</a>
+                        }
+                    ]}
+                />
             </Row>
             <PageHeader
                 style={{ paddingLeft: 0 }}
@@ -126,10 +131,11 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
                         onChange={(val) => setFilter(val)}
                         defaultValue="Address"
                         style={{ width: "35%" }}
-                    >
-                        <Option value="Address">Address</Option>
-                        <Option value="Building">Building</Option>
-                    </Select>
+                        options={[
+                            { value: "Address", label: "Address", },
+                            { value: "Building", label: "Building", }
+                        ]}
+                    />
                     <AutoComplete
                         allowClear
                         onClear={() => {

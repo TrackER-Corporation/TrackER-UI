@@ -53,11 +53,19 @@ const AddNewBuildings = (user: UserProps) => {
         >
             {show && <LoadingSpinner message={"Creating new building..."} />}
             <Row gutter={[16, 16]} style={{ marginTop: "32px" }}>
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>Buildings</Breadcrumb.Item>
-                    <Breadcrumb.Item>Create Building</Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: 'Home',
+                        },
+                        {
+                            title: <a>Buildings</a>
+                        },
+                        {
+                            title: <a>Create Building</a>
+                        },
+                    ]}
+                />
             </Row>
             <PageHeader
                 style={{ paddingLeft: 0 }}

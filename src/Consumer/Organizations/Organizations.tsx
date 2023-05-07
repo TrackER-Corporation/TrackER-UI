@@ -25,10 +25,16 @@ const Organizations = ({ allOrganization, allUser }: Organizations) => {
             }}
         >
             <Row gutter={[16, 16]} >
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>Organizations</Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: 'Home',
+                        },
+                        {
+                            title: <a>Organizations</a>
+                        },
+                    ]}
+                />
             </Row>
             <PageHeader
                 style={{ paddingLeft: 0 }}
