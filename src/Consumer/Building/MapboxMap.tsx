@@ -22,13 +22,14 @@ const MapboxMap = ({ lat, lng }: MapboxMap) => {
       zoom: 13,
       interactive: false
     })
+
     map.current.addControl(new mapboxgl.NavigationControl({
       visualizePitch: true
     }), 'top-left');
+
     map.current.addControl(new mapboxgl.FullscreenControl());
-    new mapboxgl.Marker()
-      .setLngLat([lng, lat])
-      .addTo(map.current);
+
+    new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map.current);
   }, [lat, lng]);
 
   return <div ref={mapContainer} style={{ height: "400px" }} className="map-container" />
