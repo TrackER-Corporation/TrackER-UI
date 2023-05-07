@@ -1,5 +1,4 @@
 import { Row, Select } from "antd"
-import { Option } from "antd/lib/mentions"
 import IconFont from "../../Iconfont"
 
 interface BuildingOptions {
@@ -11,43 +10,22 @@ const BuildingOptions = ({ setType, placeholder = "Building Type" }: BuildingOpt
     <Select
         // filterSort={(optionA, optionB) => optionA.value?.toString().toLowerCase().localeCompare(optionB.value?.toString().toLowerCase())}
         showSearch
-        placeholder={<Row align="middle">{placeholder}</Row>} size="large" onChange={(val) => setType(val)}>
-        <Option value="Residential">
-            <Row align="middle">
-                <IconFont type="i--house" />Residential</Row>
-        </Option>
-        <Option value="Factory">
-            <Row align="middle"><IconFont type="i-factory" /> Factory</Row>
-        </Option>
-        <Option value="Skyscraper">
-            <Row align="middle"><IconFont type="i--skyline" /> Skyscraper</Row>
-        </Option >
-        <Option value="School">
-            <Row align="middle"><IconFont type="i-school" />School</Row>
-        </Option >
-        <Option value="University">
-            <Row align="middle"><IconFont type="i-university" /> University</Row>
-        </Option >
-        <Option value="Hospital">
-            <Row align="middle"><IconFont type="i-ambulance" /> Hospital</Row>
-        </Option >
-        <Option value="Police Station">
-            <Row align="middle"><IconFont type="i-police" /> Police Station</Row>
-        </Option >
-        <Option value="Bank">
-            <Row align="middle"><IconFont type="i-bank" /> Bank</Row>
-        </Option >
-        <Option value="Shopping Mall">
-            <Row align="middle"><IconFont type="i--shopping-mal" /> Shopping Mall</Row>
-        </Option >
-        <Option value="Court">
-            <Row align="middle"><IconFont type="i-museum" /> Court</Row>
-        </Option >
-        <Option value="Airport">
-            <Row align="middle"><IconFont type="i-airport" /> Airport</Row>
-        </Option >
-        <Option value="City Hall">
-            <Row align="middle"><IconFont type="i--orthodoxian" /> City Hall</Row>
-        </Option >
-    </Select >
+        data-testid="select"
+        placeholder={<Row align="middle">{placeholder}</Row>} size="large" onChange={(val) => setType(val)}
+        options={[
+            { value: 'Residential', label: <Row align="middle"><IconFont type="i--house" />Residential</Row> },
+            { value: 'Factory', label: <Row align="middle"><IconFont type="i-factory" /> Factory</Row> },
+            { value: 'Skyscraper', label: <Row align="middle"><IconFont type="i--skyline" /> Skyscraper</Row> },
+            { value: 'School', label: <Row align="middle"><IconFont type="i-school" />School</Row> },
+            { value: 'University', label: <Row align="middle"><IconFont type="i-university" /> University</Row> },
+            { value: 'Hospital', label: <Row align="middle"><IconFont type="i-ambulance" /> Hospital</Row> },
+            { value: 'Police Station', label: <Row align="middle"><IconFont type="i-police" /> Police Station</Row> },
+            { value: 'Bank', label: <Row align="middle"><IconFont type="i-bank" /> Bank</Row> },
+            { value: 'Shopping Mall', label: <Row align="middle"><IconFont type="i--shopping-mal" /> Shopping Mall</Row> },
+            { value: 'Court', label: <Row align="middle"><IconFont type="i-museum" /> Court</Row> },
+            { value: 'Airport', label: <Row align="middle"><IconFont type="i-airport" /> Airport</Row> },
+            { value: 'City Hall', label: <Row align="middle"><IconFont type="i--orthodoxian" /> City Hall</Row> },
+
+        ]}
+    />
 export default BuildingOptions
