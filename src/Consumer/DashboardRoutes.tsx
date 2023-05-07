@@ -13,10 +13,10 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { DefaultRoute, defaultLogo, defaultProps } from "./utils";
 import api from "../api";
 import "./Dashboard.less"
+import { getWindowSize } from "../globalUtils";
 
 const DashboardRoutes = () => {
     const [pathname, setPathname] = useState('/Dashboard');
-    const [width, setWidth] = useState(window.innerWidth);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
@@ -31,21 +31,23 @@ const DashboardRoutes = () => {
     const settings = { fixSiderbar: true, };
     const url = window.location.pathname
 
-    const fetchPreference = async () => {
-        await api.preference.fetchPreference(user._id).then(data => dispatch(userPreference(data)))
-    }
+    const fetchPreference = async () =>
+        await api.preference.fetchPreference(user._id)
+            .then(data => dispatch(userPreference(data)))
+            .catch(err => console.log(err))
+
 
     const fetchOrganization = async () => {
-        await api.organization.fetch().then(res => {
-            dispatch(setAllOrganization(res))
-        })
-        await api.user.fetchAll().then(res => {
-            dispatch(setAllUser(res))
-        })
-    }
-
-    const handleWindowSizeChange = () => {
-        setWidth(window.innerWidth);
+        try {
+            await api.organization.fetch().then(res => {
+                dispatch(setAllOrganization(res))
+            })
+            await api.user.fetchAll().then(res => {
+                dispatch(setAllUser(res))
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     useEffect(() => {
@@ -62,10 +64,6 @@ const DashboardRoutes = () => {
     }, [url])
 
 
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => window.removeEventListener('resize', handleWindowSizeChange);
-    }, []);
 
     return (
         <ProLayout
@@ -116,7 +114,7 @@ const DashboardRoutes = () => {
             )}
             {...settings}
         >
-            {width >= 768 && <Header avatar={userAvatar} />}
+            {getWindowSize() >= 768 && <Header avatar={userAvatar} />}
             {DefaultRoute(navigate, userAvatar, setPathname, user, allOrganization, allUser)}
         </ProLayout >
     );
