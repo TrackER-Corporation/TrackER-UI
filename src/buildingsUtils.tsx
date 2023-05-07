@@ -62,18 +62,20 @@ export const addBuilding = async (
         organizationId: organizationId
     }
     setShow(true)
-    await api.buildings.addBuilding(data).then(async () => {
-        setTimeout(() => {
-            setShow(false)
-            message.success("Building created!")
-        }, 1000);
-    }).catch(() => {
+    try {
+        await api.buildings.addBuilding(data).then(async () => {
+            setTimeout(() => {
+                setShow(false)
+                message.success("Building created!")
+            }, 1000);
+        })
+        await api.buildings.fetchBuildings(user._id).then((res) => {
+            dispatch(fetchBuildings(res))
+        })
+    } catch (error) {
         setTimeout(() => {
             setShow(false)
             message.error("Building not created!")
         }, 1000);
-    })
-    await api.buildings.fetchBuildings(user._id).then((res) => {
-        dispatch(fetchBuildings(res))
-    })
+    }
 }
