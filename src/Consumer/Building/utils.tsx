@@ -1,11 +1,13 @@
-import { Button, Card, Col, Divider, Row, Statistic } from "antd"
+import { Button, Card, Col, Divider, Row, Statistic, message } from "antd"
 import { ApexOptions } from "apexcharts"
 import IconFont from "../../Iconfont"
 import { PageHeader } from "@ant-design/pro-components"
 import ReactApexChart from "react-apexcharts"
 import Empty from "../../Components/Empty"
 import api from "../../api"
-import { EnergyType } from "../../types"
+import { Building, EnergyType, Organization } from "../../types"
+import { fetchBuildings } from "../../reducers/buildings"
+import { AppDispatch } from "../../store"
 
 export const optionsBar: ApexOptions = {
     chart: {
@@ -320,3 +322,32 @@ export const getAllDataRenewable = async (
         console.log(error);
     }
 };
+
+
+export const deleteBuilding = async (
+    id: string,
+    userId: string,
+    setMessage: (arg: string) => void,
+    setShow: (arg: boolean) => void,
+    setBuildingsFilter: (arg: Array<Building>) => void,
+    dispatch: AppDispatch
+) => {
+    try {
+        setMessage("Deleting...");
+        setShow(true);
+        await api.buildings.deleteBuilding(id);
+        await api.buildings.fetchBuildings(userId).then((updatedBuildings: Array<Building>) => {
+            setBuildingsFilter(updatedBuildings);
+            dispatch(fetchBuildings(updatedBuildings));
+            setShow(false);
+            message.success("Building deleted correctly");
+            window.scroll(0, 0);
+        })
+    } catch (error) {
+        setShow(false);
+        message.error("Failed to delete building");
+        console.error(error);
+    }
+}
+
+export const showBills = (allOrg: Array<Organization>, type: string, orgId: string) => allOrg.find((el) => el._id === orgId)?.type?.includes(type)

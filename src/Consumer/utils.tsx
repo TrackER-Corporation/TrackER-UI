@@ -377,7 +377,7 @@ export const defaultLogo = (navigate: NavigateFunction) =>
     />
 
 export const getBills = async (id: string, setBills: (arg: any) => void) => {
-    await api.bills.getBillsAggregated(id).then(res => setBills(res))
+    await api.bills.getBillsAggregated(id).then(res => setBills(res)).catch(err => console.log(err))
 }
 
 export const headerMenu = (type: string, dispatch: AppDispatch): MenuProps['items'] => {

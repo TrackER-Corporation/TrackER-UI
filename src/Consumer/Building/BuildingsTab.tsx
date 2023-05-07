@@ -12,7 +12,7 @@ import { PageHeader } from "@ant-design/pro-components";
 import api from "../../api";
 import "./style.css"
 import { getBills } from "../utils";
-import { Building } from "../../types";
+import { deleteBuilding } from "./utils";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -25,7 +25,6 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
 
     const buildings = useAppSelector((state) => state.buildings.buildings)
     const user = useAppSelector((state) => state.user.user)
-    const allOrg = useAppSelector((state) => state.allOrganization.organization)
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
@@ -42,24 +41,6 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
     const [type, setType] = useState("")
     const [myMessage, setMessage] = useState("")
 
-    const deleteBuilding = async (id: string) => {
-        try {
-            setMessage("Deleting...");
-            setShow(true);
-            await api.buildings.deleteBuilding(id);
-            await api.buildings.fetchBuildings(user._id).then((updatedBuildings: Array<Building>) => {
-                setBuildingsFilter(updatedBuildings);
-                dispatch(fetchBuildings(updatedBuildings));
-                setShow(false);
-                message.success("Building deleted correctly");
-                window.scroll(0, 0);
-            })
-        } catch (error) {
-            setShow(false);
-            message.error("Failed to delete building");
-            console.error(error);
-        }
-    }
 
     useEffect(() => {
         getBills(user._id, setBills)
@@ -81,12 +62,9 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
         }];
     };
 
-    const showBills = (type: string, orgId: string) =>
-        allOrg.find((el) => el._id === orgId)?.type?.includes(type)
-
 
     const renderItem = () => {
-        if (!buildings) return [];
+        if (!buildings || buildings.length === undefined || buildings.length === 0) return [];
         return buildings.map(({ _id, address, name }) => ({
             value: filter === "Address" ? address : name,
             label: filter === "Address" ? address : name,
@@ -160,7 +138,7 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
                         }}
                         style={{ width: "65%" }}
                         dataSource={renderItem() as any}
-                        onSelect={(value, da: any) => renderBuildings(da.value)}
+                        onSelect={(value) => renderBuildings(value)}
                     >
                         <Search placeholder="Search by Name"
                         />
@@ -168,14 +146,12 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
                 </Input.Group>
             </Row>
             {
-                !buildingsFilter || buildingsFilter.length === 0 ?
+                !buildingsFilter || buildingsFilter.length === undefined ?
                     <Card style={{ marginTop: "32px" }}>
                         <Empty description="No Buildings found...">
                             <Button style={{ height: 40, borderRadius: 8 }}
                                 type="primary"
-                                onClick={() => {
-                                    updateRoute("/building/New")
-                                }}>
+                                onClick={() => updateRoute("/building/New")}>
                                 Add a new Building to your account!
                             </Button>
                         </Empty>
@@ -185,7 +161,16 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
                         <BuildingCard
                             key={item._id}
                             bills={bills}
-                            deleteBuilding={deleteBuilding}
+                            deleteBuilding={() =>
+                                deleteBuilding(
+                                    item._id,
+                                    user._id,
+                                    setMessage,
+                                    setShow,
+                                    setBuildingsFilter,
+                                    dispatch
+                                )
+                            }
                             getData={getData}
                             setAddress={setAddress}
                             setBuildingId={setBuildingId}
@@ -194,7 +179,6 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
                             setIsModalVisible={setIsModalVisible}
                             setName={setName}
                             setType={setType}
-                            showBills={showBills}
                         />)
             }
             <EditBuildingModal
@@ -214,4 +198,4 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
 }
 
 
-export default (props: any) => <BuildingTab {...props} />
+export default (props: BuildingTabProps) => <BuildingTab {...props} />

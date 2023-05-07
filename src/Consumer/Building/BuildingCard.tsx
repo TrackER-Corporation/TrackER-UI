@@ -12,6 +12,7 @@ import ResourcesModal from "./Resources/ResourcesModal";
 import { useAppSelector } from "../../hooks";
 import { ApexOptions } from "apexcharts";
 import { Building } from "../../types";
+import { showBills } from "./utils";
 
 interface BuildingCard {
     bills: any,
@@ -22,12 +23,11 @@ interface BuildingCard {
     setAddress: (arg: string) => void,
     setType: (arg: string) => void,
     setBuildingId: (arg: string) => void,
-    deleteBuilding: (arg: string) => void,
-    showBills: (arg1: string, arg2: string) => boolean | undefined,
+    deleteBuilding: any,
     getData: any
 }
 
-const BuildingCard = ({ bills, item, setIsModalVisible, setContact, setName, setAddress, setType, setBuildingId, deleteBuilding, showBills, getData }: BuildingCard) => {
+const BuildingCard = ({ bills, item, setIsModalVisible, setContact, setName, setAddress, setType, setBuildingId, deleteBuilding, getData }: BuildingCard) => {
     const [collapse, setCollapse] = useState<boolean>(false)
     const [visible, setVisible] = useState<boolean>(false)
     const [avatar, setAvatar] = useState("")
@@ -50,14 +50,17 @@ const BuildingCard = ({ bills, item, setIsModalVisible, setContact, setName, set
                             <Row justify="space-between" align="middle">
                                 <h3 style={{ color: "white" }}>{item.name}</h3>
                                 <Radio.Group value="default" >
-                                    <Radio.Button type="primary" onClick={() => {
-                                        setIsModalVisible(true);
-                                        setName(item.name);
-                                        setContact(item.contact);
-                                        setAddress(item.address);
-                                        setType(item.type);
-                                        setBuildingId(item._id)
-                                    }}>Edit</Radio.Button>
+                                    <Radio.Button
+                                        type="primary"
+                                        onClick={() => {
+                                            setIsModalVisible(true);
+                                            setName(item.name);
+                                            setContact(item.contact);
+                                            setAddress(item.address);
+                                            setType(item.type);
+                                            setBuildingId(item._id)
+                                        }}>Edit
+                                    </Radio.Button>
                                     <Popconfirm
                                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                                         title="Do you wanna delete this building?"
@@ -111,7 +114,7 @@ const BuildingCard = ({ bills, item, setIsModalVisible, setContact, setName, set
                                 <KpiCard bills={bills} item={item} />
                             </Col>
                             <Divider />
-                            {showBills("Electric", item.organizationId) &&
+                            {showBills(allOrganization, "Electric", item.organizationId) &&
                                 <Col span={24}>
                                     <StatsCard
                                         chart={
@@ -122,10 +125,10 @@ const BuildingCard = ({ bills, item, setIsModalVisible, setContact, setName, set
                                                 height={350}
                                             />} />
                                 </Col>}
-                            {showBills("Water", item.organizationId) && <Col span={24}>
+                            {showBills(allOrganization, "Water", item.organizationId) && <Col span={24}>
                                 <StatsCard chart={<ReactApexChart options={linear('Consumed Water', "liter", "#00c2f6").options as ApexOptions} series={getData(item._id, "Water")} type="area" height={350} />} />
                             </Col>}
-                            {showBills("Gas", item.organizationId) && <Col span={24}>
+                            {showBills(allOrganization, "Gas", item.organizationId) && <Col span={24}>
                                 <StatsCard chart={<ReactApexChart options={linear('Consumed Gas', "m³", "#00cbc8").options as ApexOptions} series={getData(item._id, "Gas")} type="area" height={350} />} />
                             </Col>}
                             <Col span={24} style={{ marginTop: 22 }}>
