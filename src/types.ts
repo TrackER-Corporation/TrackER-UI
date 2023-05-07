@@ -89,7 +89,7 @@ export interface Building {
     name: string;
     contact: string;
     userId?: string;
-    organizationId?: string;
+    organizationId: string;
     address: string;
     type: string;
     sqft?: number;
