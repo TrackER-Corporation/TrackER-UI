@@ -12,17 +12,24 @@ import { PageHeader } from "@ant-design/pro-components";
 import api from "../../api";
 import "./style.css"
 import { getBills } from "../utils";
+import { Building } from "../../types";
 
 const { Option } = Select;
 const { Search } = Input;
 
-const BuildingTab = ({ updateRoute }: any) => {
+interface BuildingTabProps {
+    updateRoute: (arg: string) => void
+}
 
-    const navigate = useNavigate()
+const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
+
     const buildings = useAppSelector((state) => state.buildings.buildings)
     const user = useAppSelector((state) => state.user.user)
     const allOrg = useAppSelector((state) => state.allOrganization.organization)
+
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
+
     const [show, setShow] = useState(false)
     const [bills, setBills] = useState<any>([])
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -36,18 +43,22 @@ const BuildingTab = ({ updateRoute }: any) => {
     const [myMessage, setMessage] = useState("")
 
     const deleteBuilding = async (id: string) => {
-        setMessage("Deleting...")
-        setShow(true)
-        await api.buildings.deleteBuilding(id)
-        await api.buildings.fetchBuildings(user._id).then((res) => {
-            setTimeout(() => {
-                setShow(false)
-            }, 1000);
-            message.success("Building deleted correctly")
-            setBuildingsFilter(res)
-            dispatch(fetchBuildings(res))
-        })
-        window.scroll(0, 0)
+        try {
+            setMessage("Deleting...");
+            setShow(true);
+            await api.buildings.deleteBuilding(id);
+            await api.buildings.fetchBuildings(user._id).then((updatedBuildings: Array<Building>) => {
+                setBuildingsFilter(updatedBuildings);
+                dispatch(fetchBuildings(updatedBuildings));
+                setShow(false);
+                message.success("Building deleted correctly");
+                window.scroll(0, 0);
+            })
+        } catch (error) {
+            setShow(false);
+            message.error("Failed to delete building");
+            console.error(error);
+        }
     }
 
     useEffect(() => {
@@ -56,42 +67,32 @@ const BuildingTab = ({ updateRoute }: any) => {
     }, [buildings, show])
 
     const getData = (id: string, type: string) => {
-        if (bills.all === undefined)
-            return []
-        const test = bills.all.find((el: any) => el.buildingId === id)
-        if (test === undefined) {
-            return []
-        }
-        const data: Array<any> = []
-        test.bills.map((el: any) =>
-            data.push({
-                x: moment.utc(el.date).local().format(),
-                y: el[type.toLowerCase()]
-            }))
+        const buildingBills = bills?.all?.find((el: any) => el.buildingId === id);
+        if (!buildingBills) return [];
+
         return [{
             name: type,
-            data: data
-        }]
-    }
+            data: buildingBills.bills
+                .filter((el: any) => el[type.toLowerCase()] !== undefined)
+                .map((el: any) => ({
+                    x: moment.utc(el.date).local().format(),
+                    y: el[type.toLowerCase()]
+                }))
+        }];
+    };
 
     const showBills = (type: string, orgId: string) =>
         allOrg.find((el) => el._id === orgId)?.type?.includes(type)
 
 
     const renderItem = () => {
-        const tmp: Array<object> = []
-        if (buildings === null)
-            return []
-        buildings.map((el: any) =>
-            tmp.push(
-                {
-                    value: filter === "Address" ? el.address : el.name,
-                    label: filter === "Address" ? el.address : el.name,
-                    key: el.id,
-                    props: el.id
-                })
-        )
-        return tmp
+        if (!buildings) return [];
+        return buildings.map(({ _id, address, name }) => ({
+            value: filter === "Address" ? address : name,
+            label: filter === "Address" ? address : name,
+            key: _id,
+            props: _id
+        }));
     };
 
     const renderBuildings = (element: string) => {
@@ -102,26 +103,21 @@ const BuildingTab = ({ updateRoute }: any) => {
     };
 
     const updateBuilding = async (buildingId: string) => {
-        const data = {
-            name,
-            contact,
-            address,
-            type,
-        }
-        setMessage("Updating...")
-        setShow(true)
-        await api.buildings.updateBuilding(buildingId, data).catch(() => {
+        try {
+            setMessage("Updating...");
+            setShow(true);
+            const data = { name, contact, address, type };
+            await api.buildings.updateBuilding(buildingId, data);
+            const updatedBuildings = await api.buildings.fetchBuildings(user._id);
+            setBuildingsFilter(updatedBuildings);
+            dispatch(fetchBuildings(updatedBuildings));
             setShow(false);
-            message.error("Error...")
-        })
-        await api.buildings.fetchBuildings(user._id).then((res) => {
-            dispatch(fetchBuildings(res))
-            setBuildingsFilter(res)
-            setTimeout(() => {
-                setShow(false)
-                message.success("Updated successfully")
-            }, 1000);
-        })
+            message.success("Updated successfully");
+        } catch (error) {
+            setShow(false);
+            message.error("Failed to update building");
+            console.error(error);
+        }
     }
 
     return (
