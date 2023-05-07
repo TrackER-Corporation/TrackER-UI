@@ -14,7 +14,7 @@ import { ExpandAltOutlined } from '@ant-design/icons';
 import "./style.css"
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "@ant-design/pro-components";
-import { UserProps } from "../../types";
+import { Organization, UserProps } from "../../types";
 import { addBuilding, handleCoords, onSelect } from "../../buildingsUtils";
 import IconFont from "../../Iconfont";
 
@@ -28,22 +28,20 @@ const AddNewBuildings = (user: UserProps) => {
     const [lat, setLat] = useState(0)
     const [long, setLon] = useState(0)
     const [sqft, setSqft] = useState("")
-    const [allOrganizations, setOrganizations] = useState([])
+    const [allOrganizations, setOrganizations] = useState<Array<Organization>>([])
     const [organizationId, setOrganization] = useState([])
     const [show, setShow] = useState(false)
     const navigate = useNavigate()
 
+    const fetchOrganization = async () =>
+        await api.organization.fetch().then(res => {
+            setOrganizations(res)
+            dispatch(setAllOrganization(res))
+        }).catch(err => console.log(err))
+
     useEffect(() => {
-        const fetchOrganization = async () => {
-            await api.organization.fetch().then(res => {
-                setOrganizations(res)
-                dispatch(setAllOrganization(res))
-            })
-        }
         fetchOrganization()
     }, [])
-
-
 
     return (
         <Layout
@@ -53,9 +51,7 @@ const AddNewBuildings = (user: UserProps) => {
                 paddingRight: 24,
             }}
         >
-
-
-            {show && <LoadingSpinner message={"Creating new building..."}></LoadingSpinner>}
+            {show && <LoadingSpinner message={"Creating new building..."} />}
             <Row gutter={[16, 16]} style={{ marginTop: "32px" }}>
                 <Breadcrumb>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -95,7 +91,11 @@ const AddNewBuildings = (user: UserProps) => {
 
                                 rules={[{ required: true, message: 'Please input the building name' }]}
                             >
-                                <Input onChange={(e) => setContact(e.target.value)} allowClear size="large" placeholder="Building Owner Name"
+                                <Input
+                                    onChange={(e) => setContact(e.target.value)}
+                                    allowClear
+                                    size="large"
+                                    placeholder="Building Owner Name"
                                     prefix={<IconFont type="i-shouye" style={{ marginRight: 5 }} />} />
                             </Form.Item>
                         </Col>
@@ -131,7 +131,9 @@ const AddNewBuildings = (user: UserProps) => {
                             >
                                 <AutoComplete
                                     className="test"
-                                    size="large" allowClear placeholder="Building Address"
+                                    size="large"
+                                    allowClear
+                                    placeholder="Building Address"
                                     onSearch={() => handleCoords(address, setOptions)}
                                     options={options}
                                     onSelect={(value) => onSelect(value, options, setAddress, setLat, setLon)}
@@ -141,13 +143,14 @@ const AddNewBuildings = (user: UserProps) => {
                         <Col span={24}>
                             <Form.Item rules={[{ required: true, message: 'Please input the building organization' }]}>
                                 <Select size="large"
+                                    data-testid="select1"
                                     placeholder={
                                         <Row align="middle">
                                             <IconFont type="i-dianpu" style={{ marginRight: 5 }} />
                                             Building Organization
                                         </Row>}
                                     onChange={(val) => { setOrganization(val) }}>
-                                    {allOrganizations.length > 0 && allOrganizations.map((el: any) =>
+                                    {allOrganizations.length > 0 && allOrganizations.map((el) =>
                                         <Option key={el._id} value={el._id}>
                                             <Row align="middle">
                                                 <Avatar src={el.icon} style={{ marginRight: 5 }} />{el.name}
@@ -160,20 +163,23 @@ const AddNewBuildings = (user: UserProps) => {
                     </Col>
                 </Row>
                 <Row align="middle" justify="end" style={{ marginRight: 22 }} >
-                    <Button type="primary" style={{ borderRadius: 10 }} onClick={() =>
-                        addBuilding(
-                            name,
-                            contact,
-                            address,
-                            sqft,
-                            type,
-                            lat,
-                            long,
-                            organizationId,
-                            user,
-                            setShow,
-                            dispatch
-                        )}>Add</Button>
+                    <Button type="primary" style={{ borderRadius: 10 }}
+                        onClick={() =>
+                            addBuilding(
+                                name,
+                                contact,
+                                address,
+                                sqft,
+                                type,
+                                lat,
+                                long,
+                                organizationId,
+                                user,
+                                setShow,
+                                dispatch
+                            )}>
+                        Add
+                    </Button>
                 </Row>
             </Card>
         </Layout>
