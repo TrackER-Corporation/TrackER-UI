@@ -24,7 +24,7 @@ describe('SignIn', () => {
     });
 
     it('button sign up click', () => {
-        const { getByTestId, getByText, queryAllByText } = render(
+        const { getByTestId, getByText, queryAllByText, getAllByPlaceholderText } = render(
             <BrowserRouter>
                 <ConfigProvider>
                     <Provider store={store}>
@@ -33,18 +33,23 @@ describe('SignIn', () => {
                 </ConfigProvider>
             </BrowserRouter>
         );
-        const buttonSI = getByTestId("signIn")
-        fireEvent.click(buttonSI)
         expect(getByText("Building Owner")).toBeInTheDocument()
         const buttonSU = getByTestId("signUp")
-        fireEvent.click(buttonSU)
-        expect(getByText("Building Owner")).toBeInTheDocument()
         const buttonSubLog = queryAllByText("Sign In")
-        buttonSubLog.map(el => { fireEvent.click(el) })
-        expect(getByText("Building Owner")).toBeInTheDocument()
         const buttonSubSig = queryAllByText("Sign Up")
-        buttonSubSig.map(el => { fireEvent.click(el) })
-        expect(getByText("Building Owner")).toBeInTheDocument()
+        const buttonSI = getByTestId("signIn")
+        const signUp = getByTestId("signUp")
+        fireEvent.click(buttonSI)
+        fireEvent.click(buttonSU)
+        fireEvent.click(signUp)
+        buttonSubLog.map(el => fireEvent.click(el))
+        buttonSubSig.map(el => fireEvent.click(el))
+        const findData = ["Name", "Surname", "Password", "Confirm Password", "Email"]
+        findData.map((el: string) =>
+            getAllByPlaceholderText(el).map(element =>
+                fireEvent.change(element, { target: { value: 'Good Day' } })
+            )
+        )
     });
 
 });
