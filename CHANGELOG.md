@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.2.0](https://github.com/TrackER-Corporation/TrackER-UI/compare/v1.1.0...v1.2.0) (2023-05-08)
+
+
+### Features
+
+* account page & utils ([cba4e44](https://github.com/TrackER-Corporation/TrackER-UI/commit/cba4e448a63e3c691577edbb52a923d34f48baa3))
+* Account pages & components ([9588257](https://github.com/TrackER-Corporation/TrackER-UI/commit/9588257b2e269b225be037d118b36363e27d5f2b))
+* add getWindow size function ([aed3ad4](https://github.com/TrackER-Corporation/TrackER-UI/commit/aed3ad424ab817606c5cebd70dcc17cb73853ade))
+* add types to store ([a67d3c0](https://github.com/TrackER-Corporation/TrackER-UI/commit/a67d3c0fc4aec61282768ed669e9568097f281ac))
+* create api ([137a64c](https://github.com/TrackER-Corporation/TrackER-UI/commit/137a64c9e4193e769c6f57e5f8c016447a460eda))
+* Empty Component ([850fc91](https://github.com/TrackER-Corporation/TrackER-UI/commit/850fc911f4ef0e12cd26539bb6da898301df826c))
+* EnergyType ([3b47125](https://github.com/TrackER-Corporation/TrackER-UI/commit/3b47125f0aab6b99de254c68b95561557c487525))
+* global dataInRange ([6651538](https://github.com/TrackER-Corporation/TrackER-UI/commit/66515383783564715e48fde803adf37f6b606554))
+* Iconfont component ([c662b9c](https://github.com/TrackER-Corporation/TrackER-UI/commit/c662b9cf12bcf21cdd3eda1cff36a3c6f664393f))
+* setup file with ResizeObserver for test ([e07c72e](https://github.com/TrackER-Corporation/TrackER-UI/commit/e07c72ed8732f563582bc8c8db873399594e7916))
+* TimeStamp type ([6c2ae3c](https://github.com/TrackER-Corporation/TrackER-UI/commit/6c2ae3c7c2bcf95ffae379177d5df34c8a040491))
+* update pages utils ([164d9b2](https://github.com/TrackER-Corporation/TrackER-UI/commit/164d9b2d27c33df74fa9827a92383fe87964d470))
+* update route ([6ffe670](https://github.com/TrackER-Corporation/TrackER-UI/commit/6ffe6709075cdfbb63aa24d2fa7be3d60c343e1c))
+* update types ([20a07d2](https://github.com/TrackER-Corporation/TrackER-UI/commit/20a07d2589edc9640cbdd3d089d69817ae7b8833))
+
+
+### Bug Fixes
+
+* api endpoint ([8d66727](https://github.com/TrackER-Corporation/TrackER-UI/commit/8d667274a216a0e088229176ea5721b81f269a42))
+* api users route ([ae262f7](https://github.com/TrackER-Corporation/TrackER-UI/commit/ae262f7a7f7ed193e8b4e76874f2fe05227348a1))
+* avatar image render ([c7a5fbc](https://github.com/TrackER-Corporation/TrackER-UI/commit/c7a5fbc6dfebea52211073bb8472648ddef1989c))
+* AxiosError on test ([350b610](https://github.com/TrackER-Corporation/TrackER-UI/commit/350b6109238b689fef96cd7bb282c85fce36aa42))
+* Breadcrumb deprecated item ([b2b6426](https://github.com/TrackER-Corporation/TrackER-UI/commit/b2b64262b862f885db4a2190bedb314353677ebf))
+* building route ([e0142f5](https://github.com/TrackER-Corporation/TrackER-UI/commit/e0142f5f35ab78dac1ade221a6cd70d761b77493))
+* dashboard header ([220df9e](https://github.com/TrackER-Corporation/TrackER-UI/commit/220df9eb013a98e5b7dff157b0ac74b3b88f6478))
+* dropdown header ([809b7c2](https://github.com/TrackER-Corporation/TrackER-UI/commit/809b7c264a848265a7f28aaabf64321db20dc09d))
+* removed Chart test ([acd0238](https://github.com/TrackER-Corporation/TrackER-UI/commit/acd02383e6b873c35a1f13cbbd8faac2eb452590))
+* style bug ([78619b4](https://github.com/TrackER-Corporation/TrackER-UI/commit/78619b47e1066c6afbba45f1a2e8df449e4b854c))
+
 ## [1.1.0](https://github.com/TrackER-Corporation/TrackER-UI/compare/v1.0.0...v1.1.0) (2023-05-02)
 
 
