@@ -31,9 +31,7 @@ const App = ({ logged }: { logged?: boolean }) => {
   return (
     <div>
       {show && logged ?
-        <BrowserRouter>
-          <DashboardRoutes />
-        </BrowserRouter>
+        <BrowserRouter children={<DashboardRoutes />} />
         :
         <BrowserRouter>
           <Nav key="Nav3_0" dataSource={Nav30DataSource} isMobile={isMobile} />

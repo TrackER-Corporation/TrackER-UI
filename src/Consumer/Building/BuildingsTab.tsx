@@ -146,8 +146,7 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
                         dataSource={renderItem() as any}
                         onSelect={(value) => renderBuildings(value)}
                     >
-                        <Search placeholder="Search by Name"
-                        />
+                        <Search placeholder="Search by Name" />
                     </AutoComplete>
                 </Input.Group>
             </Row>
