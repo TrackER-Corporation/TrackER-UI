@@ -254,7 +254,7 @@ describe('buildings', () => {
             const result = await api.buildings.fetchBuildingsByUserId(testUserId);
 
             expect(axios.get).toHaveBeenCalledTimes(1);
-            expect(axios.get).toHaveBeenCalledWith(`${API_URL}/building/find/${testUserId}`);
+            expect(axios.get).toHaveBeenCalledWith(`${API_URL}/buildings/find/${testUserId}`);
             expect(result).toEqual(expectedData);
         });
     });
@@ -267,7 +267,7 @@ describe('buildings', () => {
             const result = await api.buildings.fetchBuildings(testBuildingId);
 
             expect(axios.get).toHaveBeenCalledTimes(1);
-            expect(axios.get).toHaveBeenCalledWith(`${API_URL}/building/${testBuildingId}`);
+            expect(axios.get).toHaveBeenCalledWith(`${API_URL}/buildings/${testBuildingId}`);
             expect(result).toEqual(expectedData);
         });
     });
@@ -281,7 +281,7 @@ describe('buildings', () => {
             const result = await api.buildings.addBuilding(testBody);
 
             expect(axios.post).toHaveBeenCalledTimes(1);
-            expect(axios.post).toHaveBeenCalledWith(`${API_URL}/building/register`, testBody);
+            expect(axios.post).toHaveBeenCalledWith(`${API_URL}/buildings/register`, testBody);
             expect(result).toEqual(expectedData);
         });
     });
@@ -295,7 +295,7 @@ describe('buildings', () => {
             const result = await api.buildings.updateBuilding(testBuildingId, testBody);
 
             expect(axios.put).toHaveBeenCalledTimes(1);
-            expect(axios.put).toHaveBeenCalledWith(`${API_URL}/building/${testBuildingId}`, testBody);
+            expect(axios.put).toHaveBeenCalledWith(`${API_URL}/buildings/${testBuildingId}`, testBody);
             expect(result).toEqual(expectedData);
         });
     });
@@ -309,7 +309,7 @@ describe('buildings', () => {
             const result = await api.buildings.updateBuildingResources(testBuildingId, testBody);
 
             expect(axios.put).toHaveBeenCalledTimes(1);
-            expect(axios.put).toHaveBeenCalledWith(`${API_URL}/building/resources/${testBuildingId}`, testBody);
+            expect(axios.put).toHaveBeenCalledWith(`${API_URL}/buildings/resources/${testBuildingId}`, testBody);
             expect(result).toEqual(expectedData);
         });
     });
@@ -322,7 +322,7 @@ describe('buildings', () => {
             const result = await api.buildings.deleteBuilding(testUserId);
 
             expect(axios.delete).toHaveBeenCalledTimes(1);
-            expect(axios.delete).toHaveBeenCalledWith(`${API_URL}/building/${testUserId}`);
+            expect(axios.delete).toHaveBeenCalledWith(`${API_URL}/buildings/${testUserId}`);
             expect(result).toEqual(expectedData);
         });
     });
@@ -335,7 +335,7 @@ describe('buildings', () => {
             const result = await api.buildings.getBuilding(testBuildingId);
 
             expect(axios.get).toHaveBeenCalledTimes(1);
-            expect(axios.get).toHaveBeenCalledWith(`${API_URL}/building/${testBuildingId}`);
+            expect(axios.get).toHaveBeenCalledWith(`${API_URL}/buildings/${testBuildingId}`);
             expect(result).toEqual(expectedData);
         });
     });
@@ -348,7 +348,7 @@ describe('buildings', () => {
             const result = await api.buildings.getBuildingsByOrganizationId(testOrganizationId);
 
             expect(axios.get).toHaveBeenCalledTimes(1);
-            expect(axios.get).toHaveBeenCalledWith(`${API_URL}/building/organization/${testOrganizationId}`);
+            expect(axios.get).toHaveBeenCalledWith(`${API_URL}/buildings/organization/${testOrganizationId}`);
             expect(result).toEqual(expectedData);
         });
     });
@@ -361,7 +361,7 @@ describe('buildings', () => {
             const result = await api.buildings.deleteBuildingByUserId(testUserId);
 
             expect(axios.delete).toHaveBeenCalledTimes(1);
-            expect(axios.delete).toHaveBeenCalledWith(`${API_URL}/building/user/${testUserId}`);
+            expect(axios.delete).toHaveBeenCalledWith(`${API_URL}/buildings/user/${testUserId}`);
             expect(result).toEqual(expectedData);
         });
     });

@@ -1,9 +1,14 @@
 
 import { createSlice } from '@reduxjs/toolkit'
+import { UserPreference } from '../types'
 
 const preference = localStorage.getItem("preference")
 
-const initialState = {
+interface initState {
+    preference: UserPreference
+}
+
+const initialState: initState = {
     preference: preference ? JSON.parse(preference) : {},
 }
 

@@ -1,13 +1,12 @@
-
 import React from 'react';
-import { Button, Col, Row, Carousel as AntCarousel, Menu, } from 'antd';
+import { Button, Col, Row, Carousel as AntCarousel, } from 'antd';
 import QueueAnim, { IObject } from 'rc-queue-anim';
 import { isMobile } from 'react-device-detect';
 import TweenOne from 'rc-tween-one';
-import { GetItem } from './types';
+import { GetItem, UserProps } from './types';
 import { UploadRequestOption } from "rc-upload/lib/interface";
-
-
+import { MenuProps } from 'antd/lib/menu';
+import moment from 'moment';
 
 export const isImg = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?/;
 export const getChildrenToRender = (item: any, i: number) => {
@@ -37,7 +36,6 @@ export const getSelectedKeys = () =>
         : window.location.pathname === '/Service'
             ? ['item0']
             : ['item2']
-
 
 export const getChildrenToRenderComponent = (item: any) => {
     if (item.children && item.children.indexOf('iframe') !== -1) {
@@ -264,29 +262,28 @@ export const getItem: (label: string, key: string, icon: JSX.Element) => GetItem
     label,
 });
 
+type AvatarImages = {
+    [key: string]: string;
+};
 
-async function importAll() {
-    const images: { [key: string]: any } = {};
-    const files = import.meta.glob('../assets/avatars/*.svg');
-    for (const path in files) {
-        const match = path.match(/\.\/(\w+)\.svg$/);
-        if (match) {
-            images[match[1]] = await files[path]();
-        }
-    }
-    return images;
+
+const avatarImages: AvatarImages = {};
+
+for (let i = 1; i <= 38; i++) {
+    const fileName = `Avatar-${i}.svg`;
+    avatarImages[fileName] = `/assets/avatars/${fileName}`;
 }
 
-export const avatarImages = await importAll();
+export default avatarImages;
 
-export const accountMenu = (user: any, setVisible: (arg: boolean) => void): any => (
-    <Menu style={{ padding: 6, borderRadius: 10, }}
-        items={[{
+export const accountMenu = (user: UserProps, setVisible: (arg: boolean) => void): MenuProps['items'] =>
+    [
+        {
             key: '1',
-            label: user?.type === "Building" ? "Change Avatar" : "Change Organization Logo",
-            onClick: () => { setVisible(true) }
-        }]}
-    />)
+            label: user.type === "Building" ? "Change Avatar" : "Change Organization Logo",
+            onClick: () => setVisible(true)
+        }
+    ];
 
 export const uploadImage = async (file: UploadRequestOption, setCurrent: (arg: any) => void) => {
     const data = new FormData();
@@ -309,3 +306,19 @@ export const uploadImage = async (file: UploadRequestOption, setCurrent: (arg: a
     }
 }
 
+
+export const dataInRange = (
+    el: any,
+    elec: Array<any>,
+    gas: Array<any>,
+    water: Array<any>,
+    momentSpan: moment.Moment,
+) => {
+    if (moment(el.date).isBetween(momentSpan, undefined, 'day')) {
+        elec.push([moment.utc(el.date).local().format(), el.electric])
+        gas.push([moment.utc(el.date).local().format(), el.gas])
+        water.push([moment.utc(el.date).local().format(), el.water])
+    }
+}
+
+export const getWindowSize = () => window.innerWidth

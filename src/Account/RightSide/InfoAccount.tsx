@@ -21,7 +21,7 @@ const InfoAccount = ({ user, socket }: any) => {
                 <AccountSubTitle>Contact</AccountSubTitle>
                 <Button onClick={() => setVisible(true)} type="primary" style={{ borderRadius: 6, marginRight: "20px", height: 40 }}>Edit</Button>
             </Row>
-            <Col span={12}>
+            <Col span={16}>
                 <Row justify="space-between" style={{ marginTop: "16px" }}>
                     <Col >Name</Col>
                     <Col offset={8}>{user.name}</Col>

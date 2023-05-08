@@ -1,8 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { Building } from '../types'
 
 
 const buildings = localStorage.getItem("buildings")
-const initialState = {
+
+interface InitState {
+    buildings: Array<Building>
+}
+
+const initialState: InitState = {
     buildings: buildings ? JSON.parse(buildings) : {},
 }
 

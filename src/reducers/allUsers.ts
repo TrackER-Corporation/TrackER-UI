@@ -1,9 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { UserProps } from '../types';
 
 
 const user = localStorage.getItem("allOrganization");
 
-const initialState = {
+interface InitState {
+    user: Array<UserProps>
+}
+
+const initialState: InitState = {
     user: user ? JSON.parse(user) : {},
 }
 

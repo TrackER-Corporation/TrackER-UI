@@ -1,8 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { Organization } from '../types'
 
 const organization = localStorage.getItem("organization")
 
-const initialState = {
+interface InitState {
+    organization: Organization
+}
+
+const initialState: InitState = {
     organization: organization ? JSON.parse(organization) : {},
 }
 

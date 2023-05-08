@@ -1,9 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { Building, Organization } from '../types';
 
 const organizationData = localStorage.getItem("allOrganization");
 const allBuildingsData = localStorage.getItem("allBuildings");
 
-const initialState = {
+interface InitState {
+    organization: Array<Organization>
+    allBuildings: Array<Building>
+}
+
+const initialState: InitState = {
     organization: organizationData ? JSON.parse(organizationData) : null,
     allBuildings: allBuildingsData ? JSON.parse(allBuildingsData) : null
 };

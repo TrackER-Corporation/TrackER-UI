@@ -8,6 +8,7 @@ import { logout, updateUser } from "./reducers/user";
 import bcrypt from "bcryptjs"
 import { getItem } from "./globalUtils";
 import { GetItem } from "./types";
+import IconFont from "./Iconfont";
 
 
 export const draggerProps: DraggerProps = {
@@ -89,7 +90,10 @@ export const fetchActivity = async (user: any, setData: (arg: any) => void, setL
                 setLoad(false)
             }, 300)
         })
-        .catch(() => message.error("Error on Update Data"))
+        .catch(() => {
+            message.error("Error on Update Data")
+            setLoad(false)
+        })
 }
 
 export const updateUserData = async (user: any, name: string, surname: string, email: string, dispatch: AppDispatch, setVisible: (arg: boolean) => void) =>
@@ -97,7 +101,10 @@ export const updateUserData = async (user: any, name: string, surname: string, e
         .then(res => {
             dispatch(updateUser(res.data))
             setVisible(false)
-        }).catch(() => message.error("Error on Update Data"))
+        }).catch(() => {
+            message.error("Error on Update Data")
+            setVisible(false)
+        })
 
 
 export const activityColumns: any = [
@@ -144,9 +151,9 @@ export const updatePassword = (old: string, userPassword: string, password: stri
 }
 
 export const accountItems: Array<GetItem> = [
-    getItem('Personal Information', '/Profile/Edit', <span className="iconfont anticon " >&#x100e5; </span>,),
-    getItem('Notification', '/Profile/Notification', <span className="iconfont anticon" >&#x100d9; </span>),
-    getItem('Activity Monitor', '/Profile/Activity', <span className="iconfont anticon" >&#x100e1; </span>),
-    getItem('Security Settings', '/Profile/Security', <span className="iconfont anticon" >&#x100df; </span>),
-    getItem('Change Password', '/Profile/Password', <span className="iconfont anticon" >&#xe6a9; </span>),
+    getItem('Personal Information', '/Profile/Edit', <IconFont style={{ fontSize: 22, fill: "red" }} type="i-shouye" />),
+    getItem('Notification', '/Profile/Notification', <IconFont style={{ fontSize: 22 }} type="i-bell" />),
+    getItem('Activity Monitor', '/Profile/Activity', <IconFont style={{ fontSize: 22 }} type="i-dingwei" />),
+    getItem('Security Settings', '/Profile/Security', <IconFont style={{ fontSize: 22 }} type="i-shezhi" />),
+    getItem('Change Password', '/Profile/Password', <IconFont style={{ fontSize: 22 }} type="i-lock" />),
 ];
