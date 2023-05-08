@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { accountMenu, animTypePricing, dataInRange, getChildrenToRender, getChildrenToRenderComponent, getChildrenToRenderPrice, getDelay, getSelectedKeys, isImg, onComplete, onTitleClick, renderChildPrice, uploadImage } from '../src/globalUtils';
+import { accountMenu, animTypePricing, dataInRange, getChildrenToRender, getChildrenToRenderComponent, getChildrenToRenderPrice, getDelay, getItem, getSelectedKeys, isImg, onComplete, onTitleClick, renderChildPrice, uploadImage } from '../src/globalUtils';
 import { describe, expect, test, vi } from 'vitest';
 import { Feature60DataSource, Feature80DataSource } from '../src/Service/data.source';
 import '@testing-library/jest-dom';
@@ -45,9 +45,6 @@ describe('getChildrenToRenderPrice', () => {
         expect(antCarousel.props.children).toHaveLength(2);
     });
 });
-
-
-
 
 describe('isImg', () => {
     it('should match valid image URLs', () => {
@@ -96,7 +93,6 @@ describe('getChildrenToRender', () => {
         expect(result.props.children).toEqual(['Some Text']);
     });
 });
-
 
 describe('getDelay', () => {
     it('should return the correct delay for even and odd numbers', () => {
@@ -155,43 +151,44 @@ describe('getSelectedKeys function', () => {
         expect(getSelectedKeys()).toEqual(['item2']);
     });
 
-    describe('getChildrenToRenderComponent', () => {
-        it('returns item children without modification when no iframe is present', () => {
-            const item = {
-                name: 'test',
-                children: 'Test children',
-            };
+});
 
-            const result = getChildrenToRenderComponent(item);
+describe('getChildrenToRenderComponent', () => {
+    it('returns item children without modification when no iframe is present', () => {
+        const item = {
+            name: 'test',
+            children: 'Test children',
+        };
 
-            expect(result).toBe('Test children');
-        });
+        const result = getChildrenToRenderComponent(item);
 
-        it('returns a div with an iframe when an iframe is present in item children', () => {
-            const item = {
-                name: 'test',
-                children: '<iframe src="https://example.com"></iframe>',
-            };
-
-            const result = getChildrenToRenderComponent(item);
-
-            expect(result.props.className).toBe('iframe-wrapper');
-            expect(result.props.dangerouslySetInnerHTML.__html).toBe('<iframe src="https://example.com"></iframe>');
-        });
+        expect(result).toBe('Test children');
     });
 
-    describe('onTitleClick', () => {
-        it('calls the goTo method on the carouselRef with the provided index', () => {
-            const carouselRef = {
-                current: {
-                    goTo: vi.fn(),
-                },
-            };
+    it('returns a div with an iframe when an iframe is present in item children', () => {
+        const item = {
+            name: 'test',
+            children: '<iframe src="https://example.com"></iframe>',
+        };
 
-            onTitleClick(2, carouselRef);
+        const result = getChildrenToRenderComponent(item);
 
-            expect(carouselRef.current.goTo).toHaveBeenCalledWith(2);
-        });
+        expect(result.props.className).toBe('iframe-wrapper');
+        expect(result.props.dangerouslySetInnerHTML.__html).toBe('<iframe src="https://example.com"></iframe>');
+    });
+});
+
+describe('onTitleClick', () => {
+    it('calls the goTo method on the carouselRef with the provided index', () => {
+        const carouselRef = {
+            current: {
+                goTo: vi.fn(),
+            },
+        };
+
+        onTitleClick(2, carouselRef);
+
+        expect(carouselRef.current.goTo).toHaveBeenCalledWith(2);
     });
 });
 
@@ -282,8 +279,6 @@ describe('dataInRange function', () => {
     });
 })
 
-
-
 describe('accountMenu', () => {
     it('should return menu item for changing avatar when user type is Building', () => {
         const user = {
@@ -297,13 +292,6 @@ describe('accountMenu', () => {
         };
 
         const setVisible = vi.fn();
-        const expected = [
-            {
-                key: '1',
-                label: 'Change Avatar',
-                onClick: () => { setVisible(true) },
-            },
-        ];
         expect(setVisible).toHaveBeenCalledTimes(0);
         const actual = accountMenu(user, setVisible);
         actual[0].onClick();
@@ -323,13 +311,6 @@ describe('accountMenu', () => {
         };
 
         const setVisible = vi.fn();
-        const expected = [
-            {
-                key: '1',
-                label: 'Change Organization Logo',
-                onClick: () => setVisible(true),
-            },
-        ];
         expect(setVisible).toHaveBeenCalledTimes(0);
         const actual = accountMenu(user, setVisible);
         actual[0].onClick();
@@ -338,3 +319,9 @@ describe('accountMenu', () => {
     });
 });
 
+describe('getItem', () => {
+    it('returns window size', () => {
+        const value = getItem("test", "1", <p></p>)
+        expect(value).toBe(value);
+    });
+});

@@ -14,7 +14,7 @@ describe('BuildingsTab component', () => {
     const update = vi.fn()
 
     it('renders the BuildingsTab component', () => {
-        const { baseElement } = render(
+        const { baseElement, getByText } = render(
             <Provider store={store}>
                 <BrowserRouter>
                     <BuildingsTab updateRoute={update} />
@@ -22,16 +22,6 @@ describe('BuildingsTab component', () => {
             </Provider>
         );
         expect(baseElement).toBeValid();
-    });
-
-    it('fire events', () => {
-        const { getByText } = render(
-            <Provider store={store}>
-                <BrowserRouter>
-                    <BuildingsTab updateRoute={update} />
-                </BrowserRouter>
-            </Provider>
-        );
         fireEvent.click(getByText("Add a new Building to your account!"))
     });
 
