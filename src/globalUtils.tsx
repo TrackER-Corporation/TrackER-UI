@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button, Col, Row, Carousel as AntCarousel, } from 'antd';
 import QueueAnim, { IObject } from 'rc-queue-anim';
@@ -37,7 +36,6 @@ export const getSelectedKeys = () =>
         : window.location.pathname === '/Service'
             ? ['item0']
             : ['item2']
-
 
 export const getChildrenToRenderComponent = (item: any) => {
     if (item.children && item.children.indexOf('iframe') !== -1) {
@@ -264,20 +262,19 @@ export const getItem: (label: string, key: string, icon: JSX.Element) => GetItem
     label,
 });
 
+type AvatarImages = {
+    [key: string]: string;
+};
 
-async function importAll() {
-    const images: { [key: string]: any } = {};
-    const files = import.meta.glob('../src/assets/avatars/*.svg');
-    for (const path in files) {
-        const match = path.match(/\.\/(\w+)\.svg$/);
-        if (match) {
-            images[match[1]] = await files[path]();
-        }
-    }
-    return images;
+
+const avatarImages: AvatarImages = {};
+
+for (let i = 1; i <= 38; i++) {
+    const fileName = `Avatar-${i}.svg`;
+    avatarImages[fileName] = `/assets/avatars/${fileName}`;
 }
 
-export const avatarImages = await importAll();
+export default avatarImages;
 
 export const accountMenu = (user: UserProps, setVisible: (arg: boolean) => void): MenuProps['items'] =>
     [

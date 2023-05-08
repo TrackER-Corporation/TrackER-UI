@@ -6,7 +6,7 @@ import { ProCard } from "@ant-design/pro-components";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { getBillsAggregated, getBillsRenewable, getData, statebar } from "./utils";
 import { useAppSelector } from "../hooks";
-import { avatarImages } from "../globalUtils";
+import avatarImages from "../globalUtils";
 import { ApexOptions } from "apexcharts";
 import ReactApexChart from "react-apexcharts";
 import BannerCard from "./DashboardCards/BannerCard";
@@ -34,7 +34,6 @@ const Dashboard = () => {
   });
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (buildings === null || buildings === undefined) return
