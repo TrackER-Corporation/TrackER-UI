@@ -80,7 +80,7 @@ const UsersCard = ({openModal}: UsersCard) => {
             }
         });
         setUsers(tmp.slice(0, 4))
-    }, [organization, allUser, users])
+    }, [organization, allUser])
 
 
     return (
