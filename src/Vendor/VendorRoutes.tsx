@@ -14,6 +14,7 @@ import { DefaultFooter, ProLayout } from "@ant-design/pro-components";
 import { getWindowSize } from "../globalUtils";
 import { defaultLogo } from "../Consumer/utils";
 import { DefaultVendorRoute, defaultProps } from "./utils";
+import { setAllUser } from "../reducers/allUsers";
 
 
 const VendorRoutes = () => {
@@ -26,34 +27,43 @@ const VendorRoutes = () => {
 
     const dispatch = useAppDispatch()
     const fetchPreference = async () => {
-        await api.preference.fetchPreference(user._id).then(data => dispatch(userPreference(data))).catch(e => console.log("Error"))
+        await api.preference.fetchPreference(user._id)
+            .then(data => dispatch(userPreference(data)))
+            .catch(e => console.log(e))
     }
     const getOrganization = async () => {
-        await api.organization.getByUserId(user._id).then(data => dispatch(fetchOrganization(data))).catch(e => console.log("Error"))
+        await api.organization.getByUserId(user._id)
+            .then(data => dispatch(fetchOrganization(data)))
+            .catch(e => console.log(e))
     }
     const getBills = async () => {
-        await api.bills.getBillsByOrganizationIdAggregated(organization._id).then(res => setBills(res)).catch(e => console.log("Error"))
+        await api.bills.getBillsByOrganizationIdAggregated(organization._id)
+            .then(res => setBills(res))
+            .catch(e => console.log(e))
     }
 
     const getBuildings = async () => {
-        await api.buildings.getBuildingsByOrganizationId(organization._id).then((res) => dispatch(setAllBuildings(res))).catch(err => dispatch(setAllBuildings([])))
+        console.log(organization)
+        await api.buildings.getBuildingsByOrganizationId(organization._id).then((res) =>
+            dispatch(setAllBuildings(res)))
+            .catch(() => dispatch(setAllBuildings([])))
     }
-
+    const fetchAllUser = async () => {
+        await api.user.fetchAll().then(res => {
+            dispatch(setAllUser(res))
+        })
+    }
     useEffect(() => {
-        if (organization === null || organization === undefined)
+        fetchAllUser()
+        if (organization === null || organization === undefined) {
             getOrganization()
-        fetchPreference()
-        getBills()
-        getBuildings()
-    }, [user])
+            fetchPreference()
+            getBills()
+            getBuildings()
+        }
+    }, [user, organization])
 
 
-
-
-    const url = window.location.pathname
-    useEffect(() => {
-        setPathname(url)
-    }, [url])
 
     if (organization === null) {
         fetchPreference()

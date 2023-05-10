@@ -1,28 +1,14 @@
-import { Card, Carousel, Col, Divider, Layout, Row, Statistic, } from "antd";
+import { Card, Col, Divider, Layout, Row, Statistic, } from "antd";
 import { useEffect, useState } from "react";
 import api from "../api"
 import UsersCard from "./DashboardCards/UsersCard";
 import CarouselKpi from "./DashboardCards/CarouselKpi";
 import ConsumeCard from "./DashboardCards/ConsumeCard";
-import styled from "styled-components";
 import CustomerModal from "./CustomerModal";
 import { useAppSelector } from "../hooks";
+import { CarouselWrapper, renderCarouselCard } from "./utils";
+import { UserProps } from "../types";
 
-const CarouselWrapper = styled(Carousel)`
-  > .slick-dots li button {
-    width: 6px;
-    height: 6px;
-    border-radius: 100%;
-    background: grey;
-
-  }
-  > .slick-dots li.slick-active button {
-    width: 7px;
-    height: 7px;
-    border-radius: 100%;
-    background: #1196db;
-  }
-`;
 
 const Dashboard = () => {
     const user = useAppSelector((state) => state.user.user)
@@ -32,7 +18,7 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true)
     const [loadingRenew, setLoadingRenew] = useState(true)
     const [visible, setVisible] = useState(false)
-    const [userPassed, setUser] = useState<any>({})
+    const [userPassed, setUserPassed] = useState<any | UserProps>({})
     const [kWhSum, setkWh] = useState(0)
     const [kWhCost, setkWhCost] = useState(0)
     const [gasSum, setGas] = useState(0)
@@ -46,8 +32,7 @@ const Dashboard = () => {
     const [totalHydro, setTotalHydro] = useState(0)
     const [totalRenew, setTotalRenew] = useState(0)
     const [cost, setCost] = useState<any>({})
-    const [users, setUsers] = useState([])
-
+    const [users, setUsers] = useState<Array<UserProps>>([])
 
     const getKpi = async (id: any) => {
         let kWh = 0
@@ -100,13 +85,13 @@ const Dashboard = () => {
                 }
                 setCost(tmpCost)
             })
-            await api.renewable.fetchResourcesByOrganizationId(organization._id!).then(res => {
+            await api.renewable.fetchResourcesByOrganizationId(organization._id).then(res => {
                 let sum = 0
                 res.map((el: any) => sum += el.buildings.length)
                 setSold(sum)
             })
 
-            await api.bills.getBillsByOrganizationIdAggregated(organization._id!).then(res => {
+            await api.bills.getBillsByOrganizationIdAggregated(organization._id).then(res => {
                 let solar = 0
                 let geo = 0
                 let wind = 0
@@ -155,7 +140,7 @@ const Dashboard = () => {
             const res = allUser.find((el) => el._id === element.user)
             if (res != undefined && !tmp.includes(res)) {
                 tmp.push(res)
-                await getKpi(element.user).then(() => setLoading(false)).catch(e => setLoading(false))
+                await getKpi(element.user).then(() => setLoading(false)).catch(() => setLoading(false))
             }
         });
         setUsers(tmp)
@@ -176,15 +161,22 @@ const Dashboard = () => {
                 <Col span={24}>
                     <Card style={{ borderRadius: 20 }}>
                         <CarouselKpi loading={loading}
-                            waterCost={waterCost} gasCost={gasCost} kWhCost={kWhCost}
-                            waterSum={waterSum} gasSum={gasSum} kWhSum={kWhSum} sold={sold} renewable={totalRenew}
+                            waterCost={waterCost}
+                            gasCost={gasCost}
+                            kWhCost={kWhCost}
+                            waterSum={waterSum}
+                            gasSum={gasSum}
+                            kWhSum={kWhSum}
+                            sold={sold}
+                            renewable={totalRenew}
                         />
                         <Divider />
                         <p style={{ fontSize: 18, fontWeight: 500 }}>Customers List</p>
-                        <UsersCard openModal={(user: any) => {
-                            setUser(user)
-                            setVisible(true)
-                        }} />
+                        <UsersCard
+                            openModal={(user: UserProps) => {
+                                setUserPassed(user)
+                                setVisible(true)
+                            }} />
                     </Card>
                 </Col>
                 <Col md={16} xs={24} sm={24}>
@@ -216,34 +208,10 @@ const Dashboard = () => {
                             <span className="anticon iconfont" style={{ color: "#1196db", }}>&#xe64f;</span>
                         </Row>
                         <CarouselWrapper style={{ justifyContent: "center" }} autoplay={!loadingRenew}>
-                            <Row justify="space-between" align="middle">
-                                <Col span={24} style={{ height: "200px", textAlign: "center", marginTop: 12 }}>
-                                    <p style={{ fontWeight: "300", fontSize: 17, color: "#1196db" }}>Total Solar Production</p>
-                                    <span className="anticon iconfontMedium3" style={{ color: "#1196db" }}>&#xe65f;</span>
-                                    <Statistic loading={loadingRenew} value={totalSolar} suffix="kW" precision={2} />
-                                </Col>
-                            </Row>
-                            <Row justify="space-between" align="middle">
-                                <Col span={24} style={{ height: "200px", textAlign: "center", marginTop: 12 }}>
-                                    <p style={{ fontWeight: "300", fontSize: 17, color: "#1196db" }}>Total Hydro Production</p>
-                                    <span className="anticon iconfontMedium3" style={{ color: "#1196db" }}>&#xe650;</span>
-                                    <Statistic loading={loadingRenew} value={totalHydro} suffix="kW" precision={2} />
-                                </Col>
-                            </Row>
-                            <Row justify="space-between" align="middle">
-                                <Col span={24} style={{ height: "200px", textAlign: "center", marginTop: 12 }}>
-                                    <p style={{ fontWeight: "300", fontSize: 17, color: "#1196db" }}>Total Windy Production</p>
-                                    <span className="anticon iconfontMedium3" style={{ color: "#1196db" }}>&#xe661;</span>
-                                    <Statistic loading={loadingRenew} value={totalWind} suffix="kW" precision={2} />
-                                </Col>
-                            </Row>
-                            <Row justify="space-between" align="middle">
-                                <Col span={24} style={{ height: "200px", textAlign: "center", marginTop: 12 }}>
-                                    <p style={{ fontWeight: "300", fontSize: 17, color: "#1196db" }}>Total Geothermic Production</p>
-                                    <span className="anticon iconfontMedium3" style={{ color: "#1196db" }}>&#xe64b;</span>
-                                    <Statistic loading={loadingRenew} value={totalGeo} suffix="kW" precision={2} />
-                                </Col>
-                            </Row>
+                            {renderCarouselCard(loadingRenew, { icon: "", title: "Total Solar Production", value: totalSolar })}
+                            {renderCarouselCard(loadingRenew, { icon: "", title: "Total Hydro Production", value: totalHydro })}
+                            {renderCarouselCard(loadingRenew, { icon: "", title: "Total Windy Production", value: totalWind })}
+                            {renderCarouselCard(loadingRenew, { icon: "", title: "Total Geothermic Production", value: totalGeo })}
                         </CarouselWrapper>
                     </Card>
 

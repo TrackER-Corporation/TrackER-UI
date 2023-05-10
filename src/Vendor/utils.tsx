@@ -9,6 +9,9 @@ import Customers from "./Customers/Customers";
 import EditPlan from "./Edit/EditPlan";
 import Account from "../Account/Account";
 import CompleteOrganization from "./CompleteOrganization";
+import { Carousel, Col, Row, Statistic } from "antd";
+import styled from "styled-components";
+import IconFont from "../Iconfont";
 
 export const defaultProps = (organization: Organization, edited: number | undefined) => ({
     route: {
@@ -18,49 +21,49 @@ export const defaultProps = (organization: Organization, edited: number | undefi
                 path: '/Dashboard',
                 name: 'Dashboard',
                 disabled: edited === 0,
-                icon: <span className="anticon iconfont">&#x100d9;</span>
+                icon: <IconFont type="i-gaishuai" />
             },
             organization !== null && organization?.type?.includes("Electric") && {
                 path: '/Electric',
                 name: 'Electric Supplier',
                 disabled: edited === 0,
-                icon: <span className="anticon iconfont">&#xe61d;</span>
+                icon: <IconFont type="i-Energy" />
             },
             organization !== null && organization?.type?.includes("Water") && {
                 path: '/Water',
                 name: 'Water Supplier',
                 disabled: edited === 0,
-                icon: <span className="anticon iconfont">&#xe730;</span>
+                icon: <IconFont type="i-water-flash-line" />
             },
             organization !== null && organization?.type?.includes("Gas") && {
                 path: '/Gas',
                 name: 'Gas Supplier',
                 disabled: edited === 0,
-                icon: <span className="anticon iconfont">&#xe657;</span>
+                icon: <IconFont type="i-fire-line" />
             },
             organization !== null && organization?.type?.includes("Distributed") && {
                 path: '/Resources',
                 name: 'Energy Resources',
                 disabled: edited === 0,
-                icon: <span className="anticon iconfont">&#xe927;</span>
+                icon: <IconFont type="i-a-EnergyResources" />
             },
             {
                 path: '/Customers',
                 name: 'Customers',
                 disabled: edited === 0,
-                icon: <span className="anticon iconfont">&#x100e5;</span>
+                icon: <IconFont type="i-shouye" />
             },
             {
                 path: '/Edit',
                 name: 'Edit Plan',
                 disabled: edited === 0,
-                icon: <span className="anticon iconfont">&#x100e9;</span>
+                icon: <IconFont type="i-bianxie" />
             },
             {
                 path: '/Profile',
                 name: 'Organization',
                 disabled: edited === 0,
-                icon: <span className="anticon iconfont" >&#x100da;</span>,
+                icon: <IconFont type="i-fenlei" />,
                 routes: [
                     {
                         path: '/Profile/Edit',
@@ -123,3 +126,37 @@ export const DefaultVendorRoute = (
             <Route path="/Profile/Security" element={<Account avatar={icon} user={user} updateRoute={(val: any) => { setPathname(val); navigate(val) }} />} />
             <Route path="/Profile/Password" element={<Account avatar={icon} user={user} updateRoute={(val: any) => { setPathname(val); navigate(val) }} />} />
         </Routes>
+
+interface CarouselProps {
+    icon: string,
+    title: string,
+    value: number,
+}
+
+export const renderCarouselCard = (
+    loading: boolean,
+    props: CarouselProps
+) =>
+    <Row justify="space-between" align="middle">
+        <Col span={24} style={{ height: "200px", textAlign: "center", marginTop: 12 }}>
+            <p style={{ fontWeight: "300", fontSize: 17, color: "#1196db" }}>{props.title}</p>
+            <span className="anticon iconfontMedium3" style={{ color: "#1196db" }}>{props.icon}</span>
+            <Statistic loading={loading} value={props.value} suffix="kW" precision={2} />
+        </Col>
+    </Row>
+
+export const CarouselWrapper = styled(Carousel)`
+  > .slick-dots li button {
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    background: grey;
+
+  }
+  > .slick-dots li.slick-active button {
+    width: 7px;
+    height: 7px;
+    border-radius: 100%;
+    background: #1196db;
+  }
+`;
