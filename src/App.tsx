@@ -15,9 +15,10 @@ import Service from "./Service/index.tsx";
 import Login from "./Login/Login.tsx";
 import DashboardRoutes from "./Consumer/DashboardRoutes.tsx";
 import { RootState } from "./store.ts";
+import VendorRoutes from "./Vendor/VendorRoutes.tsx";
 
 
-const App = ({ logged }: { logged?: boolean }) => {
+const App = ({ logged, type }: { logged?: boolean, type?: string }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -30,7 +31,9 @@ const App = ({ logged }: { logged?: boolean }) => {
 
   return (
     <div>
-      {show && logged ?
+      {show && logged ? type === "Vendor" ?
+        <BrowserRouter children={<VendorRoutes />} />
+        :
         <BrowserRouter children={<DashboardRoutes />} />
         :
         <BrowserRouter>
