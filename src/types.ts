@@ -1,4 +1,3 @@
-import { ProColumns } from "@ant-design/pro-table"
 import { SpinSize } from "antd/lib/spin"
 import { DefaultOptionType } from "rc-cascader"
 
@@ -79,7 +78,7 @@ export interface Organization {
     name: string;
     description?: string;
     userId?: string;
-    type?: Array<string>;
+    type: Array<string>;
     icon: string;
     customers?: Array<UserProps>;
     details?: any;
@@ -98,7 +97,7 @@ export interface Building {
     lat: string;
     long: string;
     resources?: Array<any>;
-    date?: Date;
+    date: Date;
 }
 
 export interface Bills {
@@ -129,7 +128,7 @@ export interface Bills {
 
 export interface Pages {
     bills: Bills,
-    cost: Array<Object>
+    cost: Array<object>
 }
 
 export interface Data {
@@ -194,7 +193,7 @@ export interface Step3 {
     type: Array<string | boolean>,
     description: string,
     prices: Array<any>,
-    setData: (arg: Object) => void
+    setData: (arg: object) => void
 }
 
 export interface OrganizationCard {
@@ -206,10 +205,6 @@ export interface OrganizationCard {
 export interface EditCard {
     data: any,
     type: string
-}
-
-export interface UsersCard {
-    openModal: (arg: any) => void
 }
 
 export interface Customers {
@@ -241,17 +236,17 @@ export interface CustomersBuildingTable {
 }
 
 export interface ModalDetails {
-    visible: boolean, 
-    setVisible: (arg:boolean) => void, 
-    building: Building, 
+    visible: boolean,
+    setVisible: (arg: boolean) => void,
+    building: Building,
     bills: Array<any>;
 }
 
 export interface CustomerDrawer {
-    visible: boolean, 
-    buildingId: string, 
-    setVisible: (arg: boolean) => void, 
-    showWater?: boolean, 
-    showElectric?: boolean, 
+    visible: boolean,
+    buildingId: string,
+    setVisible: (arg: boolean) => void,
+    showWater?: boolean,
+    showElectric?: boolean,
     showGas?: boolean
 }
