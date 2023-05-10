@@ -53,7 +53,7 @@ const Dashboard = () => {
         let kWh = 0
         let gas = 0
         let water = 0
-        let tmpCost: any = {}
+        const tmpCost: any = {}
         try {
             await api.bills.getBillsAggregated(id).then(res => {
                 if (organization?.type?.includes("Electric")) {
@@ -113,7 +113,7 @@ const Dashboard = () => {
                 let hydro = 0
                 setLoadingRenew(true)
                 res.result.map((el: any) => {
-                    let filter = buildings.find((build: any) => build._id === el.buildingId)
+                    const filter = buildings.find((build: any) => build._id === el.buildingId)
                     filter?.resources?.map((element: any) => {
                         el.bills.map((bill: any) => {
                             bill.resources.map((resource: any) => {
@@ -148,12 +148,12 @@ const Dashboard = () => {
     }
 
     useEffect(() => {
-        let tmp: any = users
+        const tmp = users
         if (organization === null || organization === undefined)
             return
-        organization?.customers?.forEach(async (element: any) => {
-            let res = allUser.find((el: any) => el._id === element.user)
-            if (!tmp.includes(res) && res !== undefined) {
+        organization.customers?.forEach(async (element: any) => {
+            const res = allUser.find((el) => el._id === element.user)
+            if (res != undefined && !tmp.includes(res)) {
                 tmp.push(res)
                 await getKpi(element.user).then(() => setLoading(false)).catch(e => setLoading(false))
             }
