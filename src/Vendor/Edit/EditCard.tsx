@@ -8,8 +8,8 @@ import { useAppDispatch, useAppSelector } from "../../hooks"
 import { EditCard } from "../../types"
 
 interface Resource {
-  name: string;
-  price: number;
+    name: string;
+    price: number;
 }
 
 const EditCard = ({ data, type }: EditCard) => {
@@ -23,17 +23,17 @@ const EditCard = ({ data, type }: EditCard) => {
         value: number,
         name: string,
         type: string,
-      ) => {
-        const newResources = price[type].map((resource:any) =>
-          resource.name === name ? { ...resource, price: value } : resource
+    ) => {
+        const newResources = price[type].map((resource: any) =>
+            resource.name === name ? { ...resource, price: value } : resource
         );
         const newPrices = { ...price, [type]: newResources };
         setPrices(newPrices);
-      };
+    };
 
     const editPlan = () => {
         if (!edit) {
-            let data = { ...organization, details: price }
+            const data = { ...organization, details: price }
             setLoad(true)
             api.organization.update(organization._id, data).then((res) => {
                 dispatch(fetchOrganization(res))

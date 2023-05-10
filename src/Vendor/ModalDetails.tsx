@@ -7,7 +7,7 @@ import { ApexOptions } from "apexcharts";
 import { ModalDetails } from "../types";
 
 
-let options = {
+const options: ApexOptions = {
     chart: {
         type: 'bar',
         height: 350,
@@ -29,7 +29,7 @@ let options = {
         bar: {
             horizontal: false,
             columnWidth: '90%',
-            endingShape: 'rounded'
+            // endingShape: 'rounded'
         },
     },
     stroke: {
@@ -66,12 +66,12 @@ let options = {
     },
 }
 
-let radialOption = {
+const radialOption: ApexOptions = {
     labels: ['Water Total Production', 'Gas Total Production', 'Electricity Total Production',],
     legend: {
         position: "bottom",
         horizontalAlign: "center",
-        align: "center"
+        // align: "center"
     },
     chart: {
         type: 'donut',
@@ -89,10 +89,10 @@ let radialOption = {
                 }
             },
         },
-        value: {
-            show: true,
-            formatter: function (val: number) { return val.toFixed(2) }
-        },
+        // value: {
+        //     show: true,
+        //     formatter: function (val: number) { return val.toFixed(2) }
+        // },
     },
     yaxis: {
         labels: {
@@ -121,12 +121,12 @@ const ModalDetails = ({ visible = false, setVisible, building, bills }: ModalDet
     const [data, setData] = useState<any>([])
 
     const fetchDataSecondModal = (buildingId: string) => {
-        let water: any = []
-        let gas: any = []
-        let electric: any = []
+        const water: any = []
+        const gas: any = []
+        const electric: any = []
         let oldMoment = moment('01/23/17', 'MM/D/YYYY')
 
-        if ((bills && Object.keys(bills).length === 0 && Object.getPrototypeOf(bills) === Object.prototype) || bills === undefined) { }
+        if ((bills && Object.keys(bills).length === 0 && Object.getPrototypeOf(bills) === Object.prototype) || bills === undefined) return
         else
             bills.map((res: any) => {
                 if (res.buildingId !== buildingId) return
@@ -187,16 +187,16 @@ const ModalDetails = ({ visible = false, setVisible, building, bills }: ModalDet
                                     <p style={{ fontSize: "15px", fontWeight: 500 }}>Building Size: <b>{building.sqft} sqmt</b></p>
                                 </Col>
                                 <Col span={12}>
-                                    <p style={{ fontSize: "15px", fontWeight: 500 }}>Created At: <b>{new Date(building.date!).toLocaleString()}</b></p>
+                                    <p style={{ fontSize: "15px", fontWeight: 500 }}>Created At: <b>{new Date(building.date).toLocaleString()}</b></p>
                                 </Col>
                             </Row>
                         </Col>
                         <Col span={24}>
-                            <ReactApexChart options={options as ApexOptions} series={data} type="bar" height={350} />
+                            <ReactApexChart options={options} series={data} type="bar" height={350} />
                         </Col>
 
                         <Col span={12}>
-                            <ReactApexChart options={radialOption as ApexOptions} series={pieBills} type="donut" />
+                            <ReactApexChart options={radialOption} series={pieBills} type="donut" />
                         </Col>
                     </Row>
                 </Col>

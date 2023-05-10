@@ -6,11 +6,10 @@ import EditCard from "./EditCard"
 
 const EditPlan = () => {
     const organization = useAppSelector(state => state.organization.organization)
-    if (organization.details === undefined) {
-        return <></>
-    }
+    const navigate = useNavigate()
+    if (organization.details === undefined) return <></>
+
     const { gas, water, electric } = organization.details
-    let navigate = useNavigate()
     return (
         <Layout
             style={{
@@ -21,7 +20,6 @@ const EditPlan = () => {
             }}
         >
             <Row gutter={[16, 16]} >
-
                 <Breadcrumb
                     items={[
                         {

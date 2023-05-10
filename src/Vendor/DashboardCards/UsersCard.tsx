@@ -6,13 +6,17 @@ import api from "../../api"
 import { AvatarHover } from "../../Components/CustomComponents";
 import TweenOne from "rc-tween-one"
 import { useAppSelector } from "../../hooks"
-import { UsersCard } from "../../types"
+import { UserProps } from "../../types"
 
-const UsersCard = ({openModal}: UsersCard) => {
+export interface UsersCard {
+    openModal: (arg: any) => void
+}
+
+const UsersCard = ({ openModal }: UsersCard) => {
     const navigate = useNavigate()
-    const organization = useAppSelector((state: any) => state.organization.organization)
-    const allUser = useAppSelector((state: any) => state.allUser.user)
-    const [users, setUsers] = useState<any>([])
+    const organization = useAppSelector((state) => state.organization.organization)
+    const allUser = useAppSelector((state) => state.allUser.user)
+    const [users, setUsers] = useState<Array<UserProps>>([])
     const [bills, setBills] = useState<object>([])
     const [avatars, setAvatars] = useState<object>([])
     const [loading, setLoading] = useState(true)
@@ -57,7 +61,7 @@ const UsersCard = ({openModal}: UsersCard) => {
             }
             total = gas + water + electric
             setInvoices(res.invoicesDays)
-            setBills((bills:any) => [...bills, { value: Number(total).toFixed(2), id: id }])
+            setBills((bills: any) => [...bills, { value: Number(total).toFixed(2), id: id }])
         })
     }
 
@@ -66,11 +70,11 @@ const UsersCard = ({openModal}: UsersCard) => {
     }
 
     useEffect(() => {
-        let tmp: any = users
+        const tmp = users
         if (organization === null || organization === undefined || organization.customers === null || organization.customers === undefined)
             return
-        organization.customers.forEach(async (element:any) => {
-            let res: any = allUser.find((el: any) => el._id === element.user)
+        organization.customers.forEach(async (element: any) => {
+            const res: any = allUser.find((el) => el._id === element.user)
             if (!tmp.includes(res) && res !== undefined) {
                 tmp.push(res)
                 await Promise.all([
@@ -87,7 +91,7 @@ const UsersCard = ({openModal}: UsersCard) => {
 
         <Row justify="space-between" style={{ marginTop: 32 }} align="middle">
             {users.length === 0 ? <div></div> :
-                users.map((el: any, index: number) =>
+                users.map((el, index: number) =>
 
                     <Col md={5} xs={24} sm={24} style={{ textAlign: "center" }} key={index} onClick={() => openModal(el)}>
                         {loading ? <Skeleton active /> :

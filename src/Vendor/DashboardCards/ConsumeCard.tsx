@@ -86,7 +86,7 @@ const ConsumeCard = () => {
             setWater(water)
             setGas(gas)
             setElectric(electric)
-        }).catch(e => {return})
+        }).catch(e => { return })
     }
 
     useEffect(() => {
@@ -97,7 +97,7 @@ const ConsumeCard = () => {
 
 
 
-    let state:any = {
+    const state: any = {
         electricLine: [electric],
         electricOption: {
             chart: {
@@ -144,10 +144,10 @@ const ConsumeCard = () => {
                 <ReactApexChart options={state.electricOption as ApexOptions} series={state.electricLine} type="line" height={460} />
             </Col>
             <Col md={8} xs={24} sm={24}>
-                <ReactApexChart options={state.gasOption  as ApexOptions} series={state.gasLine} type="line" height={460} />
+                <ReactApexChart options={state.gasOption as ApexOptions} series={state.gasLine} type="line" height={460} />
             </Col>
             <Col md={8} xs={24} sm={24}>
-                <ReactApexChart options={state.waterOption  as ApexOptions} series={state.waterLine} type="line" height={460} />
+                <ReactApexChart options={state.waterOption as ApexOptions} series={state.waterLine} type="line" height={460} />
             </Col>
         </Row>
     )

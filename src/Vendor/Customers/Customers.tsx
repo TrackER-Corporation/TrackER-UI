@@ -8,7 +8,7 @@ import CustomersBuildingTable from '../CustomersBuildingTable';
 import { PageHeader } from '@ant-design/pro-components';
 import { Customers } from '../../types';
 
-const Customers = ({organization}: Customers) => {
+const Customers = ({ organization }: Customers) => {
     const columns = [
         {
             title: "#",
@@ -67,7 +67,7 @@ const Customers = ({organization}: Customers) => {
                             setData((old: any) => [...old, { buildingId: res3._id, name: res.name, surname: res.surname, avatar: res2.avatar, building: res3.name }])
                         }))
                     }))
-                }).catch(e => {return}))
+                }).catch(e => { return }))
             setTimeout(() => {
                 setLoad(false)
             }, 1000);
@@ -75,7 +75,7 @@ const Customers = ({organization}: Customers) => {
         getAllUser()
     }, [])
 
-    let navigate = useNavigate()
+    const navigate = useNavigate()
     return (
         <Layout
             className="site-layout-background"

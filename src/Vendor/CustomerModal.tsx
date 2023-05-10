@@ -7,11 +7,31 @@ import ProSkeleton from '@ant-design/pro-skeleton';
 import CustomersBuildingTable from "./CustomersBuildingTable"
 import ModalDetails from "./ModalDetails"
 import { useAppSelector } from "../hooks"
-import { CustomerModal } from "../types"
+import { Building, CustomerModal } from "../types"
 
 const CustomerModal = ({ visible, user, setVisible }: CustomerModal) => {
-
     const allBuildings = useAppSelector((state: any) => state.allOrganization.allBuildings)
+    const [buildings, setBuildings] = useState<any>([])
+    const [load, setLoad] = useState(true)
+    const [visible2, setVisible2] = useState(false)
+    const [bills, setBills] = useState<any>({})
+    const [building, setBuilding] = useState<Building | any>()
+    const fetchData = async () => {
+        await api.bills.getBillsAggregated(user._id).then(res => {
+            res.all.map((el: any) => setBuildings((old: any) => [...old, allBuildings.find((ele: any) => ele._id === el.buildingId)]))
+            setBills(res.all)
+            setTimeout(() => {
+                setLoad(false)
+            }, 500);
+        }).catch(e => setLoad(false))
+    }
+
+    useEffect(() => {
+        setBuildings([])
+        fetchData()
+    }, [visible, user, building])
+
+
     const columns = [
         {
             title: "#",
@@ -55,31 +75,20 @@ const CustomerModal = ({ visible, user, setVisible }: CustomerModal) => {
         },
     ];
 
-    const [buildings, setBuildings] = useState<any>([])
-    const [load, setLoad] = useState(true)
-    const [visible2, setVisible2] = useState(false)
-    const [bills, setBills] = useState<any>({})
-    const [building, setBuilding] = useState<any>({})
-    const fetchData = async () => {
-        await api.bills.getBillsAggregated(user._id).then(res => {
-            res.all.map((el: any) => setBuildings((old: any) => [...old, allBuildings.find((ele: any) => ele._id === el.buildingId)]))
-            setBills(res.all)
-            setTimeout(() => {
-                setLoad(false)
-            }, 500);
-        }).catch(e => setLoad(false))
-    }
-
-    useEffect(() => {
-        setBuildings([])
-        fetchData()
-    }, [visible, user, building])
-
-
-
 
     return (
-        <Modal style={{ borderRadius: 20 }} destroyOnClose title={user.name + " " + user.surname + " Buildings Overview"} open={visible} width={1000} onCancel={() => setVisible(false)} footer={<Button key="back" type="primary" onClick={() => setVisible(false)}>Ok</Button>}>
+        <Modal style={{ borderRadius: 20 }}
+            destroyOnClose
+            title={user.name + " " + user.surname + " Buildings Overview"}
+            open={visible}
+            width={1000} onCancel={() => setVisible(false)}
+            footer={
+                <Button key="back"
+                    type="primary"
+                    onClick={() => setVisible(false)}>
+                    Ok
+                </Button>
+            }>
             {load ?
                 <Col span={24} style={{ width: "100%" }}>
                     <Skeleton.Image active={true} style={{ width: "100%", height: 300 }} />
