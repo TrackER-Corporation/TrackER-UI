@@ -29,9 +29,10 @@ export const handleLoginSubmit = (email: string, password: string, setError: (ar
                 dispatch(userPreference(res))
                 if (res.activityLog) await api.activity.updateActivity(data._id)
             })
-            api.buildings.fetchBuildings(data._id).then((res) => {
-                dispatch(fetchBuildings(res))
-            })
+            if (data.type !== "Vendor")
+                api.buildings.fetchBuildings(data._id).then((res) => {
+                    dispatch(fetchBuildings(res))
+                })
             dispatch(login(data))
             navigate("/Dashboard")
 
