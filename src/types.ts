@@ -123,7 +123,7 @@ export interface Activity {
 export type TimeStamp = "Weekly" | "Monthly" | "Yearly" | ""
 export type EnergyType = "Solar" | "Hydro" | "Geo" | "Wind"
 
-export interface Bills {
+export interface BillsAggregated {
     totalElectric: number,
     totalGas: number,
     totalWater: number,
@@ -212,7 +212,7 @@ export interface EditCard {
     type: string
 }
 
-export interface Customers {
+export interface VendorCustomers {
     organization: Organization
 }
 
