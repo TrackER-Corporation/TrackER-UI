@@ -9,7 +9,7 @@ import { PageHeader } from "@ant-design/pro-components"
 import { ApexOptions } from "apexcharts"
 import { Pages } from "../../types"
 
-let optionsBar = {
+const optionsBar = {
     chart: {
         type: 'bar',
         toolbar: { show: false, },
@@ -42,7 +42,7 @@ let optionsBar = {
     }
 }
 
-let optionsLine = {
+const optionsLine = {
     legend: {
         position: "top",
         horizontalAlign: "center",
@@ -112,7 +112,7 @@ let optionsLine = {
 }
 
 const Water = ({ bills, cost }: Pages) => {
-    let navigate = useNavigate()
+    const navigate = useNavigate()
     const allBuildings = useAppSelector((state: any) => state.allOrganization.allBuildings)
     const [metricCubic, setMetric] = useState(true)
     const [buildingId, setBuildingId] = useState("")
@@ -250,7 +250,7 @@ const Water = ({ bills, cost }: Pages) => {
             bill.bills.forEach((singleBill: any) => {
                 sum += singleBill.water
             })
-            setLabels((old: any) => [...old, allBuildings.find((el:any) => el._id === bill.buildingId).name])
+            setLabels((old: any) => [...old, allBuildings.find((el: any) => el._id === bill.buildingId).name])
             setAllWater((old: any) => [...old, (sum).toFixed(2)])
         })
     }, [bills, metricCubic])
@@ -313,10 +313,16 @@ const Water = ({ bills, cost }: Pages) => {
             }}
         >
             <Row gutter={[16, 16]} style={{ marginTop: "32px" }}>
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>{window.location.pathname.split("/")[1]}</Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: 'Home',
+                        },
+                        {
+                            title: <a>{window.location.pathname.split("/")[1]}</a>
+                        }
+                    ]}
+                />
             </Row>
             <PageHeader
                 style={{ paddingLeft: 0 }}
