@@ -10,40 +10,33 @@ import { store } from "../../src/store";
 
 describe('ModalDetails', () => {
 
-    // const ResizeObserverMock = vi.fn(() => ({
-    //     observe: vi.fn(),
-    //     unobserve: vi.fn(),
-    //     disconnect: vi.fn()
-    // }))
+    const building = {
+        _id: "string",
+        name: "string",
+        contact: "string",
+        userId: "string",
+        organizationId: "string",
+        address: "string",
+        type: "string",
+        sqft: 6,
+        lat: "string",
+        long: "string",
+        resources: [],
+        date: new Date()
+    }
 
-    // vi.stubGlobal('ResizeObserver', ResizeObserverMock)
+    it('renders correctly with same day', () => {     
 
-    // vi.mock("react-apexcharts", async () => {
-    //     const actual: any = await vi.importActual("react-apexcharts")
-    //     return {
-    //         ...actual
-    //     }
-    // })
-    // vi.mock('apexcharts', () => ({ exec: vi.fn(() => { return new Promise((resolve, reject) => { resolve("uri") }) }) }));
-
-    it('renders the correctly', () => {
-
-        const building = {
-            _id: "string",
-            name: "string",
-            contact: "string",
-            address: "string",
-            type: "string",
-            lat: "string",
-            long: "",
-            organizationId: "12"
-        }
-
-        const bills = {
+        const billsDay = [{
             buildingId: "string",
             organizationId: "string",
-            bills: []
-        }
+            bills: [{
+                electric: 5,
+                gas: 5,
+                water: 5,
+                date: new Date('01/23/17')
+            }]
+        }]
 
         const setVisible = vi.fn()
 
@@ -51,7 +44,85 @@ describe('ModalDetails', () => {
             <BrowserRouter>
                 <ConfigProvider>
                     <Provider store={store}>
-                        <ModalDetails visible setVisible={setVisible} building={building} bills={[]}  />
+                        <ModalDetails visible={true} setVisible={setVisible} building={building} bills={billsDay} />
+                    </Provider>
+                </ConfigProvider>
+            </BrowserRouter>
+
+        );
+        expect(baseElement).toBeValid()
+        expect(getByText(/Building Name/)).toBeInTheDocument()
+    });
+
+    it('renders correctly with different day', () => {     
+
+        const bills = [{
+            buildingId: "string",
+            organizationId: "string",
+            bills: [{
+                electric: 5,
+                gas: 5,
+                water: 5,
+                date: new Date('01/01/17')
+            }]
+        }]
+
+        const setVisible = vi.fn()
+
+        const { baseElement, getByText } = render(
+            <BrowserRouter>
+                <ConfigProvider>
+                    <Provider store={store}>
+                        <ModalDetails visible={true} setVisible={setVisible} building={building} bills={bills} />
+                    </Provider>
+                </ConfigProvider>
+            </BrowserRouter>
+
+        );
+        expect(baseElement).toBeValid()
+        expect(getByText(/Building Name/)).toBeInTheDocument()
+    });
+
+    it('renders incorrectly', () => {     
+
+        const bills = [{
+            buildingId: "string2",
+            organizationId: "string",
+            bills: [{
+                electric: 5,
+                gas: 5,
+                water: 5,
+                date: new Date('01/01/17')
+            }]
+        }]
+
+        const setVisible = vi.fn()
+
+        const { baseElement, getByText } = render(
+            <BrowserRouter>
+                <ConfigProvider>
+                    <Provider store={store}>
+                        <ModalDetails visible={true} setVisible={setVisible} building={building} bills={bills} />
+                    </Provider>
+                </ConfigProvider>
+            </BrowserRouter>
+
+        );
+        expect(baseElement).toBeValid()
+        expect(getByText(/Building Name/)).toBeInTheDocument()
+    });
+
+    it('renders incorrectly', () => {     
+
+        const bills = []
+
+        const setVisible = vi.fn()
+
+        const { baseElement, getByText } = render(
+            <BrowserRouter>
+                <ConfigProvider>
+                    <Provider store={store}>
+                        <ModalDetails visible={true} setVisible={setVisible} building={building} bills={bills} />
                     </Provider>
                 </ConfigProvider>
             </BrowserRouter>

@@ -1,8 +1,9 @@
 
 import FirstStep from "../../../src/Vendor/OrganizationSteps/FirstStep"
+import setObj from "../../../src/Vendor/OrganizationSteps/FirstStep"
 import React from 'react';
 import { expect, describe, it, vi } from 'vitest'
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider } from "antd";
@@ -12,18 +13,41 @@ import { store } from "../../../src/store";
 describe('FirstStep', () => {
 
     it('renders the correctly', () => {
-        const { baseElement, getAllByText } = render(
+
+        const allSet = vi.fn()
+
+        const { baseElement, getAllByText, getAllByRole } = render(
             <BrowserRouter>
-            <ConfigProvider>
-                <Provider store={store}>
-                <FirstStep gas={0} setGas={{}} electric={0} setElectric={{}} water={0} setWater={{}} distributed={0} setDistributed={{}} setPrices={() => {}} />
-                </Provider>
-            </ConfigProvider>
-        </BrowserRouter>
-            
+                <ConfigProvider>
+                    <Provider store={store}>
+                        <FirstStep gas={true} setGas={allSet} electric={true} setElectric={allSet} water={true} setWater={allSet} distributed={true} setDistributed={allSet} prices={[{name:"Solar"}]} setPrices={allSet} />
+                    </Provider>
+                </ConfigProvider>
+            </BrowserRouter>
+
         );
         expect(baseElement).toBeValid()
         expect(getAllByText("Selected")[0]).toBeInTheDocument()
+        getAllByRole("button").forEach(el => fireEvent.click(el))
+    });
+
+    it('renders the correctly', () => {
+
+        const allSet = vi.fn()
+
+        const { baseElement, getAllByText, getAllByRole } = render(
+            <BrowserRouter>
+                <ConfigProvider>
+                    <Provider store={store}>
+                        <FirstStep gas={true} setGas={allSet} electric={true} setElectric={allSet} water={true} setWater={allSet} distributed={true} setDistributed={allSet} prices={[{name:"Wind"}]} setPrices={allSet} />
+                    </Provider>
+                </ConfigProvider>
+            </BrowserRouter>
+
+        );
+        expect(baseElement).toBeValid()
+        expect(getAllByText("Selected")[0]).toBeInTheDocument()
+        getAllByRole("button").forEach(el => fireEvent.click(el))
     });
 
 });

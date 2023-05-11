@@ -11,7 +11,15 @@ import { store } from "../../../src/store";
 describe('Customers', () => {
 
     const organization = {
-        customers:[{building:"6300a343707609fd28d22e6e", user:"630093ea707609fd28d22dd7"}]
+        _id: "string",
+        name: "string",
+        description: "string",
+        userId: "string",
+        type: [],
+        icon: "string",
+        customers: [{building:"6300a343707609fd28d22e6e", user:"630093ea707609fd28d22dd7"}],
+        details: {},
+        createAt: new Date()
     }
 
     it('renders the correct text', () => {

@@ -10,22 +10,6 @@ import { store } from "../../src/store";
 
 describe('CustomersBuildingTable', () => {
 
-    const ResizeObserverMock = vi.fn(() => ({
-        observe: vi.fn(),
-        unobserve: vi.fn(),
-        disconnect: vi.fn()
-    }))
-
-    vi.stubGlobal('ResizeObserver', ResizeObserverMock)
-
-    vi.mock("react-apexcharts", async () => {
-        const actual: any = await vi.importActual("react-apexcharts")
-        return {
-            ...actual
-        }
-    })
-    vi.mock('apexcharts', () => ({ exec: vi.fn(() => { return new Promise((resolve, reject) => { resolve("uri") }) }) }));
-
     it('renders the correctly', () => {
         const { baseElement, getByText } = render(
             <BrowserRouter>

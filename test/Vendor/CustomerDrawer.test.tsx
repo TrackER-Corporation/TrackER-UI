@@ -10,28 +10,14 @@ import { store } from "../../src/store";
 
 describe('CustomerDrawer', () => {
 
-    const ResizeObserverMock = vi.fn(() => ({
-        observe: vi.fn(),
-        unobserve: vi.fn(),
-        disconnect: vi.fn()
-    }))
-
-    vi.stubGlobal('ResizeObserver', ResizeObserverMock)
-
-    vi.mock("react-apexcharts", async () => {
-        const actual: any = await vi.importActual("react-apexcharts")
-        return {
-            ...actual
-        }
-    })
-    vi.mock('apexcharts', () => ({ exec: vi.fn(() => { return new Promise((resolve, reject) => { resolve("uri") }) }) }));
+    const set = vi.fn()
 
     it('renders the correctly', () => {
         const { baseElement, getByText } = render(
             <BrowserRouter>
                 <ConfigProvider>
                     <Provider store={store}>
-                        <CustomerDrawer visible={true} buildingId={"building"} setVisible={true} showWater={true} showElectric={true} showGas={true} />
+                        <CustomerDrawer visible={true} buildingId={"building"} setVisible={set} showWater={true} showElectric={true} showGas={true} />
                     </Provider>
                 </ConfigProvider>
             </BrowserRouter>

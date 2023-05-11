@@ -23,7 +23,7 @@ describe('EditCard', () => {
     }))
 
     it('renders the correct text with gas', () => {
-        const { baseElement, getByText, getByRole } = render(
+        const { baseElement, getByText, getAllByRole } = render(
             <BrowserRouter>
             <ConfigProvider>
                 <Provider store={store}>
@@ -35,9 +35,7 @@ describe('EditCard', () => {
         );
         expect(baseElement).toBeValid()
         fireEvent.click(getByText("Edit Plan"))
-        fireEvent.change(getByRole("spinbutton"), {target:{value:"1"}})
-        fireEvent.click(getByText("Confirm Plan"))
-        
+        getAllByRole("button").forEach(el => fireEvent.click(el))
     });
 
     it('renders the correct text with electric', () => {

@@ -9,28 +9,21 @@ import { Provider } from "react-redux";
 import { store } from "../../../src/store";
 
 describe('ResourcesCard', () => {
-
-    const ResizeObserverMock = vi.fn(() => ({
-        observe: vi.fn(),
-        unobserve: vi.fn(),
-        disconnect: vi.fn()
-    }))
-
-    vi.stubGlobal('ResizeObserver', ResizeObserverMock)
+    const onClick = vi.fn()
 
     it('renders the correctly', () => {
         const { baseElement, getByText } = render(
             <BrowserRouter>
                 <ConfigProvider>
                     <Provider store={store}>
-                        <ResourcesCard element={{name:"name"}} onClick={{}}  />
+                        <ResourcesCard element={{name:"Solar"}} onClick={onClick}  />
                     </Provider>
                 </ConfigProvider>
             </BrowserRouter>
 
         );
         expect(baseElement).toBeValid()
-        expect(getByText("name")).toBeInTheDocument()
+        expect(getByText("Solar")).toBeInTheDocument()
     });
 
 });
