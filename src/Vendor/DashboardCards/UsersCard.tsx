@@ -85,23 +85,33 @@ const UsersCard = ({ openModal }: UsersCard) => {
         });
         setUsers(tmp.slice(0, 4))
     }, [organization, allUser])
-    console.log(users)
 
     return (
-
         <Row justify="space-between" style={{ marginTop: 32 }} align="middle">
             {users.length === 0 ? <div></div> :
                 users.map((el, index: number) =>
-
-                    <Col md={5} xs={24} sm={24} style={{ textAlign: "center" }} key={index} onClick={() => openModal(el)}>
+                    <Col md={5} xs={24} sm={24}
+                        style={{ textAlign: "center" }}
+                        key={index}
+                        onClick={() => openModal(el)}
+                    >
                         {loading ? <Skeleton active /> :
                             <Row>
                                 <Col span={24}>
-                                    <AvatarHover src={Object.values(avatars).find((ele: any) => ele.id === el._id)?.avatar} size={120} shape="square" />
+                                    <AvatarHover
+                                        src={Object.values(avatars)
+                                            .find((ele: any) => ele.id === el._id)?.avatar
+                                        }
+                                        size={120}
+                                        shape="square"
+                                    />
                                 </Col>
                                 <Col span={24}>
                                     <p style={{ fontWeight: "lighter", color: "blue", margin: 5 }}>{el.name} {el.surname}</p>
-                                    <p style={{ fontSize: 22, fontWeight: "bold", margin: 0 }}>{Object.keys(bills).length > 0 ? Object.values(bills).find((ele: any) => ele.id === el._id)?.value : 0}€</p>
+                                    <p style={{ fontSize: 22, fontWeight: "bold", margin: 0 }}>
+                                        {Object.keys(bills).length > 0 ? Object.values(bills)
+                                            .find((ele: any) => ele.id === el._id)?.value : 0}€
+                                    </p>
                                     <p>{invoices} Invoices Days</p>
                                 </Col>
                             </Row>
@@ -109,7 +119,7 @@ const UsersCard = ({ openModal }: UsersCard) => {
                     </Col>
                 )}
             {users.length !== 0 &&
-                <Col md={1} xs={24} sm={24} onClick={() => navigate("/Customers")}>
+                <Col data-testid="back" md={1} xs={24} sm={24} onClick={() => navigate("/Customers")}>
                     <TweenOne
                         animation={{
                             x: 0,

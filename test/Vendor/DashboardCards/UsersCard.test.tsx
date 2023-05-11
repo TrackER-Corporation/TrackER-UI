@@ -1,7 +1,7 @@
 import UsersCard from "../../../src/Vendor/DashboardCards/UsersCard"
 import React from 'react';
 import { expect, describe, it, vi } from 'vitest'
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider } from "antd";
@@ -11,7 +11,7 @@ import { fetchOrganization } from "../../../src/reducers/organization";
 import { setAllUser } from "../../../src/reducers/allUsers";
 
 describe('UsersCard', () => {
-    
+
     store.dispatch(fetchOrganization({
         _id: "string",
         name: "string",
@@ -19,7 +19,7 @@ describe('UsersCard', () => {
         userId: "string",
         type: [],
         icon: "string",
-        customers: [{user: "string"}],
+        customers: [{ user: "string" }],
         details: {},
         createAt: "2023-05-10T16:24:51.677Z"
     }))
@@ -36,21 +36,22 @@ describe('UsersCard', () => {
             type: "string"
         }
     }]))
-    
+
 
     it('renders the correct text', () => {
         const openModal = vi.fn()
-        const { baseElement } = render(
+        const { baseElement, getByTestId } = render(
             <BrowserRouter>
-            <ConfigProvider>
-                <Provider store={store}>
-                <UsersCard openModal={openModal}/>
-                </Provider>
-            </ConfigProvider>
-        </BrowserRouter>
-            
+                <ConfigProvider>
+                    <Provider store={store}>
+                        <UsersCard openModal={openModal} />
+                    </Provider>
+                </ConfigProvider>
+            </BrowserRouter>
+
         );
         expect(baseElement).toBeValid()
+        fireEvent.click(getByTestId("back"))
     });
 
 });
