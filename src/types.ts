@@ -109,6 +109,7 @@ export interface Bills {
     buildingId?: string;
     organizationId?: string;
     bills?: Array<any>;
+    totalElectric?: number
 }
 
 export interface Activity {

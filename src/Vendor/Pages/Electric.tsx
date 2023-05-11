@@ -2,14 +2,14 @@ import { Breadcrumb, Card, Carousel, Col, Divider, Layout, Row, Statistic } from
 import { useEffect, useState } from "react"
 import ReactApexChart from "react-apexcharts"
 import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
 import CustomerDrawer from "../CustomerDrawer"
 import CustomersBuildingTable from "../CustomersBuildingTable"
 import { PageHeader } from "@ant-design/pro-components"
 import { ApexOptions } from "apexcharts"
 import { Pages } from "../../types"
+import { useAppSelector } from "../../hooks"
 
-let optionsBar: ApexOptions = {
+const optionsBar: ApexOptions = {
     chart: {
         type: 'bar',
         toolbar: { show: false, },
@@ -22,17 +22,6 @@ let optionsBar: ApexOptions = {
     },
     tooltip: {
         enabled: true,
-
-        // y: {
-        //     formatter: function (val: number) {
-        //         return val + "€"
-        //     },
-        //     title: {
-        //         formatter: (_: any, props: any) => {
-        //             return ["Earnings", "Cost"][props.dataPointIndex]
-        //         },
-        //     },
-        // }
     },
     dataLabels: {
         enabled: false
@@ -42,7 +31,7 @@ let optionsBar: ApexOptions = {
     }
 }
 
-let optionsLine = {
+const optionsLine = {
     legend: {
         position: "top",
         horizontalAlign: "center",
@@ -98,7 +87,7 @@ let optionsLine = {
             format: "dd-MM-yyyy HH:mm"
         },
         y: {
-            formatter: function (val:number) {
+            formatter: function (val: number) {
                 return val + "€"
             },
             title: {
@@ -113,8 +102,8 @@ let optionsLine = {
 
 
 const Electric = ({ bills, cost }: Pages) => {
-    let navigate = useNavigate()
-    const allBuildings = useSelector((state: any) => state.allOrganization.allBuildings)
+    const navigate = useNavigate()
+    const allBuildings = useAppSelector((state) => state.allOrganization.allBuildings)
     const [metricCubic, setMetric] = useState(true)
     const [buildingId, setBuildingId] = useState("")
     const [visible, setVisible] = useState(false)
@@ -248,12 +237,12 @@ const Electric = ({ bills, cost }: Pages) => {
             bill.bills.forEach((singleBill: any) => {
                 sum += singleBill.electric
             })
-            setLabels((old: any) => [...old, allBuildings.find((el:any) => el._id === bill.buildingId).name])
+            setLabels((old: any) => [...old, allBuildings.find((el: any) => el._id === bill.buildingId).name])
             setAllElectric((old: any) => [...old, (sum).toFixed(4)])
         })
 
     }, [bills, metricCubic])
-    
+
     const columns = [
         {
             title: "#",

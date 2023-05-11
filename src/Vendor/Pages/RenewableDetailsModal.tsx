@@ -5,7 +5,7 @@ import api from "../../api"
 import { PageHeader } from "@ant-design/pro-components"
 import { ApexOptions } from "apexcharts"
 import { RenewableDetailsModal } from "../../types"
-let optionsBar = {
+const optionsBar = {
     chart: {
         type: 'bar',
         toolbar: { show: false, },
@@ -37,7 +37,7 @@ let optionsBar = {
     }
 }
 
-let optionsLine = {
+const optionsLine = {
     legend: {
         position: "top",
         horizontalAlign: "center",
@@ -116,7 +116,7 @@ const RenewableDetailsModal = ({ filter, data, setVisible, visible }: RenewableD
             return
         }
         data.buildings.map(async (building: any) => {
-            let tmp: any = []
+            const tmp: any = []
             await api.bills.getBillsRenewable(building).then(res => {
                 res.renewable.map((el: any) => {
                     el.resources.map((resource: any) => {

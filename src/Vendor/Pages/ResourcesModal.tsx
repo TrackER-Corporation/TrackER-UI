@@ -2,9 +2,10 @@ import { Button, Card, message, Modal, Popconfirm, Row, Tooltip } from "antd"
 import { ProForm, ProFormMoney, ProFormSelect, ProFormText, ProTable } from "@ant-design/pro-components"
 import api from "../../api"
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import RenewableDetailsModal from "./RenewableDetailsModal";
 import { ResourcesModal } from "../../types";
+import { useAppSelector } from "../../hooks";
+import IconFont from "../../Iconfont";
 const ResourcesModal = ({ visible, setVisible, data, options }: ResourcesModal) => {
 
     const columns = [
@@ -55,12 +56,12 @@ const ResourcesModal = ({ visible, setVisible, data, options }: ResourcesModal) 
                             setShow(true)
                             setShowData(data)
                         }}>
-                            <span className="anticon iconfont" style={{ color: "blue" }}>&#xe7c6;</span>
+                            <IconFont type="i-news" className="anticon iconfont" style={{ color: "blue" }} />
                         </div>
                     </Tooltip>
                     <Popconfirm title="Are you sure to delete this Device" onConfirm={() => deleteResources(data._id)}>
                         <Tooltip title="Delete Device">
-                            <div style={{ cursor: "pointer" }}><span className="anticon iconfont" style={{ color: "red" }} >&#x100dd;</span></div>
+                            <IconFont type="i-shanchu" className="anticon iconfont" style={{ color: "blue" }} />
                         </Tooltip>
                     </Popconfirm>
                 </Row>
@@ -73,7 +74,7 @@ const ResourcesModal = ({ visible, setVisible, data, options }: ResourcesModal) 
     const [name, setName] = useState("")
     const [type, setType] = useState("")
     const [dataTable, setDataTable] = useState<any>([])
-    const organizationId = useSelector((state: any) => state.organization.organization._id)
+    const organizationId = useAppSelector((state) => state.organization.organization._id)
     const [show, setShow] = useState(false)
     const [showData, setShowData] = useState<any>({})
 
@@ -82,27 +83,27 @@ const ResourcesModal = ({ visible, setVisible, data, options }: ResourcesModal) 
 
     const getResourcesList = async () => {
         await api.renewable.fetchResourcesByOrganizationId(organizationId).then(res => {
-            let table: any = []
+            const table: any = []
             res.forEach((element: any) => {
                 if (element.resourcesType === data.name)
                     table.push(element)
             });
             setDataTable(table)
-        }).catch(e => {return})
+        }).catch(e => { return })
     }
 
     const deleteResources = async (id: any) => {
         await api.renewable.deleteResources(id).then(res => {
             message.success("Resources Deleted")
             ref.current.reloadAndRest();
-        }).catch(err => message.error("Error... "))
+        }).catch(err => message.error(err))
     }
 
     const createResources = async (data: any) => {
         await api.renewable.createResources(data).then(res => {
             setDataTable((old: any) => [...old, data])
             ref.current.reloadAndRest();
-        }).catch(e => {return})
+        }).catch(e => { return })
     }
 
     useEffect(() => {
@@ -112,7 +113,7 @@ const ResourcesModal = ({ visible, setVisible, data, options }: ResourcesModal) 
 
 
     const submit = (resourcesType: any) => {
-        let data = {
+        const data = {
             price,
             name,
             type,

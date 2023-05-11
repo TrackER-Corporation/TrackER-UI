@@ -3,9 +3,9 @@ import moment from "moment";
 import { useState } from "react";
 import { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
-import { useSelector } from "react-redux";
 import api from "../../api";
 import { ApexOptions } from "apexcharts";
+import { useAppSelector } from "../../hooks";
 
 const commonProps = {
     stroke: {
@@ -41,8 +41,7 @@ const commonProps = {
 }
 
 const ConsumeCard = () => {
-
-    const organization = useSelector((state: any) => state.organization.organization)
+    const organization = useAppSelector((state) => state.organization.organization)
     const [bills, setBills] = useState({})
     const [electric, setElectric] = useState({})
     const [gas, setGas] = useState({})

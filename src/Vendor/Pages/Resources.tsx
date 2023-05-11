@@ -1,16 +1,16 @@
 import { Breadcrumb, Card, Col, Layout, Row } from "antd"
 import { useState } from "react"
 import { useEffect } from "react"
-import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import ResourcesCard from "./ResourcesCard"
 import ResourcesModal from "./ResourcesModal"
 import { electricOptions, geoOptions, waterOptions, windOptions } from "./utils"
 import { PageHeader } from "@ant-design/pro-components"
+import { useAppSelector } from "../../hooks"
 
 const Resources = () => {
-    let navigate = useNavigate()
-    const organization = useSelector((state:any) => state.organization.organization)
+    const navigate = useNavigate()
+    const organization = useAppSelector((state) => state.organization.organization)
     const [resources, setResources] = useState(organization.details.resources)
     const [visible, setVisible] = useState(false)
     const [data, setData] = useState<any>({})
@@ -22,7 +22,7 @@ const Resources = () => {
         setResources(organization.details.resources)
     }, [organization])
 
-    const setProps = (data:any) => {
+    const setProps = (data: any) => {
         setData(data)
         setVisible(true)
         if (data.name.includes("Solar"))
@@ -59,7 +59,7 @@ const Resources = () => {
             <Card style={{ borderRadius: 20, boxShadow: "0 2px 4px rgba(0,0,0,0.2)", }}>
                 <p style={{ fontSize: 18, fontWeight: 500 }}>Create and check your energy resources offer</p>
                 <Row justify="center" gutter={[32, 32]}>
-                    {resources.map((el:any) =>
+                    {resources.map((el: any) =>
                         <Col md={12} sm={24} xs={24}>
                             <ResourcesCard element={el} onClick={() => setProps(el)} />
                         </Col>
