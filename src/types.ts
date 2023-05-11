@@ -9,10 +9,10 @@ export interface LoadingSpinnerProps {
 export interface EditAccountModalProps {
     visible: boolean
     setVisible: (visible: boolean) => void,
-    user: any
+    user: UserProps
 }
 export interface AccountActivity {
-    user: any
+    user: UserProps
 }
 
 export type BannerProps = {
@@ -73,6 +73,11 @@ export interface Renewable {
     organization: number;
 }
 
+export interface Customers {
+    building: string
+    user: string
+}
+
 export interface Organization {
     _id: string;
     name: string;
@@ -80,7 +85,7 @@ export interface Organization {
     userId?: string;
     type: Array<string>;
     icon: string;
-    customers?: Array<UserProps>;
+    customers?: Array<Customers>;
     details?: any;
     createAt: Date;
 }

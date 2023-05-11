@@ -10,7 +10,7 @@ import moment from "moment"
 import { ApexOptions } from "apexcharts"
 import { CustomerDrawer } from "../types"
 
-let options = {
+const options = {
     chart: {
         type: 'bar',
         height: 350,
@@ -70,12 +70,12 @@ let options = {
 }
 
 const CustomerDrawer = ({ visible, buildingId = "", setVisible, showWater = true, showElectric = true, showGas = true }: CustomerDrawer) => {
-    let labels = []
+    const labels = []
     showWater && labels.push('Water Total Production')
     showGas && labels.push('Gas Total Production')
     showElectric && labels.push('Electricity Total Production')
 
-    let radialOption = {
+    const radialOption = {
         labels: labels,
         legend: {
             position: "bottom",
@@ -135,9 +135,9 @@ const CustomerDrawer = ({ visible, buildingId = "", setVisible, showWater = true
     const [load, setLoad] = useState(true)
     const fetchData = async () => {
         setLoad(true)
-        let water: any = []
-        let gas: any = []
-        let electric: any = []
+        const water: any = []
+        const gas: any = []
+        const electric: any = []
         let oldMoment = moment('01/23/17', 'MM/D/YYYY')
         if (buildingId === "")
             return
@@ -180,7 +180,7 @@ const CustomerDrawer = ({ visible, buildingId = "", setVisible, showWater = true
             setData(out)
             setBills(res)
         }).catch(e => { return })
-        await api.buildings.getBuilding(buildingId).then(res => {
+        await api.buildings.fetchBuildingsByUserId(buildingId).then(res => {
             setBuilding(res)
             setTimeout(() => {
                 setLoad(false)

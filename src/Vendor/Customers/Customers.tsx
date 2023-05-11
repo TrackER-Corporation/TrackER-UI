@@ -50,32 +50,50 @@ const Customers = ({ organization }: Customers) => {
                 </a>
         },
     ];
-    const [data, setData] = useState<any>([])
+    const [data, setData] = useState<Array<any>>([])
     const [visible, setVisible] = useState(false)
     const [load, setLoad] = useState(true)
     const [buildingId, setBuildingId] = useState("")
-    const customers = organization.customers
+    const navigate = useNavigate()
 
     useEffect(() => {
-        setData({})
+        setData([])
         const getAllUser = async () => {
-            setData({})
-            await customers?.map(async (el: any) =>
-                await api.user.get(el.user).then(async res => {
-                    await api.preference.fetchPreference(el.user).then((async res2 => {
-                        await api.buildings.getBuilding(el.building).then((res3 => {
-                            setData((old: any) => [...old, { buildingId: res3._id, name: res.name, surname: res.surname, avatar: res2.avatar, building: res3.name }])
+            setData([])
+            try {
+                organization.customers
+                    ?.map(async (el) =>
+                        await api.user.get(el.user).then(async user => {
+                            await api.preference.fetchPreference(el.user)
+                                .then((async preference => {
+                                    await api.buildings.fetchBuildingsByUserId(el.building)
+                                        .then((building => {
+                                            setData((old: any) =>
+                                                [...old,
+                                                {
+                                                    buildingId: building._id,
+                                                    name: user.name,
+                                                    surname: user.surname,
+                                                    avatar: preference.avatar,
+                                                    building: building.name
+                                                }]
+                                            )
+                                        }))
+                                }))
                         }))
-                    }))
-                }).catch(e => { return }))
-            setTimeout(() => {
-                setLoad(false)
-            }, 1000);
+            } catch (error) {
+                console.log(error)
+            }
+            finally {
+                setTimeout(() => {
+                    console.log(data)
+                    setLoad(false)
+                }, 1000);
+            }
         }
         getAllUser()
     }, [])
 
-    const navigate = useNavigate()
     return (
         <Layout
             className="site-layout-background"
