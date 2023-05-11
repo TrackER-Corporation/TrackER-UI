@@ -9,7 +9,7 @@ import { PageHeader } from "@ant-design/pro-components"
 import { ApexOptions } from "apexcharts"
 import { Pages } from "../../types"
 
-let optionsBar = {
+let optionsBar: ApexOptions = {
     chart: {
         type: 'bar',
         toolbar: { show: false, },
@@ -23,16 +23,16 @@ let optionsBar = {
     tooltip: {
         enabled: true,
 
-        y: {
-            formatter: function (val: number) {
-                return val + "€"
-            },
-            title: {
-                formatter: (_: any, props: any) => {
-                    return ["Earnings", "Cost"][props.dataPointIndex]
-                },
-            },
-        }
+        // y: {
+        //     formatter: function (val: number) {
+        //         return val + "€"
+        //     },
+        //     title: {
+        //         formatter: (_: any, props: any) => {
+        //             return ["Earnings", "Cost"][props.dataPointIndex]
+        //         },
+        //     },
+        // }
     },
     dataLabels: {
         enabled: false
@@ -253,7 +253,7 @@ const Electric = ({ bills, cost }: Pages) => {
         })
 
     }, [bills, metricCubic])
-
+    
     const columns = [
         {
             title: "#",
@@ -296,7 +296,7 @@ const Electric = ({ bills, cost }: Pages) => {
                 </a>
         },
     ];
-
+    console.log(series)
     const getData = (data: any) => {
         if (data === undefined)
             return []
@@ -358,7 +358,7 @@ const Electric = ({ bills, cost }: Pages) => {
                 <Row style={{ marginTop: 32 }} justify="space-between" align="middle">
                     <Col md={10} sm={24} xs={24}>
                         <p style={{ fontSize: 18, fontWeight: 500 }}> Profit</p>
-                        <ReactApexChart options={optionsBar as ApexOptions} series={[series]} type="bar" height={250} />
+                        <ReactApexChart options={optionsBar} series={series} type="bar" height={250} />
                     </Col>
                     <Col md={12} sm={24} xs={24}>
                         <p style={{ fontSize: 18, fontWeight: 500 }}>Buildings Electric Usage</p>

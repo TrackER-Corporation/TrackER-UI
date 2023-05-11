@@ -15,7 +15,7 @@ const CustomerModal = ({ visible, user, setVisible }: CustomerModal) => {
     const [load, setLoad] = useState(true)
     const [visible2, setVisible2] = useState(false)
     const [bills, setBills] = useState<any>({})
-    const [building, setBuilding] = useState<Building | any>()
+    const [building, setBuilding] = useState<Building|any>(allBuildings)
     const fetchData = async () => {
         await api.bills.getBillsAggregated(user._id).then(res => {
             res.all.map((el: any) => setBuildings((old: any) => [...old, allBuildings.find((ele: any) => ele._id === el.buildingId)]))

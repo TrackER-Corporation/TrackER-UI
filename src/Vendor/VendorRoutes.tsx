@@ -51,7 +51,7 @@ const VendorRoutes = () => {
     const fetchAllUser = async () => {
         await api.user.fetchAll().then(res => {
             dispatch(setAllUser(res))
-        })
+        }).catch(e => console.log(e))
     }
     useEffect(() => {
         fetchAllUser()

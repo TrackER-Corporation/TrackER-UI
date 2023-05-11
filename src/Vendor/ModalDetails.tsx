@@ -165,9 +165,8 @@ const ModalDetails = ({ visible = false, setVisible, building, bills }: ModalDet
             return
         fetchDataSecondModal(building._id)
     }, [building, bills])
-
     return (
-        <Modal destroyOnClose open={visible} onCancel={() => setVisible(false)} onOk={() => setVisible(false)} width={900} title={building.name + " Consume Overview"}>
+        <Modal destroyOnClose open={visible} onCancel={() => setVisible(false)} onOk={() => setVisible(false)} width={900} title={building?.name + " Consume Overview"}>
             <div>
                 <Col span={24}>
                     <div style={{ height: 400 }}>

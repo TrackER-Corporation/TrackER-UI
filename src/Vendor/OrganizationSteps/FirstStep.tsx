@@ -12,7 +12,7 @@ const FirstStep = ({gas, setGas, electric, setElectric, water, setWater, distrib
     const [windy, setWindy] = useState<any>(Object.values(prices).find((el: any) => el.name === "Wind" ? el.price : false))
     const [geo, setGeo] = useState<any>(Object.values(prices).find((el: any) => el.name === "Geo" ? el.price : false))
     const [pricesTmp, setPricesTmp] = useState(prices)
-    const [name, setName] = useState("")
+    const [name, setName] = useState("Solar")
     const [value, setValue] = useState(0)
 
     useEffect(() => {

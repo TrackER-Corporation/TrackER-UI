@@ -133,7 +133,7 @@ const RenewableDetailsModal = ({ filter, data, setVisible, visible }: RenewableD
     }
 
     const getSeries = () => {
-        if (Object.keys(data).length === 0)
+        if (Object.keys(data).length === 0 || data.buildings === undefined)
             return []
         return [
             {
@@ -145,7 +145,7 @@ const RenewableDetailsModal = ({ filter, data, setVisible, visible }: RenewableD
 
                     }, {
                         x: 'Organization Cost',
-                        y: Number(data.price * data.buildings!.length).toFixed(2),
+                        y: Number(data.price * data.buildings.length).toFixed(2),
                         fillColor: "#008ffb"
                     }
                 ]

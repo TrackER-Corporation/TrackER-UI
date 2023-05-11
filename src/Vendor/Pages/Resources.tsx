@@ -11,13 +11,13 @@ import { PageHeader } from "@ant-design/pro-components"
 const Resources = () => {
     let navigate = useNavigate()
     const organization = useSelector((state:any) => state.organization.organization)
-    const [resources, setResources] = useState<any>([])
+    const [resources, setResources] = useState(organization.details.resources)
     const [visible, setVisible] = useState(false)
     const [data, setData] = useState<any>({})
     const [options, setOptions] = useState<any>([])
 
     useEffect(() => {
-        if (organization === null || organization.details == undefined)
+        if (organization === null || organization.details === undefined)
             return
         setResources(organization.details.resources)
     }, [organization])

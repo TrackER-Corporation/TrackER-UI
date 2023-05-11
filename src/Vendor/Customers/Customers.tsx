@@ -6,9 +6,9 @@ import CustomerDrawer from '../CustomerDrawer';
 import LoadingSpinner from '../../Components/LoadingSpinner';
 import CustomersBuildingTable from '../CustomersBuildingTable';
 import { PageHeader } from '@ant-design/pro-components';
-import { Customers } from '../../types';
+import { VendorCustomers } from '../../types';
 
-const Customers = ({ organization }: Customers) => {
+const Customers = ({ organization }: VendorCustomers) => {
     const columns = [
         {
             title: "#",
@@ -60,36 +60,30 @@ const Customers = ({ organization }: Customers) => {
         setData([])
         const getAllUser = async () => {
             setData([])
-            try {
-                organization.customers
-                    ?.map(async (el) =>
-                        await api.user.get(el.user).then(async user => {
-                            await api.preference.fetchPreference(el.user)
-                                .then((async preference => {
-                                    await api.buildings.fetchBuildingsByUserId(el.building)
-                                        .then((building => {
-                                            setData((old: any) =>
-                                                [...old,
-                                                {
-                                                    buildingId: building._id,
-                                                    name: user.name,
-                                                    surname: user.surname,
-                                                    avatar: preference.avatar,
-                                                    building: building.name
-                                                }]
-                                            )
-                                        }))
-                                }))
-                        }))
-            } catch (error) {
-                console.log(error)
-            }
-            finally {
-                setTimeout(() => {
-                    console.log(data)
-                    setLoad(false)
-                }, 1000);
-            }
+            organization.customers
+                ?.map(async (el) =>
+                    await api.user.get(el.user).then(async user => {
+                        await api.preference.fetchPreference(el.user)
+                            .then((async preference => {
+                                await api.buildings.fetchBuildingsByUserId(el.building)
+                                    .then((building => {
+                                        setData((old: any) =>
+                                            [...old,
+                                            {
+                                                buildingId: building._id,
+                                                name: user.name,
+                                                surname: user.surname,
+                                                avatar: preference.avatar,
+                                                building: building.name
+                                            }]
+                                        )
+                                    })).catch(e => console.log(e))
+                            })).catch(e => console.log(e))
+                    }).catch(e => console.log(e)))
+
+            setTimeout(() => {
+                setLoad(false)
+            }, 1000);
         }
         getAllUser()
     }, [])

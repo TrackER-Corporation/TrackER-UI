@@ -16,7 +16,7 @@ const UsersCard = ({ openModal }: UsersCard) => {
     const navigate = useNavigate()
     const organization = useAppSelector((state) => state.organization.organization)
     const allUser = useAppSelector((state) => state.allUser.user)
-    const [users, setUsers] = useState<Array<UserProps>>([])
+    const [users, setUsers] = useState<Array<UserProps>>([allUser[0]])
     const [bills, setBills] = useState<object>([])
     const [avatars, setAvatars] = useState<object>([])
     const [loading, setLoading] = useState(true)
@@ -24,11 +24,11 @@ const UsersCard = ({ openModal }: UsersCard) => {
 
 
     const getUserBills = async (id: string) => {
+        let total = 0
+        let water = 0
+        let gas = 0
+        let electric = 0
         await api.bills.getBillsAggregated(id).then(res => {
-            let total = 0
-            let water = 0
-            let gas = 0
-            let electric = 0
             if (organization.type.includes("Electric")) {
                 organization.details.electric.forEach((el: any) => {
                     if (el.name === "Electricity Cost at kWh")
@@ -66,7 +66,7 @@ const UsersCard = ({ openModal }: UsersCard) => {
     }
 
     const getUserAvatar = async (id: string) => {
-        await api.preference.getAvatar(id).then(res => setAvatars((avatars: any) => [...avatars, { id: id, avatar: res }]))
+        await api.preference.getAvatar(id).then(res => setAvatars((avatars: any) => [...avatars, { id: id, avatar: res }])).catch(e => console.log(e))
     }
 
     useEffect(() => {
@@ -85,7 +85,7 @@ const UsersCard = ({ openModal }: UsersCard) => {
         });
         setUsers(tmp.slice(0, 4))
     }, [organization, allUser])
-
+    console.log(users)
 
     return (
 
