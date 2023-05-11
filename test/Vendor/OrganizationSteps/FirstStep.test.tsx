@@ -1,6 +1,5 @@
 
 import FirstStep from "../../../src/Vendor/OrganizationSteps/FirstStep"
-import setObj from "../../../src/Vendor/OrganizationSteps/FirstStep"
 import React from 'react';
 import { expect, describe, it, vi } from 'vitest'
 import { fireEvent, render } from '@testing-library/react';
@@ -20,7 +19,17 @@ describe('FirstStep', () => {
             <BrowserRouter>
                 <ConfigProvider>
                     <Provider store={store}>
-                        <FirstStep gas={true} setGas={allSet} electric={true} setElectric={allSet} water={true} setWater={allSet} distributed={true} setDistributed={allSet} prices={[{name:"Solar"}]} setPrices={allSet} />
+                        <FirstStep gas={true}
+                            setGas={allSet}
+                            electric={true}
+                            setElectric={allSet}
+                            water={true}
+                            setWater={allSet}
+                            distributed={true}
+                            setDistributed={allSet}
+                            prices={[{ name: "Solar" }]}
+                            setPrices={allSet}
+                        />
                     </Provider>
                 </ConfigProvider>
             </BrowserRouter>
@@ -35,11 +44,21 @@ describe('FirstStep', () => {
 
         const allSet = vi.fn()
 
-        const { baseElement, getAllByText, getAllByRole } = render(
+        const { baseElement, getAllByText, getAllByRole, getAllByTestId } = render(
             <BrowserRouter>
                 <ConfigProvider>
                     <Provider store={store}>
-                        <FirstStep gas={true} setGas={allSet} electric={true} setElectric={allSet} water={true} setWater={allSet} distributed={true} setDistributed={allSet} prices={[{name:"Wind"}]} setPrices={allSet} />
+                        <FirstStep gas={true}
+                            setGas={allSet}
+                            electric={true}
+                            setElectric={allSet}
+                            water={true}
+                            setWater={allSet}
+                            distributed={true}
+                            setDistributed={allSet}
+                            prices={[{ name: "Wind" }]}
+                            setPrices={allSet}
+                        />
                     </Provider>
                 </ConfigProvider>
             </BrowserRouter>
@@ -47,6 +66,7 @@ describe('FirstStep', () => {
         );
         expect(baseElement).toBeValid()
         expect(getAllByText("Selected")[0]).toBeInTheDocument()
+        getAllByTestId("card").forEach(el => fireEvent.click(el))
         getAllByRole("button").forEach(el => fireEvent.click(el))
     });
 
