@@ -1,5 +1,5 @@
 import { NavigateFunction, Route, Routes } from "react-router-dom";
-import { Bills, Organization, UserProps } from "../types";
+import { Bills, Building, Organization, UserProps } from "../types";
 import Dashboard from "./Dashboard";
 import Electric from "./Pages/Electric";
 import Gas from "./Pages/Gas";
@@ -12,6 +12,7 @@ import CompleteOrganization from "./CompleteOrganization";
 import { Carousel, Col, Row, Statistic } from "antd";
 import styled from "styled-components";
 import IconFont from "../Iconfont";
+import api from "../api";
 
 export const defaultProps = (organization: Organization, edited: number | undefined) => ({
     route: {
@@ -140,7 +141,7 @@ export const renderCarouselCard = (
     <Row justify="space-between" align="middle">
         <Col span={24} style={{ height: "200px", textAlign: "center", marginTop: 12 }}>
             <p style={{ fontWeight: "300", fontSize: 17, color: "#1196db" }}>{props.title}</p>
-            <span className="anticon iconfontMedium3" style={{ color: "#1196db" }}>{props.icon}</span>
+            <IconFont type={props.icon} style={{ color: "#1196db", fontSize: 80, margin: 5 }} />
             <Statistic loading={loading} value={props.value} suffix="kW" precision={2} />
         </Col>
     </Row>
@@ -160,3 +161,147 @@ export const CarouselWrapper = styled(Carousel)`
     background: #1196db;
   }
 `;
+
+
+export const getBillsByOrganizationIdAggregated = async (
+    organizationId: string,
+    buildings: Array<Building>,
+) =>
+    await api.bills.getBillsByOrganizationIdAggregated(organizationId).then(res => {
+        let solar = 0
+        let geo = 0
+        let wind = 0
+        let hydro = 0
+        res.result.map((el: any) => {
+            const filter = buildings.find((build) => build._id === el.buildingId)
+            filter?.resources?.map((element: any) => {
+                el.bills.map((bill: any) => {
+                    bill.resources.map((resource: any) => {
+                        if (Object.keys(resource)[0].includes("Solar") && Object.keys(element)[0].includes("Solar")) {
+                            solar += Number(Object.values(resource))
+                        }
+                        if (Object.keys(resource)[0].includes("Wind") && Object.keys(element)[0].includes("Wind")) {
+                            wind += Number(Object.values(resource))
+                        }
+                        if (Object.keys(resource)[0].includes("Hydro") && Object.keys(element)[0].includes("Hydro")) {
+                            hydro += Number(Object.values(resource))
+                        }
+                        if (Object.keys(resource)[0].includes("Geo") && Object.keys(element)[0].includes("Geo")) {
+                            geo += Number(Object.values(resource))
+                        }
+                    })
+                })
+                return {
+                    geo: geo / 1000,
+                    hydro: hydro / 1000,
+                    wind: wind / 1000,
+                    solar: solar / 1000,
+                }
+            })
+        })
+    }).catch(() => ({
+        geo: 0,
+        hydro: 0,
+        wind: 0,
+        solar: 0,
+    }))
+
+
+export const getBillsAggregated = async (
+    id: string,
+    organization: Organization,
+    setkWh: (arg: number) => void,
+    setkWhCost: (arg: number) => void,
+    setGas: (arg: number) => void,
+    setGasCost: (arg: number) => void,
+    setWater: (arg: number) => void,
+    setWaterCost: (arg: number) => void,
+    setCost: (arg: number) => void,
+    setSold: (arg: number) => void,
+) => {
+    await api.bills.getBillsAggregated(id).then(res => {
+        const tmpCost: Record<string, number> = {};
+
+        if (organization?.type?.includes("Electric")) {
+            const electricDetails = organization.details.electric;
+            const electricityCostAtKwh = electricDetails.find((el: any) => el.name === "Electricity Cost at kWh");
+            const electricitySupplierCost = electricDetails.find((el: any) => el.name === "Electricity Supplier Cost");
+            const electricityDeliveryCost = electricDetails.find((el: any) => el.name === "Electricity Delivery Cost");
+            const electricityTaxPercentage = electricDetails.find((el: any) => el.name === "Electricity Tax Percentage");
+
+            let kWh = res.totalElectric * 0.0833333 / 1000 * electricityCostAtKwh?.price;
+            if (electricitySupplierCost) {
+                kWh += electricitySupplierCost.price;
+                tmpCost[electricitySupplierCost.name] = electricitySupplierCost.price;
+            }
+            if (electricityDeliveryCost) {
+                kWh += electricityDeliveryCost.price;
+                tmpCost[electricityDeliveryCost.name] = electricityDeliveryCost.price;
+            }
+            if (electricityTaxPercentage) {
+                kWh += (res.totalElectric * electricityTaxPercentage.price / 100);
+                tmpCost[electricityTaxPercentage.name] = electricityTaxPercentage.price;
+            }
+
+            setkWh(old => old + res.totalElectric);
+            setkWhCost(old => old + Number(kWh));
+        }
+
+        if (organization?.type?.includes("Gas")) {
+            const gasDetails = organization.details.gas;
+            const gasCostAtM3 = gasDetails.find((el: any) => el.name === "Gas Cost at m³");
+            const supplierGasCost = gasDetails.find((el: any) => el.name === "Supplier Gas Cost");
+            const gasDeliveryCost = gasDetails.find((el: any) => el.name === "Gas Delivery Cost");
+            const gasTaxPercentage = gasDetails.find((el: any) => el.name === "Gas Tax Percentage");
+
+            let gas = res.totalGas * 0.0454249414 / 1000 * gasCostAtM3?.price;
+            if (supplierGasCost) {
+                gas += supplierGasCost.price;
+                tmpCost[supplierGasCost.name] = supplierGasCost.price;
+            }
+            if (gasDeliveryCost) {
+                gas += gasDeliveryCost.price;
+                tmpCost[gasDeliveryCost.name] = gasDeliveryCost.price;
+            }
+            if (gasTaxPercentage) {
+                gas += (res.totalGas * gasTaxPercentage.price / 100);
+                tmpCost[gasTaxPercentage.name] = gasTaxPercentage.price;
+            }
+
+            setGas(old => old + res.totalGas);
+            setGasCost(old => old + Number(gas));
+        }
+
+        if (organization?.type?.includes("Water")) {
+            const waterDetails = organization.details.water;
+            const waterCostAtM3 = waterDetails.find((el: any) => el.name === "Water Cost at m³");
+            const waterSupplierCost = waterDetails.find((el: any) => el.name === "Water Supplier Cost");
+            const waterDeliveryCost = waterDetails.find((el: any) => el.name === "Water Delivery Cost");
+            const waterTaxPercentage = waterDetails.find((el: any) => el.name === "Water Tax Percentage");
+
+            let water = res.totalWater * 0.0001666667 * waterCostAtM3?.price;
+            if (waterSupplierCost) {
+                water += waterSupplierCost.price;
+                tmpCost[waterSupplierCost.name] = waterSupplierCost.price;
+            }
+            if (waterDeliveryCost) {
+                water += waterDeliveryCost.price;
+                tmpCost[waterDeliveryCost.name] = waterDeliveryCost.price;
+            }
+            if (waterTaxPercentage) {
+                water += (res.totalWater * waterTaxPercentage.price / 100);
+                tmpCost[waterTaxPercentage.name] = waterTaxPercentage.price;
+            }
+
+            setWater(old => old + res.totalWater);
+            setWaterCost(old => old + Number(water));
+        }
+
+        setCost(tmpCost);
+    });
+    await api.renewable.fetchResourcesByOrganizationId(organization._id).then(res => {
+        let sum = 0
+        res.map((el: any) => sum += el.buildings.length)
+        setSold(sum)
+    })
+}
