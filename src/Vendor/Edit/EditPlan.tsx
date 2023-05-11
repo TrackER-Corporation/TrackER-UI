@@ -41,9 +41,9 @@ const EditPlan = () => {
                 subTitle="Check and Edit your plans (changes will be available after a month to notify customers)"
                 onBack={() => navigate("/Dashboard")}
             />
-            <EditCard data={gas} type="g" />
-            <EditCard data={electric} type="e" />
-            <EditCard data={water} type="w" />
+            <EditCard data={gas} type="gas" />
+            <EditCard data={electric} type="electric" />
+            <EditCard data={water} type="water" />
         </Layout>
     )
 }
