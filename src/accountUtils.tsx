@@ -70,7 +70,6 @@ export const deleteAccount = async (user: UserProps, dispatch: AppDispatch, setS
     setTimeout(() => {
         message.success('Account deleted');
         dispatch((logout()))
-        // socket?.emit("disconnect")
         setShow(false)
     }, 5000);
 }
