@@ -187,3 +187,44 @@ export const columns = (
                 </a>
         },
     ];
+
+export const options = (labels: Array<any>, metricCubic: boolean, unit:Array<string>): ApexOptions => ({
+        chart: {
+            height: 390,
+            type: 'polarArea',
+        },
+        labels: labels,
+        colors: ["#1984f5", "#00c2f6", "#00cbc8",],
+        tooltip: {
+            enabled: true,
+            y: {
+                formatter: function (value: any) {
+                    return metricCubic ? (value * 0.0454249414 / 1000).toFixed(2) + " " + unit[0] : value + " " + unit[1]
+                },
+            },
+
+        },
+        legend: {
+            show: true,
+            fontSize: '16px',
+            position: 'right',
+            labels: {
+                useSeriesColors: true,
+            },
+            formatter: function (seriesName: string, opts: any) {
+                return seriesName + " " +
+                    metricCubic ? (opts.w.globals.series[opts.seriesIndex] * 0.0454249414 / 1000).toFixed(2) + " " + unit[0] : opts.w.globals.series[opts.seriesIndex] + " " + unit[1]
+            },
+            itemMargin: {
+                vertical: 3
+            }
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                legend: {
+                    show: false
+                }
+            }
+        }]
+    })

@@ -7,9 +7,8 @@ import CustomersBuildingTable from "../CustomersBuildingTable"
 import { Pages } from "../../types"
 import { useAppSelector } from "../../hooks"
 import Wrapper from "./Wrapper"
-import { columns, optionsBar, optionsLine } from "./utils"
+import { columns, options, optionsBar, optionsLine } from "./utils"
 import { ApexOptions } from "apexcharts"
-
 
 const Gas = ({ bills, cost }: Pages) => {
     const navigate = useNavigate()
@@ -26,47 +25,6 @@ const Gas = ({ bills, cost }: Pages) => {
     const [supplier, setSupplier] = useState(0)
     const [delivery, setDelivery] = useState(0)
     const [series, setSeries] = useState<any>([])
-
-    const options: ApexOptions = {
-        chart: {
-            height: 390,
-            type: 'polarArea',
-        },
-        labels: labels,
-        colors: ["#1984f5", "#00c2f6", "#00cbc8",],
-        tooltip: {
-            enabled: true,
-            y: {
-                formatter: function (value: any) {
-                    return metricCubic ? (value * 0.0454249414 / 1000).toFixed(2) + " m³" : value + " Gallon"
-                },
-            },
-
-        },
-        legend: {
-            show: true,
-            fontSize: '16px',
-            position: 'right',
-            labels: {
-                useSeriesColors: true,
-            },
-            formatter: function (seriesName: string, opts: any) {
-                return seriesName + " " +
-                    metricCubic ? (opts.w.globals.series[opts.seriesIndex] * 0.0454249414 / 1000).toFixed(2) + " m³" : opts.w.globals.series[opts.seriesIndex] + " Gallon"
-            },
-            itemMargin: {
-                vertical: 3
-            }
-        },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                legend: {
-                    show: false
-                }
-            }
-        }]
-    }
 
     useEffect(() => {
         setLabels([])
@@ -172,7 +130,7 @@ const Gas = ({ bills, cost }: Pages) => {
                         </Col>
                         <Col md={12} sm={24} xs={24} >
                             <p style={{ fontSize: 18, fontWeight: 500 }}>Buildings Gas Usage</p>
-                            <ReactApexChart options={options} series={allGas} type="polarArea" />
+                            <ReactApexChart options={options(labels, metricCubic, ["m³", "Gallon"])} series={allGas} type="polarArea" />
                         </Col>
                         <Col span={24} style={{ marginTop: 32 }}>
                             <CustomersBuildingTable
