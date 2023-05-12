@@ -98,11 +98,19 @@ const Customers = ({ organization }: VendorCustomers) => {
         >
             {load && <LoadingSpinner message="Fetching Customers..." />}
             <Row gutter={[16, 16]} style={{ marginTop: "32px" }}>
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>Pages</Breadcrumb.Item>
-                    <Breadcrumb.Item>Customers</Breadcrumb.Item>
-                </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: 'Home',
+                    },
+                    {
+                        title: <a>Pages</a>
+                    },
+                    {
+                        title: <a>Customers</a>
+                    },
+                ]}
+            />
             </Row>
             <PageHeader
                 style={{ paddingLeft: 0 }}

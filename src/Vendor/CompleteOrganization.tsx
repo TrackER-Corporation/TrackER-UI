@@ -120,11 +120,19 @@ const CompleteOrganization = () => {
 
     return (
         <div>
-            <Breadcrumb>
-                <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item>Organization</Breadcrumb.Item>
-                <Breadcrumb.Item>Create</Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: 'Home',
+                    },
+                    {
+                        title: <a>Buildings</a>
+                    },
+                    {
+                        title: <a>Create</a>
+                    },
+                ]}
+            />
             {error && <Alert style={{ marginTop: "22px" }}
                 message="Error! Cannot continue..."
                 showIcon

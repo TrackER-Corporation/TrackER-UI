@@ -44,10 +44,16 @@ const Resources = () => {
             }}
         >
             <Row gutter={[16, 16]} style={{ marginTop: "32px" }}>
-                <Breadcrumb>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>{window.location.pathname.split("/")[1]}</Breadcrumb.Item>
-                </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: 'Home',
+                    },
+                    {
+                        title: <a>{window.location.pathname.split("/")[1]}</a>
+                    }
+                ]}
+            />
             </Row>
             <PageHeader
                 style={{ paddingLeft: 0 }}
