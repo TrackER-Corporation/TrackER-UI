@@ -85,7 +85,7 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
             setShow(true);
             const data = { name, contact, address, type };
             await api.buildings.updateBuilding(buildingId, data);
-            const updatedBuildings = await api.buildings.fetchBuildings(user._id);
+            const updatedBuildings = await api.buildings.fetchBuildingsByUserId(user._id);
             setBuildingsFilter(updatedBuildings);
             dispatch(fetchBuildings(updatedBuildings));
             setShow(false);

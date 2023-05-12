@@ -142,7 +142,7 @@ const AddNewBuildings = (user: UserProps) => {
                                     size="large"
                                     allowClear
                                     placeholder="Building Address"
-                                    onSearch={() => handleCoords(address, setOptions)}
+                                    onSearch={(value) => handleCoords(value, setOptions)}
                                     options={options}
                                     onSelect={(value) => onSelect(value, options, setAddress, setLat, setLon)}
                                 />

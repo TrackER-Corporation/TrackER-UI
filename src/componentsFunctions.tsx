@@ -23,17 +23,17 @@ export const handleLoginSubmit = (email: string, password: string, setError: (ar
     const data = { email, password }
     api.user
         .login(data)
-        .then((data) => {
-            localStorage.setItem("token", data.token)
-            api.preference.fetchPreference(data._id).then(async (res) => {
+        .then((user) => {
+            localStorage.setItem("token", user.token)
+            api.preference.fetchPreference(user._id).then(async (res) => {
                 dispatch(userPreference(res))
-                if (res.activityLog) await api.activity.updateActivity(data._id)
+                if (res.activityLog) await api.activity.updateActivity(user._id)
             })
-            if (data.type !== "Vendor")
-                api.buildings.fetchBuildings(data._id).then((res) => {
+            if (user.type !== "Vendor")
+                api.buildings.fetchBuildingsByUserId(user._id).then((res) => {
                     dispatch(fetchBuildings(res))
                 })
-            dispatch(login(data))
+            dispatch(login(user))
             navigate("/Dashboard")
 
         })
