@@ -108,10 +108,10 @@ describe('addBuilding', () => {
             userId: user._id
         };
         api.buildings.addBuilding = vi.fn().mockRejectedValue({});
-        api.buildings.fetchBuildings = vi.fn().mockResolvedValue([]);
+        api.buildings.fetchBuildingsByUserId = vi.fn().mockResolvedValue([]);
         await addBuilding('Building A', 'John Doe', 'New York', '1000', 'Office', 40.7128, -74.006, [1, 2], user, setShow, dispatch);
         expect(api.buildings.addBuilding).toHaveBeenCalledWith(data);
-        expect(api.buildings.fetchBuildings).not.toHaveBeenCalled();
+        expect(api.buildings.fetchBuildingsByUserId).not.toHaveBeenCalled();
         expect(setShow).toHaveBeenCalledWith(true);
     });
 });
