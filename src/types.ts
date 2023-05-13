@@ -241,12 +241,6 @@ export interface CustomersBuildingTable {
     headerTitle?: React.ReactNode
 }
 
-export interface ModalDetails {
-    visible: boolean,
-    setVisible: (arg: boolean) => void,
-    building: Building,
-    bills: Array<any>;
-}
 
 export interface CustomerDrawer {
     visible: boolean,

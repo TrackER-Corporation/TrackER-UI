@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts"
 import MapboxMap from "../Consumer/Building/MapboxMap";
 import { ApexOptions } from "apexcharts";
-import { ModalDetails } from "../types";
+import { Bills, Building } from "../types";
 
 
 const options: ApexOptions = {
@@ -40,21 +40,21 @@ const options: ApexOptions = {
     dataLabels: {
         enabled: false
     },
-    xaxis: {
-        type: 'datetime',
-        tooltip: {
-            enabled: false
-        },
-        labels: {
-            show: true,
-            datetimeUTC: false,
-            datetimeFormatter: {
-                year: 'yyyy',
-                month: "MMM 'yy",
-                day: 'dd MMM',
-            },
-        },
-    },
+    // xaxis: {
+    //     type: 'datetime',
+    //     tooltip: {
+    //         enabled: false
+    //     },
+    //     labels: {
+    //         show: true,
+    //         datetimeUTC: false,
+    //         datetimeFormatter: {
+    //             year: 'yyyy',
+    //             month: "MMM 'yy",
+    //             day: 'dd MMM',
+    //         },
+    //     },
+    // },
     tooltip: {
         enabled: true,
         followCursor: true,
@@ -116,6 +116,14 @@ const radialOption: ApexOptions = {
     }
 };
 
+interface ModalDetails {
+    visible: boolean,
+    setVisible: (arg: boolean) => void,
+    building: Building,
+    bills: Array<Bills>;
+}
+
+
 const ModalDetails = ({ visible = false, setVisible, building, bills }: ModalDetails) => {
     const [pieBills, setPieBills] = useState<any>([{}])
     const [data, setData] = useState<any>([])
@@ -125,18 +133,17 @@ const ModalDetails = ({ visible = false, setVisible, building, bills }: ModalDet
         const gas: any = []
         const electric: any = []
         let oldMoment = moment('01/23/17', 'MM/D/YYYY')
-
         if ((bills && Object.keys(bills).length === 0 && Object.getPrototypeOf(bills) === Object.prototype) || bills === undefined) return
         else
-            bills.map((res: any) => {
-                if (res.buildingId !== buildingId) return
+            bills.map((bill) => {
+                if (bill.buildingId !== buildingId) return
                 let sumWater = 0
                 let sumElectric = 0
                 let sumGas = 0
                 let totalElectric = 0
                 let totalGas = 0
                 let totalWater = 0
-                res.bills.map((el: any) => {
+                bill.bills?.map((el) => {
                     totalElectric += el.electric
                     totalGas += el.gas
                     totalWater += el.water
@@ -165,6 +172,7 @@ const ModalDetails = ({ visible = false, setVisible, building, bills }: ModalDet
             return
         fetchDataSecondModal(building._id)
     }, [building, bills])
+
     return (
         <Modal destroyOnClose open={visible} onCancel={() => setVisible(false)} onOk={() => setVisible(false)} width={900} title={building?.name + " Consume Overview"}>
             <div>
