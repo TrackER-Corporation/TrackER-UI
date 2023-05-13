@@ -38,15 +38,12 @@ const Dashboard = () => {
     const getKpi = async (id: any) => {
 
         try {
-
             getBillsAggregated(id, organization, setkWh, setkWhCost, setGas, setGasCost, setWater, setWaterCost, setCost, setSold)
-
             await api.renewable.fetchResourcesByOrganizationId(organization._id).then(res => {
                 let sum = 0
                 res.map((el: any) => sum += el.buildings.length)
                 setSold(sum)
             })
-
             getBillsByOrganizationIdAggregated(organization._id, buildings).then((data: any) => {
                 setTotalGeo(data.geo)
                 setTotalHydro(data.hydro)

@@ -292,7 +292,7 @@ export const getBillsAggregated = async (
                 water += (res.totalWater * waterTaxPercentage.price / 100);
                 tmpCost[waterTaxPercentage.name] = waterTaxPercentage.price;
             }
-
+            console.log(res)
             setWater(old => old + res.totalWater);
             setWaterCost(old => old + Number(water));
         }
