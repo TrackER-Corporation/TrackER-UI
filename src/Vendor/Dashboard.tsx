@@ -58,7 +58,7 @@ const Dashboard = () => {
             setTotalGeo(data.geo)
             setTotalHydro(data.hydro)
             setTotalWind(data.wind)
-            setTotalSolar(data.geo.solar)
+            setTotalSolar(data.solar)
             setTotalRenew(data.geo + data.hydro + data.solar + data.wind)
         })
     }, [])
