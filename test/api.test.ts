@@ -254,7 +254,7 @@ describe('buildings', () => {
             const result = await api.buildings.fetchBuildingsByUserId(testUserId);
 
             expect(axios.get).toHaveBeenCalledTimes(1);
-            expect(axios.get).toHaveBeenCalledWith(`${API_URL}/buildings/find/${testUserId}`);
+            expect(axios.get).toHaveBeenCalledWith(`${API_URL}/buildings/user/${testUserId}`);
             expect(result).toEqual(expectedData);
         });
     });
@@ -264,7 +264,7 @@ describe('buildings', () => {
             const expectedData = { name: 'Building 1' };
             axios.get.mockResolvedValueOnce({ data: expectedData });
 
-            const result = await api.buildings.fetchBuildings(testBuildingId);
+            const result = await api.buildings.getBuilding(testBuildingId);
 
             expect(axios.get).toHaveBeenCalledTimes(1);
             expect(axios.get).toHaveBeenCalledWith(`${API_URL}/buildings/${testBuildingId}`);
