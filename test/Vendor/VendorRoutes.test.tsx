@@ -24,7 +24,7 @@ describe('VendorRoutes', () => {
             createAt: "2023-05-10T16:24:51.677Z"
         }))
 
-        const { baseElement, getByText } = render(
+        const { baseElement } = render(
             <BrowserRouter>
                 <ConfigProvider>
                     <Provider store={store}>

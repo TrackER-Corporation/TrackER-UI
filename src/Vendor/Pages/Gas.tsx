@@ -8,7 +8,6 @@ import { Pages } from "../../types"
 import { useAppSelector } from "../../hooks"
 import Wrapper from "./Wrapper"
 import { columns, options, optionsBar, optionsLine } from "./utils"
-import { ApexOptions } from "apexcharts"
 
 const Gas = ({ bills, cost }: Pages) => {
     const navigate = useNavigate()

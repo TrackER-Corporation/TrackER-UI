@@ -78,7 +78,7 @@ const Electric = ({ bills, cost }: Pages) => {
             bill.bills.forEach((singleBill: any) => {
                 sum += singleBill.electric
             })
-            setLabels((old: any) => [...old, allBuildings.find((el: any) => el._id === bill.buildingId).name])
+            setLabels((old: any) => [...old, allBuildings.find((el: any) => el._id === bill.buildingId)?.name])
             setAllElectric((old: any) => [...old, (sum).toFixed(4)])
         })
 
