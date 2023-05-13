@@ -172,32 +172,33 @@ export const getBillsByOrganizationIdAggregated = async (
         let geo = 0
         let wind = 0
         let hydro = 0
-        res.result.map((el: any) => {
-            const filter = buildings.find((build) => build._id === el.buildingId)
-            filter?.resources?.map((element: any) => {
-                el.bills.map((bill: any) => {
-                    bill.resources.map((resource: any) => {
-                        if (Object.keys(resource)[0].includes("Solar") && Object.keys(element)[0].includes("Solar")) {
-                            solar += Number(Object.values(resource))
-                        }
-                        if (Object.keys(resource)[0].includes("Wind") && Object.keys(element)[0].includes("Wind")) {
-                            wind += Number(Object.values(resource))
-                        }
-                        if (Object.keys(resource)[0].includes("Hydro") && Object.keys(element)[0].includes("Hydro")) {
-                            hydro += Number(Object.values(resource))
-                        }
-                        if (Object.keys(resource)[0].includes("Geo") && Object.keys(element)[0].includes("Geo")) {
-                            geo += Number(Object.values(resource))
-                        }
+        res.result.map((bill: any) => {
+            const filter = buildings.find((build) => build._id === bill.buildingId)
+            if (filter)
+                filter?.resources?.map((buildingResource: any) => {
+                    bill.bills.map((bill: any) => {
+                        bill.resources.map((resource: any) => {
+                            if (Object.keys(resource)[0].includes("Solar") && Object.keys(buildingResource)[0].includes("Solar")) {
+                                solar += Number(Object.values(resource))
+                            }
+                            if (Object.keys(resource)[0].includes("Wind") && Object.keys(buildingResource)[0].includes("Wind")) {
+                                wind += Number(Object.values(resource))
+                            }
+                            if (Object.keys(resource)[0].includes("Hydro") && Object.keys(buildingResource)[0].includes("Hydro")) {
+                                hydro += Number(Object.values(resource))
+                            }
+                            if (Object.keys(resource)[0].includes("Geo") && Object.keys(buildingResource)[0].includes("Geo")) {
+                                geo += Number(Object.values(resource))
+                            }
+                        })
                     })
                 })
-                return {
-                    geo: geo / 1000,
-                    hydro: hydro / 1000,
-                    wind: wind / 1000,
-                    solar: solar / 1000,
-                }
-            })
+        })
+        return ({
+            geo: geo / 1000,
+            hydro: hydro / 1000,
+            wind: wind / 1000,
+            solar: solar / 1000,
         })
     }).catch(() => ({
         geo: 0,
@@ -292,7 +293,6 @@ export const getBillsAggregated = async (
                 water += (res.totalWater * waterTaxPercentage.price / 100);
                 tmpCost[waterTaxPercentage.name] = waterTaxPercentage.price;
             }
-            console.log(res)
             setWater(old => old + res.totalWater);
             setWaterCost(old => old + Number(water));
         }
