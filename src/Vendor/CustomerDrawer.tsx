@@ -180,7 +180,7 @@ const CustomerDrawer = ({ visible, buildingId = "", setVisible, showWater = true
             setData(out)
             setBills(res)
         }).catch(e => { return })
-        await api.buildings.fetchBuildingsByUserId(buildingId).then(res => {
+        await api.buildings.getBuilding(buildingId).then(res => {
             setBuilding(res)
             setTimeout(() => {
                 setLoad(false)
@@ -204,7 +204,6 @@ const CustomerDrawer = ({ visible, buildingId = "", setVisible, showWater = true
                 :
                 <Row>
                     <Col span={24}>
-                        {/* <StreetMap lat={building.lat} lng={building.long} /> */}
                         <div style={{ height: "400px" }}>
                             <MapboxMap lat={building.lat} lng={building.long} />
                         </div>

@@ -65,7 +65,7 @@ const Customers = ({ organization }: VendorCustomers) => {
                     await api.user.get(el.user).then(async user => {
                         await api.preference.fetchPreference(el.user)
                             .then((async preference => {
-                                await api.buildings.fetchBuildingsByUserId(el.building)
+                                await api.buildings.getBuilding(el.building)
                                     .then((building => {
                                         setData((old: any) =>
                                             [...old,
