@@ -68,7 +68,7 @@ const Electric = ({ bills, cost }: Pages) => {
                 }
             ]
         })
-        let tmp: any = []
+        const tmp: any = []
         Object.values(bills.aggregated).map((el: any) => {
             tmp.push([el.date, el.electric])
         })
@@ -87,7 +87,7 @@ const Electric = ({ bills, cost }: Pages) => {
     const getData = (data: any) => {
         if (data === undefined)
             return []
-        let res = data.map((build: any) => allBuildings.find((el: any) => el._id === build.buildingId))
+        const res = data.map((build: any) => allBuildings.find((el: any) => el._id === build.buildingId))
         return res
     }
     return (

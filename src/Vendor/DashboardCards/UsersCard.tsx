@@ -8,7 +8,7 @@ import TweenOne from "rc-tween-one"
 import { useAppSelector } from "../../hooks"
 import { UserProps } from "../../types"
 
-export interface UsersCard {
+interface UsersCard {
     openModal: (arg: any) => void
 }
 
