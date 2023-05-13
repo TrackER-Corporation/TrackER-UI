@@ -55,11 +55,11 @@ const VendorRoutes = () => {
     }
     useEffect(() => {
         fetchAllUser()
+        getBuildings()
         if (organization === null || organization === undefined) {
             getOrganization()
-            fetchPreference()
             getBills()
-            getBuildings()
+            fetchPreference()
         }
     }, [user, organization])
 
