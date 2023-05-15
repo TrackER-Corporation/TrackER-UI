@@ -44,7 +44,7 @@ describe('FirstStep', () => {
 
         const allSet = vi.fn()
 
-        const { baseElement, getAllByText, getAllByRole, getAllByTestId } = render(
+        const { baseElement, getAllByText, getAllByRole, getAllByTestId, getAllByPlaceholderText } = render(
             <BrowserRouter>
                 <ConfigProvider>
                     <Provider store={store}>
@@ -68,6 +68,11 @@ describe('FirstStep', () => {
         expect(getAllByText("Selected")[0]).toBeInTheDocument()
         getAllByTestId("card").forEach(el => fireEvent.click(el))
         getAllByRole("button").forEach(el => fireEvent.click(el))
+        getAllByPlaceholderText("€ 0").forEach(el => fireEvent.change(el, {
+            target: { value: '1' }
+        }))
+        getAllByPlaceholderText("%").forEach(el => fireEvent.change(el, {
+            target: { value: '1' }
+        }))
     });
-
 });
