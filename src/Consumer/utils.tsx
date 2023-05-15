@@ -16,6 +16,7 @@ import Account from "../Account/Account";
 import Invoices from "./Invoices/Invoices";
 import { MenuProps } from "antd/lib/menu";
 import moment from "moment";
+import { ApexOptions } from "apexcharts";
 
 export const statebar = (type: string, color: any) => ({
     options: {
@@ -127,82 +128,80 @@ export const stateradial = (color: string) => ({
     },
 });
 
-export const stacked = {
-    options: {
-        noData: {
-            text: "No data to show...",
-            align: 'center',
-            verticalAlign: 'middle',
-            offsetX: 0,
-            offsetY: 0,
-            style: {
-                color: "blue",
-                fontSize: '12px',
-            }
+export const stackedOptions: ApexOptions = {
+    noData: {
+        text: "No data to show...",
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+            color: "blue",
+            fontSize: '12px',
+        }
+    },
+    colors: ['#ffcf45', '#022cf7', '#00cbff', '#26f8c9'],
+    grid: {
+        show: false
+    },
+    chart: {
+        type: 'bar',
+        height: 360,
+        stacked: true,
+        stackType: '100%',
+        toolbar: { show: false }
+    },
+    plotOptions: {
+        bar: {
+            horizontal: true,
         },
-        colors: ['#ffcf45', '#022cf7', '#00cbff', '#26f8c9'],
-        grid: {
+    },
+    stroke: {
+        width: 1,
+        colors: ['#fff']
+    },
+    xaxis: {
+        labels: {
             show: false
         },
-        chart: {
-            type: 'bar',
-            height: 360,
-            stacked: true,
-            stackType: '100%',
-            toolbar: { show: false }
+        axisBorder: {
+            show: false
         },
-        plotOptions: {
-            bar: {
-                horizontal: true,
-            },
+        axisTicks: {
+            show: false
         },
-        stroke: {
-            width: 1,
-            colors: ['#fff']
+    },
+    yaxis: {
+        axisBorder: {
+            show: false
         },
-        xaxis: {
-            labels: {
-                show: false
-            },
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            },
+        axisTicks: {
+            show: false,
         },
-        yaxis: {
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false,
-            },
-            labels: {
-                show: false,
-                formatter: function () {
-                    return "";
-                }
+        labels: {
+            show: false,
+            formatter: function () {
+                return "";
             }
-        },
-        tooltip: {
-            y: {
-                formatter: function (val: number) {
-                    return (val / 1000).toFixed(2) + "kW"
-                }
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        legend: {
-            position: 'left',
-            horizontalAlign: 'left',
-            offsetY: 25,
-            offsetX: -20
         }
+    },
+    tooltip: {
+        y: {
+            formatter: function (val: number) {
+                return (val / 1000).toFixed(2) + "kW"
+            }
+        }
+    },
+    fill: {
+        opacity: 1
+    },
+    legend: {
+        position: 'left',
+        horizontalAlign: 'left',
+        offsetY: 25,
+        offsetX: -20
     }
-};
+}
 
 
 export const linear = (text: string, unit: string, color: string) => ({
@@ -617,7 +616,7 @@ export const fetchResources = async (
 ) => {
     if (id === oldId) return
     setOldId(id)
-    await api.renewable.fetchResourcesByBuildingId(id).then(res => setResourceApi(res))
+    await api.renewable.fetchResourcesByBuildingId(id).then(res => setResourceApi([res]))
     await api.bills.getBillsRenewable(id).then(res => setBills(res))
 }
 
@@ -665,26 +664,41 @@ export const getIcon = (resources: any) => {
         return <span className={"anticon iconfontMedium2"} style={{ color: "#1196db" }}>&#xe650;</span>
 }
 
+export const sortDate = (array: any) => {
+    array.sort(function (a: any, b: any) {
+        const keyA = new Date(a.x)
+        const keyB = new Date(b.x)
+        if (keyA < keyB) return -1;
+        if (keyA > keyB) return 1;
+        return 0;
+    });
+}
+
 export const getData = (data: any) => {
     if (data === undefined || Object.keys(data).length === 0) return []
     let series = []
     let electric: any = []
     let gas: any = []
     let water: any = []
-    // Object.values(data.aggregated).forEach((el: any) => {
-    //   electric.push({
-    //     x: moment.utc(el.date).local().format(),
-    //     y: el.electric === undefined ? null : el.electric
-    //   })
-    //   gas.push({
-    //     x: moment.utc(el.date).local().format(),
-    //     y: el.gas === undefined ? null : el.gas
-    //   })
-    //   water.push({
-    //     x: moment.utc(el.date).local().format(),
-    //     y: el.water === undefined ? null : el.water
-    //   })
-    // })
+    Object.values(data.aggregated).forEach((el: any) => {
+        electric.push({
+            x: el.date,
+            y: el.electric === undefined ? null : el.electric
+        })
+        gas.push({
+            x: el.date,
+            y: el.gas === undefined ? null : el.gas
+        })
+        water.push({
+            x: el.date,
+            y: el.water === undefined ? null : el.water
+        })
+    })
+
+    sortDate(electric)
+    sortDate(water)
+    sortDate(gas)
+
     electric = {
         type: 'area',
         name: "Electric",
@@ -747,10 +761,10 @@ export const getBillsRenewable = async (
 
         setEnergy({
             ...energy,
-            solar: { name: "Solar", data: sumSolar },
-            wind: { name: "Wind", data: sumWind },
-            hydro: { name: "Hydro", data: sumHydro },
-            geo: { name: "Geo", data: sumGeo },
+            solar: { name: "Solar", data: [sumSolar] },
+            wind: { name: "Wind", data: [sumWind] },
+            hydro: { name: "Hydro", data: [sumHydro] },
+            geo: { name: "Geo", data: [sumGeo] },
         });
 
         setTotalRen(sumSolar + sumGeo + sumHydro + sumWind);

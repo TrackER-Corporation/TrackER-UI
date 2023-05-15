@@ -134,7 +134,10 @@ const Electric = ({ bills, cost }: Pages) => {
                             <ReactApexChart options={options(labels, metricCubic, ["kWh", "w"]) as ApexOptions} series={allElectric} type="polarArea" />
                         </Col>
                         <Col span={24} style={{ marginTop: 32 }}>
-                            <CustomersBuildingTable headerTitle="Organization Building Electric Overview" columns={columns(setVisible, setBuildingId)} data={getData(bills.result)} />
+                            <CustomersBuildingTable
+                                headerTitle="Organization Building Electric Overview"
+                                columns={columns(setVisible, setBuildingId)}
+                                data={getData(bills.result)} />
                         </Col>
                     </Row>
                 </Card>

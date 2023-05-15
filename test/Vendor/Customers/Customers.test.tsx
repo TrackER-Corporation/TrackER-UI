@@ -17,7 +17,7 @@ describe('Customers', () => {
         userId: "string",
         type: [],
         icon: "string",
-        customers: [{building:"6300a343707609fd28d22e6e", user:"630093ea707609fd28d22dd7"}],
+        customers: [{ building: "6300a343707609fd28d22e6e", user: "630093ea707609fd28d22dd7" }],
         details: {},
         createAt: new Date()
     }
@@ -25,13 +25,13 @@ describe('Customers', () => {
     it('renders the correct text', () => {
         const { getByText } = render(
             <BrowserRouter>
-            <ConfigProvider>
-                <Provider store={store}>
-                <Customers organization={organization}/>
-                </Provider>
-            </ConfigProvider>
-        </BrowserRouter>
-            
+                <ConfigProvider>
+                    <Provider store={store}>
+                        <Customers organization={organization} />
+                    </Provider>
+                </ConfigProvider>
+            </BrowserRouter>
+
         );
         expect(getByText("Customers")).toBeInTheDocument()
     });
