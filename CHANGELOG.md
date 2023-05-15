@@ -1,5 +1,49 @@
 # Changelog
 
+## [1.3.0](https://github.com/TrackER-Corporation/TrackER-UI/compare/v1.2.0...v1.3.0) (2023-05-15)
+
+
+### Features
+
+* add sort date function ([7fe6c56](https://github.com/TrackER-Corporation/TrackER-UI/commit/7fe6c56c65f7f7bd2b2cba591218c46c2eecb5e0))
+* change duplicate type ([748bead](https://github.com/TrackER-Corporation/TrackER-UI/commit/748bead34c4a25b87aa10fd8ddf41f3625357ff0))
+* fix deprecated library ([b419b19](https://github.com/TrackER-Corporation/TrackER-UI/commit/b419b196de1e7f1d5de764f90a651855c1bee87e))
+* minor changes ([979d2cd](https://github.com/TrackER-Corporation/TrackER-UI/commit/979d2cdfb189516d4641f5e9198b50eef1cc5286))
+* move const in utils ([9a3080f](https://github.com/TrackER-Corporation/TrackER-UI/commit/9a3080f5dd675217e7d2cedad67383ef81c0983c))
+* pages Wrapper ([e063c87](https://github.com/TrackER-Corporation/TrackER-UI/commit/e063c872bb6df912a84c7e865ccdef9c6764a956))
+* update interface types ([217102c](https://github.com/TrackER-Corporation/TrackER-UI/commit/217102c76ca123fbfaea842b7c82e653e0da255e))
+* update vendor pages ([bd0120f](https://github.com/TrackER-Corporation/TrackER-UI/commit/bd0120ffe56b0cc253b536d0c5649669c21dc638))
+* vendor customers ([ac8a431](https://github.com/TrackER-Corporation/TrackER-UI/commit/ac8a4318c5f4e28f3a86cb03617f6f7f4c80fded))
+* vendor dashboard cards ([2e66021](https://github.com/TrackER-Corporation/TrackER-UI/commit/2e66021fc37a36e3dec6e3957e24df54891d12e9))
+* vendor edits ([55f18e6](https://github.com/TrackER-Corporation/TrackER-UI/commit/55f18e635d7251f9aebb84e6b46c6c8180f69123))
+* vendor organization ([2d6af39](https://github.com/TrackER-Corporation/TrackER-UI/commit/2d6af39de7778e5178e20a2c3cc3c137b3025f1a))
+* vendor organization creation steps ([f661537](https://github.com/TrackER-Corporation/TrackER-UI/commit/f66153749b2fd9b80c4274a72dbe13db8c8e6f87))
+* vendor pages ([97a87f3](https://github.com/TrackER-Corporation/TrackER-UI/commit/97a87f3de8856f7c2e1efee6d6c3de9f7bbbccdf))
+* vendors utilities ([747a75a](https://github.com/TrackER-Corporation/TrackER-UI/commit/747a75a9bc083c2d79ce19a3c3b2bbc6331f3548))
+
+
+### Bug Fixes
+
+* add new undefined check ([18e2212](https://github.com/TrackER-Corporation/TrackER-UI/commit/18e22122c089c2fac92931954e3369a8e0cb770e))
+* api endpoint, data chart ([f0d3697](https://github.com/TrackER-Corporation/TrackER-UI/commit/f0d36971fbb4e676cec426a66fba3572c9e55c0f))
+* api return statement ([85d7172](https://github.com/TrackER-Corporation/TrackER-UI/commit/85d7172624bb061441ac449957066331b792a446))
+* bills type ([cafe703](https://github.com/TrackER-Corporation/TrackER-UI/commit/cafe703e9db550754c52189ff03468500208bbaf))
+* chart render on Electric Page ([24537e7](https://github.com/TrackER-Corporation/TrackER-UI/commit/24537e70f334de5a4d7eb782bf4d596c75ecb3f1))
+* customer page drawer render ([f11bacc](https://github.com/TrackER-Corporation/TrackER-UI/commit/f11baccf3569e4992b5cf629730d08fd2d0df7ac))
+* disable dispatch for vendor ([e455ac1](https://github.com/TrackER-Corporation/TrackER-UI/commit/e455ac1db3e6d2088f0ccb7ad0c47fcb26748d61))
+* duplicated user list ([ea38046](https://github.com/TrackER-Corporation/TrackER-UI/commit/ea380465390ea0a8666ba0dac5e7df1eb3ebebe4))
+* null date ([a016b3d](https://github.com/TrackER-Corporation/TrackER-UI/commit/a016b3d5f9bd16a803abb0d6da6b5093f097af2b))
+* null values check ([0d5897f](https://github.com/TrackER-Corporation/TrackER-UI/commit/0d5897ff39156a96adce7b7a0e29750e17c7deda))
+* object typo ([a801072](https://github.com/TrackER-Corporation/TrackER-UI/commit/a801072386d4f61a86eb19cc680ef3b2990ae95d))
+* prevent multiple api call ([c742d50](https://github.com/TrackER-Corporation/TrackER-UI/commit/c742d500f336ca42a12ad263a77f3667c9869242))
+* renewable create ([408020f](https://github.com/TrackER-Corporation/TrackER-UI/commit/408020f1cb69fdfa64f5f19bd45f80c3491d4224))
+* rerender loop ([dcd9380](https://github.com/TrackER-Corporation/TrackER-UI/commit/dcd9380a20f21919a2fa29fa56c0571b884e1dc9))
+* Sonarcloud bug & code smells ([c315cb5](https://github.com/TrackER-Corporation/TrackER-UI/commit/c315cb569778fb39301e0675e74832b08801089b))
+* storing redux data ([360bd7a](https://github.com/TrackER-Corporation/TrackER-UI/commit/360bd7a03e971e6e4bb2fd8da5c29d8003681774))
+* test UI ([0690bb3](https://github.com/TrackER-Corporation/TrackER-UI/commit/0690bb351d42a5b487fd4143dc84ae67ceea44a6))
+* update icons and api body data ([fb7f2fe](https://github.com/TrackER-Corporation/TrackER-UI/commit/fb7f2fea6004737891fb61c9aac29c2b878a4979))
+* wrong api endpoint call ([e354964](https://github.com/TrackER-Corporation/TrackER-UI/commit/e354964105bacb8d81881a2c11a1d866f011f0d1))
+
 ## [1.2.0](https://github.com/TrackER-Corporation/TrackER-UI/compare/v1.1.0...v1.2.0) (2023-05-08)
 
 
