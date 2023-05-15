@@ -1,7 +1,7 @@
 import ModalDetails from "../../src/Vendor/ModalDetails"
 import React from 'react';
 import { expect, describe, it, vi } from 'vitest'
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider } from "antd";
@@ -118,7 +118,7 @@ describe('ModalDetails', () => {
 
         const setVisible = vi.fn()
 
-        const { baseElement, getByText } = render(
+        const { baseElement, getByText, getAllByRole } = render(
             <BrowserRouter>
                 <ConfigProvider>
                     <Provider store={store}>
@@ -130,6 +130,7 @@ describe('ModalDetails', () => {
         );
         expect(baseElement).toBeValid()
         expect(getByText(/Building Name/)).toBeInTheDocument()
+        getAllByRole("button").forEach(el => fireEvent.click(el))
     });
 
 });

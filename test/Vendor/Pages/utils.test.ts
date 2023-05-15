@@ -1,8 +1,8 @@
-import { electricOptions, geoOptions, windOptions, waterOptions, } from "../../../src/Vendor/Pages/utils"
+import { electricOptions, geoOptions, windOptions, waterOptions, columns, options, } from "../../../src/Vendor/Pages/utils"
 import { expect, describe, it, vi } from 'vitest'
 import '@testing-library/jest-dom';
 
-describe('utilis', () => {
+describe('utils', () => {
 
     it('length of electric', () => {
         expect(electricOptions.length).toBe(2)
@@ -20,4 +20,14 @@ describe('utilis', () => {
         expect(waterOptions.length).toBe(3)
     });
 
+    it('get columns', () => {
+        const setVisible = vi.fn()
+        const setBuilding = vi.fn()
+        expect(columns(setVisible, setBuilding)).not.toBe(null)
+    });
+
+    it('get options', () => {
+        expect(options(["A", "B"], true, ["¥","$"])).not.toBe(null)
+        expect(options(["A", "B"], false, ["¥","$"])).not.toBe(null)
+    });
 });

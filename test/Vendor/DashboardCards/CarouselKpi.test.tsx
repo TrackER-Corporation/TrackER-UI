@@ -10,16 +10,48 @@ import { store } from "../../../src/store";
 
 describe('CarouselKpi', () => {
 
-    it('renders the correct text', () => {
+    it('renders loading KPI', () => {
         const { getAllByText } = render(
             <BrowserRouter>
-            <ConfigProvider>
-                <Provider store={store}>
-                <CarouselKpi loading= {true} gasSum={0} kWhSum={0} waterSum={0} gasCost={0} kWhCost={0} waterCost={0} sold={0} renewable={0} />
-                </Provider>
-            </ConfigProvider>
-        </BrowserRouter>
-            
+                <ConfigProvider>
+                    <Provider store={store}>
+                        <CarouselKpi
+                            loading={true}
+                            gasSum={0}
+                            kWhSum={0}
+                            waterSum={0}
+                            gasCost={0}
+                            kWhCost={0}
+                            waterCost={0}
+                            sold={0}
+                            renewable={0} />
+                    </Provider>
+                </ConfigProvider>
+            </BrowserRouter>
+
+        );
+        expect(getAllByText("Energy Resources Production")[0]).toBeInTheDocument()
+    });
+    
+    it('renders KPI', () => {
+        const { getAllByText } = render(
+            <BrowserRouter>
+                <ConfigProvider>
+                    <Provider store={store}>
+                        <CarouselKpi
+                            loading={false}
+                            gasSum={-1}
+                            kWhSum={-1}
+                            waterSum={-1}
+                            gasCost={-1}
+                            kWhCost={-1}
+                            waterCost={-1}
+                            sold={-1}
+                            renewable={-1} />
+                    </Provider>
+                </ConfigProvider>
+            </BrowserRouter>
+
         );
         expect(getAllByText("Energy Resources Production")[0]).toBeInTheDocument()
     });
