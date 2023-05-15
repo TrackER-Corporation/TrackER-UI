@@ -133,8 +133,7 @@ export interface BillsAggregated {
 }
 
 export interface Pages {
-    bills: BillsAggregated,
-    cost: Array<object>
+    cost: Array<any>
 }
 
 export interface Data {
