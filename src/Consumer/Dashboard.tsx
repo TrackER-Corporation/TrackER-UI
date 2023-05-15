@@ -43,6 +43,7 @@ const Dashboard = () => {
     if (user._id !== undefined && user._id !== "undefined") {
       getBillsAggregated(user._id, setBills, energy, setEnergy)
     }
+    console.log(energy)
 
     ids.forEach(id => getBillsRenewable(id, buildings, energy, setEnergy, setTotalRen))
   }, [user, buildings])

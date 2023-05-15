@@ -739,7 +739,7 @@ export const getBillsRenewable = async (
 
         if (building) {
             building.resources?.forEach((resource: any) => {
-                const [type, data] = Object.entries(resource)[0];
+                const [type, _] = Object.entries(resource)[0];
                 switch (type) {
                     case "Solar":
                         sumSolar += res.totalSolar;
@@ -758,6 +758,7 @@ export const getBillsRenewable = async (
                 }
             });
         }
+        console.log(energy)
 
         setEnergy({
             ...energy,
@@ -779,52 +780,49 @@ export const getBillsAggregated = async (
     setEnergy: (...props: any) => void,
 ) => {
     const day = moment().subtract(31, 'days')
-    if (userId !== undefined && userId !== "undefined") {
-        await api.bills.getBillsAggregated(userId).then(res => {
-            setBills(res);
+    await api.bills.getBillsAggregated(userId).then(res => {
+        setBills(res);
 
-            let oldMoment = moment("01/01/17", "MM/D/YYYY");
-            const billDates = Object.values(res.aggregated).filter((el: any) =>
-                moment(el.date).isBetween(day, undefined)
-            );
+        let oldMoment = moment("01/01/17", "MM/D/YYYY");
+        const billDates = Object.values(res.aggregated).filter((el: any) =>
+            moment(el.date).isBetween(day, undefined)
+        );
 
-            let water: number[] = [];
-            let gas: number[] = [];
-            let electric: number[] = [];
-            let sumGas = 0;
-            let sumWater = 0;
-            let sumElectric = 0;
+        let water: number[] = [];
+        let gas: number[] = [];
+        let electric: number[] = [];
+        let sumGas = 0;
+        let sumWater = 0;
+        let sumElectric = 0;
 
-            billDates.forEach((el: any) => {
-                if (moment(el.date).isSame(oldMoment, "day")) {
-                    sumWater += Number(el.water);
-                    sumElectric += Number(el.electric);
-                    sumGas += Number(el.gas);
-                } else {
-                    water.push(Number(sumWater.toFixed(3)));
-                    electric.push(Number(sumElectric.toFixed(3)));
-                    gas.push(Number(sumGas.toFixed(3)));
-                    sumWater = Number(el.water);
-                    sumElectric = Number(el.electric);
-                    sumGas = Number(el.gas);
-                    oldMoment = el.date;
-                }
-            });
+        billDates.forEach((el: any) => {
+            if (moment(el.date).isSame(oldMoment, "day")) {
+                sumWater += Number(el.water);
+                sumElectric += Number(el.electric);
+                sumGas += Number(el.gas);
+            } else {
+                water.push(Number(sumWater.toFixed(3)));
+                electric.push(Number(sumElectric.toFixed(3)));
+                gas.push(Number(sumGas.toFixed(3)));
+                sumWater = Number(el.water);
+                sumElectric = Number(el.electric);
+                sumGas = Number(el.gas);
+                oldMoment = el.date;
+            }
+        });
 
-            water.shift();
-            electric.shift();
-            gas.shift();
-            electric = electric.slice(-3);
-            gas = gas.slice(-3);
-            water = water.slice(-3);
+        water.shift();
+        electric.shift();
+        gas.shift();
+        electric = electric.slice(-3);
+        gas = gas.slice(-3);
+        water = water.slice(-3);
 
-            setEnergy({
-                ...energy,
-                water: { name: "Water", data: water },
-                gas: { name: "Gas", data: gas },
-                electric: { name: "Electric", data: electric },
-            });
-        }).catch(err => console.log(err))
-    }
-
+        setEnergy({
+            ...energy,
+            water: { name: "Water", data: water },
+            gas: { name: "Gas", data: gas },
+            electric: { name: "Electric", data: electric },
+        });
+    }).catch(err => console.log(err))
 };

@@ -11,8 +11,8 @@ interface EarningsCard {
 }
 
 
-const EarningsCard = ({ series, total = 0 }: EarningsCard) => {
-  return (<ProCard bordered style={{
+const EarningsCard = ({ series, total = 0 }: EarningsCard) =>
+  <ProCard bordered style={{
     borderRadius: "10px"
   }}>
     <Row align="middle" justify="space-between">
@@ -31,8 +31,7 @@ const EarningsCard = ({ series, total = 0 }: EarningsCard) => {
         }
       </Col>
     </Row>
-  </ProCard>)
-}
+  </ProCard>
 
 
 export default EarningsCard
