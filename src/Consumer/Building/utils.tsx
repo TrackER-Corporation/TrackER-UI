@@ -128,7 +128,6 @@ export const RenewableCardRender = (
                 <p style={{ fontWeight: "300", fontSize: 17, color: "#1196db" }}>{title}</p>
                 <IconFont
                     type={icon}
-                    className="iconfontMedium3"
                     color="#1196db"
                     style={{
                         color: "#1196db",
@@ -137,6 +136,7 @@ export const RenewableCardRender = (
                         verticalAlign: "middle",
                     }} />
                 <Statistic
+                    style={{ marginTop: 15 }}
                     value={!metric ? totalSum : totalSum / 1000}
                     suffix={metric ? "kW" : "W"}
                     precision={2} />

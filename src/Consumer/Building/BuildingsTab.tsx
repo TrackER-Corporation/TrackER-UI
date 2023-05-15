@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { PageHeader } from "@ant-design/pro-components";
 import api from "../../api";
 import "./style.css"
-import { getBills } from "../utils";
+import { getBills, sortDate } from "../utils";
 import { deleteBuilding } from "./utils";
 
 const { Search } = Input;
@@ -50,14 +50,17 @@ const BuildingTab = ({ updateRoute }: BuildingTabProps) => {
         const buildingBills = bills?.all?.find((el: any) => el.buildingId === id);
         if (!buildingBills) return [];
 
+        const orderData = buildingBills.bills
+            .filter((el: any) => el[type.toLowerCase()] !== undefined)
+            .map((el: any) => ({
+                x: moment.utc(el.date).local().format(),
+                y: el[type.toLowerCase()]
+            }))
+
+        sortDate(orderData)
         return [{
             name: type,
-            data: buildingBills.bills
-                .filter((el: any) => el[type.toLowerCase()] !== undefined)
-                .map((el: any) => ({
-                    x: moment.utc(el.date).local().format(),
-                    y: el[type.toLowerCase()]
-                }))
+            data: orderData
         }];
     };
 
