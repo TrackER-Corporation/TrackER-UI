@@ -28,7 +28,6 @@ const UsersCard = ({ openModal }: UsersCard) => {
         let water = 0
         let gas = 0
         let electric = 0
-        console.log(id)
         await api.bills.getBillsAggregated(id).then(res => {
             if (organization.type.includes("Electric")) {
                 organization.details.electric.forEach((el: any) => {
@@ -63,7 +62,7 @@ const UsersCard = ({ openModal }: UsersCard) => {
             total = gas + water + electric
             setInvoices(res.invoicesDays)
             setBills((bills: any) => [...bills, { value: Number(total).toFixed(2), id: id }])
-        })
+        }).catch((e) => console.log(e))
     }
 
     const getUserAvatar = async (id: string) => {
@@ -91,11 +90,13 @@ const UsersCard = ({ openModal }: UsersCard) => {
 
     return (
         <Row justify="space-between" style={{ marginTop: 32 }} align="middle">
-            {users.length === 0 ? <div></div> :
+            {users.length === 0 ?
+                <></> :
                 users.map((el, index: number) =>
                     <Col md={5} xs={24} sm={24}
                         style={{ textAlign: "center" }}
                         key={index}
+                        data-testid="modal"
                         onClick={() => openModal(el)}
                     >
                         {loading ? <Skeleton active /> :

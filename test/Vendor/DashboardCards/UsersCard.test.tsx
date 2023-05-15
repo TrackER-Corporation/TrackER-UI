@@ -24,9 +24,22 @@ describe('UsersCard', () => {
         createAt: "2023-05-10T16:24:51.677Z"
     }))
 
+    it('renders the correct text', () => {
+        const openModal = vi.fn()
+        const { baseElement } = render(
+            <BrowserRouter>
+                <ConfigProvider>
+                    <Provider store={store}>
+                        <UsersCard openModal={openModal} />
+                    </Provider>
+                </ConfigProvider>
+            </BrowserRouter>
+
+        );
+        expect(baseElement).toBeValid()
+    });
+
     store.dispatch(setAllUser([{
-        logged: true,
-        user: {
             _id: "string",
             name: "string",
             surname: "string",
@@ -34,10 +47,10 @@ describe('UsersCard', () => {
             password: "string",
             token: "string",
             type: "string"
-        }
-    }]))
+        }]
+    ))
 
-
+    console.log(store)
     it('renders the correct text', () => {
         const openModal = vi.fn()
         const { baseElement, getByTestId } = render(
@@ -52,6 +65,7 @@ describe('UsersCard', () => {
         );
         expect(baseElement).toBeValid()
         fireEvent.click(getByTestId("back"))
+        fireEvent.click(getByTestId("modal"))
     });
 
 });
