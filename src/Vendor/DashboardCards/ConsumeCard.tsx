@@ -22,24 +22,27 @@ const ConsumeCard = () => {
             let gas: any = []
             let water: any = []
             Object.values(res.aggregated).map((el: any) => {
-                electric.push({
-                    x: new Date(el.date).getTime(),
-                    y: el.electric === undefined ? null : el.electric
-                })
-                gas.push({
-                    x: new Date(el.date).getTime(),
-                    y: el.gas === undefined ? null : el.gas
-                })
-                water.push({
-                    x: new Date(el.date).getTime(),
-                    y: el.water === undefined ? null : el.water
-                })
+                if (el.date !== null){
+                    electric.push({
+                        x: new Date(el.date).getTime(),
+                        y: el.electric === undefined ? null : el.electric
+                    })
+                    gas.push({
+                        x: new Date(el.date).getTime(),
+                        y: el.gas === undefined ? null : el.gas
+                    })
+                    water.push({
+                        x: new Date(el.date).getTime(),
+                        y: el.water === undefined ? null : el.water
+                    })
+                }
             })
 
             sortDate(water)
             sortDate(gas)
             sortDate(electric)
             electric = {
+                type: 'line',
                 name: "Electric",
                 data: electric
             }
