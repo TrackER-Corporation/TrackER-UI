@@ -1,17 +1,10 @@
-import { Card, Carousel, Col, Divider, Row, Statistic } from "antd"
 import { useEffect, useState } from "react"
-import ReactApexChart from "react-apexcharts"
 import { useNavigate } from "react-router-dom"
-import CustomerDrawer from "../CustomerDrawer"
-import CustomersBuildingTable from "../CustomersBuildingTable"
-import { ApexOptions } from "apexcharts"
-import { BillsAggregated, Pages } from "../../types"
 import { useAppSelector } from "../../hooks"
+import { BillsAggregated, Pages } from "../../types"
 import Wrapper from "./Wrapper"
-import { columns, options, optionsBar, optionsLine } from "./utils"
 import api from "../../api"
 import { sortDate } from "../../Consumer/utils"
-import IconFont from "../../Iconfont"
 
 const Electric = ({ cost }: Pages) => {
     const navigate = useNavigate()
@@ -30,7 +23,6 @@ const Electric = ({ cost }: Pages) => {
     const [delivery, setDelivery] = useState(0)
     const [series, setSeries] = useState<any>([])
     const [resultBills, setResultBills] = useState<BillsAggregated | any>([])
-
 
     const getBills = async () => {
         await api.bills.getBillsByOrganizationIdAggregated(organization._id)
@@ -87,8 +79,6 @@ const Electric = ({ cost }: Pages) => {
                         setLabels((old: any) => [...old, name])
                         setAllElectric((old: any) => [...old, (sum).toFixed(2)])
                     }
-                    console.log(allElectric)
-                    console.log(labels)
                 })
             })
             .catch(e => console.log(e))
@@ -102,83 +92,15 @@ const Electric = ({ cost }: Pages) => {
     }, [])
 
 
-    const getData = (data: any) => {
-        if (data === undefined)
-            return []
-        return data.map((build: any) => allBuildings
-            .find((el: any) => el._id === build.buildingId))
-            .filter((res: any) => res != undefined)
-    }
-    return (
-        <Wrapper navigate={navigate} title="Electric Supplier Details" >
-            <>
-                <Card style={{ borderRadius: 20, boxShadow: "0 2px 4px rgba(0,0,0,0.2)", }}>
-                    <Row align="middle" gutter={[32, 32]} >
-                        <Col md={6} sm={12}>
-                            <Statistic title="Total Electric Usage"
-                                value={metricCubic ? Number(electricSum) * 0.0833333 / 1000 : electricSum}
-                                suffix={metricCubic ? "Kilowatt (kW)" : "Watt"}
-                                precision={2}
-                            />
-                            <Row align="middle">
-                                <IconFont onClick={() => setMetric(!metricCubic)} style={{ color: "blue", marginRight: 6, cursor: "pointer" }} className="anticon iconfont" type="i-arrow_up_down_circle" />
-                                <p style={{ color: "grey", fontSize: "18px", fontWeight: "lighter", margin: 0 }}>
-                                    {!metricCubic ? "Kilowatt (kW)" : "Watt"}
-                                </p>
-                            </Row>
-                        </Col>
-                        <Col md={6} sm={12} style={{ height: 90 }} >
-                            <Statistic title="Total Energy Earning" value={totalEarning} suffix={"Euro (€)"} precision={2} />
-                        </Col>
-                        <Col md={6} sm={12} style={{ height: 90 }} >
-                            <Statistic title="Total Delivery Cost" value={delivery} suffix={"Euro (€)"} precision={2} />
-                        </Col>
-                        <Col md={6} sm={12} style={{ height: 90 }} >
-                            <Carousel autoplay dots={false} autoplaySpeed={3500}>
-                                <Statistic title="Total Tax Cost" value={totalTaxCost.toFixed(2)} suffix={"Euro (€)"} precision={2} />
-                                <Statistic title="Total Supplier Cost" value={supplier} suffix={"Euro (€)"} precision={2} />
-                            </Carousel>
-                        </Col>
-                    </Row>
-                    <Divider />
 
-                    <Row style={{ marginTop: 32 }} justify="center" align="middle">
-                        <Col span={24}>
-                            <p style={{ fontSize: 18, fontWeight: 500 }}> Electric Usage</p>
-                            <ReactApexChart
-                                options={optionsLine as ApexOptions}
-                                series={allElectricLine}
-                                type="line"
-                                height={320} />
-                        </Col>
-                    </Row>
-                    <Divider />
-                    <Row style={{ marginTop: 32 }} justify="space-between" align="middle">
-                        <Col md={10} sm={24} xs={24}>
-                            <p style={{ fontSize: 18, fontWeight: 500 }}> Profit</p>
-                            <ReactApexChart options={optionsBar} series={[series]} type="bar" height={250} />
-                        </Col>
-                        <Col md={12} sm={24} xs={24}>
-                            <p style={{ fontSize: 18, fontWeight: 500 }}>Buildings Electric Usage</p>
-                            <ReactApexChart options={options(labels, metricCubic, ["kWh", "w"]) as ApexOptions} series={allElectric} type="polarArea" />
-                        </Col>
-                        <Col span={24} style={{ marginTop: 32 }}>
-                            <CustomersBuildingTable
-                                headerTitle="Organization Building Electric Overview"
-                                columns={columns(setVisible, setBuildingId)}
-                                data={getData(resultBills.result)} />
-                        </Col>
-                    </Row>
-                </Card>
-                <CustomerDrawer
-                    showGas={false}
-                    showWater={false}
-                    visible={visible}
-                    setVisible={setVisible}
-                    buildingId={buildingId}
-                />
-            </>
-        </Wrapper>
+    return (
+        <Wrapper navigate={navigate} title="Electric Supplier Details" 
+        drawer={ {showGas:false, showWater:false, visible:visible, setVisible:setVisible, buildingId:buildingId} }
+        pages={ {metricCubic: metricCubic, sum:electricSum, title:"Total Electric Usage", metricSwap:["Kilowatt (kW)", "Watt"], setMetric:setMetric,
+        totalEarning:totalEarning, delivery:delivery, totalTaxCost:totalTaxCost, supplier:supplier, usage:"Electric Usage", allLine:allElectricLine,
+        series:series, all:allElectric, labels:labels, setVisible:setVisible, setBuildingId: setBuildingId, resultBills:resultBills, unit:["kWh", "w"],
+        allBuildings:allBuildings
+        } } />
     )
 }
 export default Electric

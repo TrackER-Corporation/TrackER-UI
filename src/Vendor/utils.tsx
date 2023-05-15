@@ -105,7 +105,6 @@ export const DefaultVendorRoute = (
     organization: Organization,
     icon: string,
     user: UserProps,
-    bills: BillsAggregated,
     navigate: NavigateFunction,
     setPathname: (arg: string) => void,
 
@@ -115,9 +114,9 @@ export const DefaultVendorRoute = (
         <Routes >
             <Route path="*" element={<Dashboard />} />
             <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/Electric" element={<Electric bills={bills} cost={organization.details.electric} />} />
-            <Route path="/Gas" element={<Gas bills={bills} cost={organization.details.gas} />} />
-            <Route path="/Water" element={<Water bills={bills} cost={organization.details.water} />} />
+            <Route path="/Electric" element={<Electric cost={organization.details.electric} />} />
+            <Route path="/Gas" element={<Gas cost={organization.details.gas} />} />
+            <Route path="/Water" element={<Water cost={organization.details.water} />} />
             <Route path="/Resources" element={<Resources />} />
             <Route path="/Customers" element={<Customers organization={organization} />} />
             <Route path="/Edit" element={<EditPlan />} />
