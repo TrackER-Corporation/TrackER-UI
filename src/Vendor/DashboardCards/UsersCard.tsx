@@ -28,41 +28,44 @@ const UsersCard = ({ openModal }: UsersCard) => {
         let water = 0
         let gas = 0
         let electric = 0
-        await api.bills.getBillsAggregated(id).then(res => {
-            if (organization.type.includes("Electric")) {
-                organization.details.electric.forEach((el: any) => {
-                    if (el.name === "Electricity Cost at kWh")
-                        electric += res.totalElectric * 0.0833333 / 1000 * el.price
-                    if (el.name === "Electricity Supplier Cost" || el.name === "Electricity Delivery Cost")
-                        electric += el.price
-                    if (el.name === "Electricity Tax Percentage")
-                        electric += (res.totalElectric * el.price / 100)
-                });
-            }
-            if (organization.type.includes("Gas")) {
-                organization.details.gas.forEach((el: any) => {
-                    if (el.name === "Gas Cost at m³")
-                        gas += res.totalGas * 0.0454249414 / 1000 * el.price
-                    if (el.name === "Supplier Gas Cost" || el.name === "Gas Delivery Cost")
-                        gas += el.price
-                    if (el.name === "Gas Tax Percentage")
-                        gas += (res.totalGas * el.price / 100)
-                });
-            }
-            if (organization.type.includes("Water")) {
-                organization.details.water.forEach((el: any) => {
-                    if (el.name === "Water Cost at m³")
-                        water += res.totalWater * 0.0001666667 * el.price
-                    if (el.name === "Water Supplier Cost" || el.name === "Water Delivery Cost")
-                        water += el.price
-                    if (el.name === "Water Tax Percentage")
-                        water += (res.totalWater * el.price / 100)
-                });
-            }
-            total = gas + water + electric
-            setInvoices(res.invoicesDays)
-            setBills((bills: any) => [...bills, { value: Number(total).toFixed(2), id: id }])
-        }).catch((e) => console.log(e))
+        if(id !== undefined && id !== "undefined"){
+            await api.bills.getBillsAggregated(id).then(res => {
+                if (organization.type.includes("Electric")) {
+                    organization.details.electric.forEach((el: any) => {
+                        if (el.name === "Electricity Cost at kWh")
+                            electric += res.totalElectric * 0.0833333 / 1000 * el.price
+                        if (el.name === "Electricity Supplier Cost" || el.name === "Electricity Delivery Cost")
+                            electric += el.price
+                        if (el.name === "Electricity Tax Percentage")
+                            electric += (res.totalElectric * el.price / 100)
+                    });
+                }
+                if (organization.type.includes("Gas")) {
+                    organization.details.gas.forEach((el: any) => {
+                        if (el.name === "Gas Cost at m³")
+                            gas += res.totalGas * 0.0454249414 / 1000 * el.price
+                        if (el.name === "Supplier Gas Cost" || el.name === "Gas Delivery Cost")
+                            gas += el.price
+                        if (el.name === "Gas Tax Percentage")
+                            gas += (res.totalGas * el.price / 100)
+                    });
+                }
+                if (organization.type.includes("Water")) {
+                    organization.details.water.forEach((el: any) => {
+                        if (el.name === "Water Cost at m³")
+                            water += res.totalWater * 0.0001666667 * el.price
+                        if (el.name === "Water Supplier Cost" || el.name === "Water Delivery Cost")
+                            water += el.price
+                        if (el.name === "Water Tax Percentage")
+                            water += (res.totalWater * el.price / 100)
+                    });
+                }
+                total = gas + water + electric
+                setInvoices(res.invoicesDays)
+                setBills((bills: any) => [...bills, { value: Number(total).toFixed(2), id: id }])
+            }).catch((e) => console.log(e))
+        }
+        
     }
 
     const getUserAvatar = async (id: string) => {
@@ -81,7 +84,7 @@ const UsersCard = ({ openModal }: UsersCard) => {
                 tmp.push(res)
                 await Promise.all([
                     getUserBills(element.user),
-                    getUserAvatar(element.user)
+                    getUserAvatar(element.user),
                 ]).then(() => setLoading(false))
             }
         });

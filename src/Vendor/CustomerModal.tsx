@@ -17,13 +17,15 @@ const CustomerModal = ({ visible, user, setVisible }: CustomerModal) => {
     const [bills, setBills] = useState<any>({})
     const [building, setBuilding] = useState<Building|any>(allBuildings)
     const fetchData = async () => {
-        await api.bills.getBillsAggregated(user._id).then(res => {
-            res.all.map((el: any) => setBuildings((old: any) => [...old, allBuildings.find((ele: any) => ele._id === el.buildingId)]))
-            setBills(res.all)
-            setTimeout(() => {
-                setLoad(false)
-            }, 500);
-        }).catch(e => setLoad(false))
+        if (user._id !== undefined && user._id !== "undefined"){
+            await api.bills.getBillsAggregated(user._id).then(res => {
+                res.all.map((el: any) => setBuildings((old: any) => [...old, allBuildings.find((ele: any) => ele._id === el.buildingId)]))
+                setBills(res.all)
+                setTimeout(() => {
+                    setLoad(false)
+                }, 500);
+            }).catch(e => setLoad(false))
+        }
     }
 
     useEffect(() => {

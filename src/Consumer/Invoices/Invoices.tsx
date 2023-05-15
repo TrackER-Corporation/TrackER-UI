@@ -23,9 +23,12 @@ const Invoices = ({ user }: Invoices) => {
     const [visible, setVisible] = useState(false)
     const [building, setBuilding] = useState<Building>(buildings[0])
 
-    const getBillsAggregated = async () =>
-        await api.bills.getBillsAggregated(user._id)
-            .then(res => setBills(res.all)).catch(err => setBills([]))
+    const getBillsAggregated = async () => {
+        if (user._id !== undefined && user._id !== "undefined") {
+            await api.bills.getBillsAggregated(user._id)
+                .then(res => setBills(res.all)).catch(err => setBills([]))
+        }
+    }
 
     useEffect(() => {
         getBillsAggregated()

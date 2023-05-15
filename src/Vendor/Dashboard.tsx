@@ -36,20 +36,22 @@ const Dashboard = () => {
     const [users, setUsers] = useState<Array<UserProps>>([])
 
     const getKpi = async (id: any) => {
-        try {
-            getBillsAggregated(id, organization, setkWh, setkWhCost, setGas, setGasCost, setWater, setWaterCost, setCost, setSold)
-            await api.renewable.fetchResourcesByOrganizationId(organization._id).then(res => {
-                let sum = 0
-                res.map((el: any) => sum += el.buildings.length)
-                setSold(sum)
-            })
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setTimeout(() => {
-                setLoadingRenew(false)
-                setLoading(false)
-            }, 1000);
+        if (id !== undefined && id !== "undefined") {
+            try {
+                getBillsAggregated(id, organization, setkWh, setkWhCost, setGas, setGasCost, setWater, setWaterCost, setCost, setSold)
+                await api.renewable.fetchResourcesByOrganizationId(organization._id).then(res => {
+                    let sum = 0
+                    res.map((el: any) => sum += el.buildings.length)
+                    setSold(sum)
+                })
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setTimeout(() => {
+                    setLoadingRenew(false)
+                    setLoading(false)
+                }, 1000);
+            }
         }
     }
 

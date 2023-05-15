@@ -220,85 +220,87 @@ export const getBillsAggregated = async (
     setCost: (arg: number) => void,
     setSold: (arg: number) => void,
 ) => {
-    await api.bills.getBillsAggregated(id).then(res => {
-        const tmpCost: Record<string, number> = {};
-
-        if (organization?.type?.includes("Electric")) {
-            const electricDetails = organization.details.electric;
-            const electricityCostAtKwh = electricDetails.find((el: any) => el.name === "Electricity Cost at kWh");
-            const electricitySupplierCost = electricDetails.find((el: any) => el.name === "Electricity Supplier Cost");
-            const electricityDeliveryCost = electricDetails.find((el: any) => el.name === "Electricity Delivery Cost");
-            const electricityTaxPercentage = electricDetails.find((el: any) => el.name === "Electricity Tax Percentage");
-
-            let kWh = res.totalElectric * 0.0833333 / 1000 * electricityCostAtKwh?.price;
-            if (electricitySupplierCost) {
-                kWh += electricitySupplierCost.price;
-                tmpCost[electricitySupplierCost.name] = electricitySupplierCost.price;
+    if (id !== undefined && id !== "undefined"){
+        await api.bills.getBillsAggregated(id).then(res => {
+            const tmpCost: Record<string, number> = {};
+    
+            if (organization?.type?.includes("Electric")) {
+                const electricDetails = organization.details.electric;
+                const electricityCostAtKwh = electricDetails.find((el: any) => el.name === "Electricity Cost at kWh");
+                const electricitySupplierCost = electricDetails.find((el: any) => el.name === "Electricity Supplier Cost");
+                const electricityDeliveryCost = electricDetails.find((el: any) => el.name === "Electricity Delivery Cost");
+                const electricityTaxPercentage = electricDetails.find((el: any) => el.name === "Electricity Tax Percentage");
+    
+                let kWh = res.totalElectric * 0.0833333 / 1000 * electricityCostAtKwh?.price;
+                if (electricitySupplierCost) {
+                    kWh += electricitySupplierCost.price;
+                    tmpCost[electricitySupplierCost.name] = electricitySupplierCost.price;
+                }
+                if (electricityDeliveryCost) {
+                    kWh += electricityDeliveryCost.price;
+                    tmpCost[electricityDeliveryCost.name] = electricityDeliveryCost.price;
+                }
+                if (electricityTaxPercentage) {
+                    kWh += (res.totalElectric * electricityTaxPercentage.price / 100);
+                    tmpCost[electricityTaxPercentage.name] = electricityTaxPercentage.price;
+                }
+    
+                setkWh(old => old + res.totalElectric);
+                setkWhCost(old => old + Number(kWh));
             }
-            if (electricityDeliveryCost) {
-                kWh += electricityDeliveryCost.price;
-                tmpCost[electricityDeliveryCost.name] = electricityDeliveryCost.price;
+    
+            if (organization?.type?.includes("Gas")) {
+                const gasDetails = organization.details.gas;
+                const gasCostAtM3 = gasDetails.find((el: any) => el.name === "Gas Cost at m³");
+                const supplierGasCost = gasDetails.find((el: any) => el.name === "Supplier Gas Cost");
+                const gasDeliveryCost = gasDetails.find((el: any) => el.name === "Gas Delivery Cost");
+                const gasTaxPercentage = gasDetails.find((el: any) => el.name === "Gas Tax Percentage");
+    
+                let gas = res.totalGas * 0.0454249414 / 1000 * gasCostAtM3?.price;
+                if (supplierGasCost) {
+                    gas += supplierGasCost.price;
+                    tmpCost[supplierGasCost.name] = supplierGasCost.price;
+                }
+                if (gasDeliveryCost) {
+                    gas += gasDeliveryCost.price;
+                    tmpCost[gasDeliveryCost.name] = gasDeliveryCost.price;
+                }
+                if (gasTaxPercentage) {
+                    gas += (res.totalGas * gasTaxPercentage.price / 100);
+                    tmpCost[gasTaxPercentage.name] = gasTaxPercentage.price;
+                }
+    
+                setGas(old => old + res.totalGas);
+                setGasCost(old => old + Number(gas));
             }
-            if (electricityTaxPercentage) {
-                kWh += (res.totalElectric * electricityTaxPercentage.price / 100);
-                tmpCost[electricityTaxPercentage.name] = electricityTaxPercentage.price;
+    
+            if (organization?.type?.includes("Water")) {
+                const waterDetails = organization.details.water;
+                const waterCostAtM3 = waterDetails.find((el: any) => el.name === "Water Cost at m³");
+                const waterSupplierCost = waterDetails.find((el: any) => el.name === "Water Supplier Cost");
+                const waterDeliveryCost = waterDetails.find((el: any) => el.name === "Water Delivery Cost");
+                const waterTaxPercentage = waterDetails.find((el: any) => el.name === "Water Tax Percentage");
+    
+                let water = res.totalWater * 0.0001666667 * waterCostAtM3?.price;
+                if (waterSupplierCost) {
+                    water += waterSupplierCost.price;
+                    tmpCost[waterSupplierCost.name] = waterSupplierCost.price;
+                }
+                if (waterDeliveryCost) {
+                    water += waterDeliveryCost.price;
+                    tmpCost[waterDeliveryCost.name] = waterDeliveryCost.price;
+                }
+                if (waterTaxPercentage) {
+                    water += (res.totalWater * waterTaxPercentage.price / 100);
+                    tmpCost[waterTaxPercentage.name] = waterTaxPercentage.price;
+                }
+                setWater(old => old + res.totalWater);
+                setWaterCost(old => old + Number(water));
             }
-
-            setkWh(old => old + res.totalElectric);
-            setkWhCost(old => old + Number(kWh));
-        }
-
-        if (organization?.type?.includes("Gas")) {
-            const gasDetails = organization.details.gas;
-            const gasCostAtM3 = gasDetails.find((el: any) => el.name === "Gas Cost at m³");
-            const supplierGasCost = gasDetails.find((el: any) => el.name === "Supplier Gas Cost");
-            const gasDeliveryCost = gasDetails.find((el: any) => el.name === "Gas Delivery Cost");
-            const gasTaxPercentage = gasDetails.find((el: any) => el.name === "Gas Tax Percentage");
-
-            let gas = res.totalGas * 0.0454249414 / 1000 * gasCostAtM3?.price;
-            if (supplierGasCost) {
-                gas += supplierGasCost.price;
-                tmpCost[supplierGasCost.name] = supplierGasCost.price;
-            }
-            if (gasDeliveryCost) {
-                gas += gasDeliveryCost.price;
-                tmpCost[gasDeliveryCost.name] = gasDeliveryCost.price;
-            }
-            if (gasTaxPercentage) {
-                gas += (res.totalGas * gasTaxPercentage.price / 100);
-                tmpCost[gasTaxPercentage.name] = gasTaxPercentage.price;
-            }
-
-            setGas(old => old + res.totalGas);
-            setGasCost(old => old + Number(gas));
-        }
-
-        if (organization?.type?.includes("Water")) {
-            const waterDetails = organization.details.water;
-            const waterCostAtM3 = waterDetails.find((el: any) => el.name === "Water Cost at m³");
-            const waterSupplierCost = waterDetails.find((el: any) => el.name === "Water Supplier Cost");
-            const waterDeliveryCost = waterDetails.find((el: any) => el.name === "Water Delivery Cost");
-            const waterTaxPercentage = waterDetails.find((el: any) => el.name === "Water Tax Percentage");
-
-            let water = res.totalWater * 0.0001666667 * waterCostAtM3?.price;
-            if (waterSupplierCost) {
-                water += waterSupplierCost.price;
-                tmpCost[waterSupplierCost.name] = waterSupplierCost.price;
-            }
-            if (waterDeliveryCost) {
-                water += waterDeliveryCost.price;
-                tmpCost[waterDeliveryCost.name] = waterDeliveryCost.price;
-            }
-            if (waterTaxPercentage) {
-                water += (res.totalWater * waterTaxPercentage.price / 100);
-                tmpCost[waterTaxPercentage.name] = waterTaxPercentage.price;
-            }
-            setWater(old => old + res.totalWater);
-            setWaterCost(old => old + Number(water));
-        }
-
-        setCost(tmpCost);
-    });
+    
+            setCost(tmpCost);
+        });
+    }
     await api.renewable.fetchResourcesByOrganizationId(organization._id).then(res => {
         let sum = 0
         res.map((el: any) => sum += el.buildings.length)

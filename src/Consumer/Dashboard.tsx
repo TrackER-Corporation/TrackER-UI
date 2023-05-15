@@ -40,8 +40,9 @@ const Dashboard = () => {
 
     const ids = Object.values(buildings).filter((el: any) =>
       el.resources.length !== 0).map((el: any) => el._id)
-
-    getBillsAggregated(user._id, setBills, energy, setEnergy)
+    if (user._id !== undefined && user._id !== "undefined") {
+      getBillsAggregated(user._id, setBills, energy, setEnergy)
+    }
 
     ids.forEach(id => getBillsRenewable(id, buildings, energy, setEnergy, setTotalRen))
   }, [user, buildings])
