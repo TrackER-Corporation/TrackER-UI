@@ -125,14 +125,12 @@ const CustomerDrawer = ({ visible, buildingId = "", setVisible, showWater = true
         }
     };
 
-
-
-
     const [bills, setBills] = useState({})
     const [pieBills, setPieBills] = useState<any>([{}])
     const [data, setData] = useState<any>([])
     const [building, setBuilding] = useState<any>({})
     const [load, setLoad] = useState(true)
+
     const fetchData = async () => {
         setLoad(true)
         const water: any = []
@@ -179,13 +177,13 @@ const CustomerDrawer = ({ visible, buildingId = "", setVisible, showWater = true
 
             setData(out)
             setBills(res)
-        }).catch(e => { return })
+        }).catch(e => console.log(e))
         await api.buildings.getBuilding(buildingId).then(res => {
             setBuilding(res)
             setTimeout(() => {
                 setLoad(false)
             }, 500);
-        }).catch(e => { return })
+        }).catch(e => console.log(e))
     }
 
     useEffect(() => {
@@ -193,7 +191,12 @@ const CustomerDrawer = ({ visible, buildingId = "", setVisible, showWater = true
     }, [visible, buildingId])
 
     return (
-        <Drawer title={building.name + " Consume Overview"} open={visible} width={1000} onClose={() => setVisible(false)} footer={<Button key="back" type="primary" onClick={() => setVisible(false)}>Ok</Button>}>
+        <Drawer
+            title={building.name + " Consume Overview"}
+            open={visible}
+            width={1000}
+            onClose={() => setVisible(false)}
+            footer={<Button key="back" type="primary" onClick={() => setVisible(false)}>Ok</Button>}>
             {load ?
                 <Col span={24} style={{ width: "100%" }}>
                     <Skeleton.Image active={true} style={{ width: "100%", height: 300 }} />

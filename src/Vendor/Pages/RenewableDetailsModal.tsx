@@ -5,6 +5,7 @@ import api from "../../api"
 import { PageHeader } from "@ant-design/pro-components"
 import { ApexOptions } from "apexcharts"
 import { RenewableDetailsModal } from "../../types"
+import { sortDate } from "../../Consumer/utils"
 const optionsBar = {
     chart: {
         type: 'bar',
@@ -115,20 +116,22 @@ const RenewableDetailsModal = ({ filter, data, setVisible, visible }: RenewableD
         if (data.buildings === undefined) {
             return
         }
-        data.buildings.map(async (building: any) => {
+        data.buildings.map(async (buildingId: string) => {
             const tmp: any = []
-            await api.bills.getBillsRenewable(building).then(res => {
+            await api.bills.getBillsRenewable(buildingId).then(res => {
                 res.renewable.map((el: any) => {
                     el.resources.map((resource: any) => {
-                        if (Object.keys(resource).includes(filter)) tmp.push([el.date, Number(Object.values(resource)).toFixed(2)])
+                        if (Object.keys(resource).includes(filter))
+                            tmp.push([el.date, Number(Object.values(resource)).toFixed(2)])
                     })
+                    sortDate(tmp)
                     setData(tmp)
                 })
                 filter === "Solar" && setDataEarning(res.totalSolar / 1000 * data.organization / 100)
                 filter === "Wind" && setDataEarning(res.totalWind / 1000 * data.organization / 100)
                 filter === "Hydro" && setDataEarning(res.totalHydro / 1000 * data.organization / 100)
                 filter === "Geo" && setDataEarning(res.totalGeo / 1000 * data.organization / 100)
-            }).catch(e => { return })
+            }).catch(() => { return })
         })
     }
 
@@ -153,13 +156,19 @@ const RenewableDetailsModal = ({ filter, data, setVisible, visible }: RenewableD
         ]
     }
     useEffect(() => {
-        if (Object.keys(data).length !== 0)
-            getData()
-    }, [data, filter])
+        getData()
+    }, [data, filter, visible])
 
 
     return (
-        <Modal destroyOnClose title={data.name + " resources details"} width={1000} open={visible} onCancel={() => setVisible(false)} onOk={() => setVisible(false)}>
+        <Modal
+            title={data.name + " resources details"}
+            width={1000}
+            open={visible}
+            onCancel={() => setVisible(false)}
+            onOk={() => setVisible(false)}
+            destroyOnClose
+        >
             <PageHeader
                 style={{ paddingLeft: 0 }}
                 className="site-page-header"
