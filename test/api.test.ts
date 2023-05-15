@@ -707,7 +707,7 @@ describe('renewable', () => {
             const result = await api.renewable.createResources(testBody);
 
             expect(axios.post).toHaveBeenCalledTimes(1);
-            expect(axios.post).toHaveBeenCalledWith(`${API_URL}/renewable`, testBody);
+            expect(axios.post).toHaveBeenCalledWith(`${API_URL}/renewable/renewable`, testBody);
             expect(result).toEqual(expectedData);
         });
     });
