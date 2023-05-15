@@ -23,14 +23,15 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => 
 
         let totalWater = 0
         if (aggregated === undefined || aggregated === "undefined") {
-            filtered?.forEach((el: any) => totalWater += el[1])
+            filtered?.forEach((el: any) => {
+                totalWater += Number(el[1])
+            })
             if (filtered?.length === 0) return
         } else {
             Object.values(aggregated)?.map((el: any) => {
-                totalWater += el.water
+                totalWater += Number(el.water)
             })
         }
-
         setWaterSum(Number(totalWater.toFixed(2)))
         if (cost !== undefined && Object.keys(cost).length > 0) {
             cost?.forEach((el: any) => {
@@ -54,12 +55,12 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => 
             filtered?.forEach((el: any) => {
                 tmp.push({ x: el[0], y: el[1] })
             })
-            sortDate(tmp)
             setAllWaterLine([{ data: tmp }])
         } else {
             Object.values(aggregated).map((el: any) => {
                 tmp.push({ x: el.date, y: el.gas })
             })
+            sortDate(tmp)
             setAllWaterLine([{ data: tmp }])
         }
     }, [filtered, aggregated, metricCubic, bills, cost])

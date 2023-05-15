@@ -52,6 +52,7 @@ const ElectricInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) 
             Object.values(aggregated).map((el: any) => {
                 tmp.push({ x: el.date, y: el.electric })
             })
+            sortDate(tmp)
             setAllElectricLine([{ data: tmp }])
         }
     }, [filtered, metricCubic, aggregated, cost, electricSum, bills])
