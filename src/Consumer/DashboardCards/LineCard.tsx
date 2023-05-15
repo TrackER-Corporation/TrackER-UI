@@ -36,7 +36,6 @@ const options: ApexOptions = {
             },
         },
         toolbar: { show: true, },
-
     },
     stroke: {
         curve: 'smooth',
@@ -75,7 +74,7 @@ const options: ApexOptions = {
 
 }
 const LineCard = ({ data }: any) => {
-
+    
     const filterData = (e: any) => {
         ApexCharts.exec('area-datetime', 'zoomX',
             new Date(e[0]).getTime(),
@@ -92,7 +91,11 @@ const LineCard = ({ data }: any) => {
                     </CardTitle>
                 </Col>
                 <Col>
-                    <DatePicker.RangePicker placeholder={["Start Date", "End Date"]} locale={locale} onChange={(e) => filterData(e)} />
+                    <DatePicker.RangePicker
+                        placeholder={["Start Date", "End Date"]}
+                        locale={locale}
+                        onChange={(e) => filterData(e)}
+                    />
                 </Col>
             </Row>
             <ReactApexChart options={options} series={data} type="area" height={350} />

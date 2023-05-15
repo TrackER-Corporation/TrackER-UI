@@ -27,10 +27,10 @@ const Dashboard = () => {
     gas: { name: "Gas", data: [0] },
     water: { name: "Water", data: [0] },
     electric: { name: "Electric", data: [0] },
-    solar: { name: "Solar", data: 0 },
-    wind: { name: "Wind", data: 0 },
-    hydro: { name: "Hydro", data: 0 },
-    geo: { name: "Geo", data: 0 },
+    solar: { name: "Solar", data: [0] },
+    wind: { name: "Wind", data: [0] },
+    hydro: { name: "Hydro", data: [0] },
+    geo: { name: "Geo", data: [0] },
   });
 
   const navigate = useNavigate();
@@ -68,7 +68,8 @@ const Dashboard = () => {
             <Col lg={8} md={8} xs={8} >
               <StatsCard
                 color={"#ebfafa"}
-                chart={<ReactApexChart options={statebar("Water", "#008ffb").options as ApexOptions}
+                chart={<ReactApexChart
+                  options={statebar("Water", "#008ffb").options as ApexOptions}
                   series={[energy.water] as ApexAxisChartSeries}
                   type="bar" height={150} />}
               />
