@@ -14,11 +14,16 @@ describe('SecondStep', () => {
 
     it('renders the correctly', () => {
         const set = vi.fn()
-        const { baseElement, getByText, getAllByRole } = render(
+        const { baseElement, getByText, getAllByRole, getByTestId } = render(
             <BrowserRouter>
                 <ConfigProvider>
                     <Provider store={store}>
-                        <SecondStep name={"name"} setDescription={set} setIcon={set} description={"description"} />
+                        <SecondStep
+                            name={"name"}
+                            setDescription={set}
+                            setIcon={set}
+                            description={"description"}
+                        />
                     </Provider>
                 </ConfigProvider>
             </BrowserRouter>
@@ -28,6 +33,13 @@ describe('SecondStep', () => {
         expect(getByText("name")).toBeInTheDocument()
         expect(getByText("description")).toBeInTheDocument()
         getAllByRole("button").forEach(el => fireEvent.click(el))
+        fireEvent.click(getByTestId("dragger"))
+        fireEvent.click(getByTestId("text"))
+        fireEvent.change(getByTestId('text'), {
+            target: { value: '123' }
+        });
+
+        
     });
 
 });
