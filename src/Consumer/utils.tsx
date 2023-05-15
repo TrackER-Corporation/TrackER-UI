@@ -16,6 +16,7 @@ import Account from "../Account/Account";
 import Invoices from "./Invoices/Invoices";
 import { MenuProps } from "antd/lib/menu";
 import moment from "moment";
+import { ApexOptions } from "apexcharts";
 
 export const statebar = (type: string, color: any) => ({
     options: {
@@ -127,82 +128,80 @@ export const stateradial = (color: string) => ({
     },
 });
 
-export const stacked = {
-    options: {
-        noData: {
-            text: "No data to show...",
-            align: 'center',
-            verticalAlign: 'middle',
-            offsetX: 0,
-            offsetY: 0,
-            style: {
-                color: "blue",
-                fontSize: '12px',
-            }
+export const stackedOptions: ApexOptions = {
+    noData: {
+        text: "No data to show...",
+        align: 'center',
+        verticalAlign: 'middle',
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+            color: "blue",
+            fontSize: '12px',
+        }
+    },
+    colors: ['#ffcf45', '#022cf7', '#00cbff', '#26f8c9'],
+    grid: {
+        show: false
+    },
+    chart: {
+        type: 'bar',
+        height: 360,
+        stacked: true,
+        stackType: '100%',
+        toolbar: { show: false }
+    },
+    plotOptions: {
+        bar: {
+            horizontal: true,
         },
-        colors: ['#ffcf45', '#022cf7', '#00cbff', '#26f8c9'],
-        grid: {
+    },
+    stroke: {
+        width: 1,
+        colors: ['#fff']
+    },
+    xaxis: {
+        labels: {
             show: false
         },
-        chart: {
-            type: 'bar',
-            height: 360,
-            stacked: true,
-            stackType: '100%',
-            toolbar: { show: false }
+        axisBorder: {
+            show: false
         },
-        plotOptions: {
-            bar: {
-                horizontal: true,
-            },
+        axisTicks: {
+            show: false
         },
-        stroke: {
-            width: 1,
-            colors: ['#fff']
+    },
+    yaxis: {
+        axisBorder: {
+            show: false
         },
-        xaxis: {
-            labels: {
-                show: false
-            },
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            },
+        axisTicks: {
+            show: false,
         },
-        yaxis: {
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false,
-            },
-            labels: {
-                show: false,
-                formatter: function () {
-                    return "";
-                }
+        labels: {
+            show: false,
+            formatter: function () {
+                return "";
             }
-        },
-        tooltip: {
-            y: {
-                formatter: function (val: number) {
-                    return (val / 1000).toFixed(2) + "kW"
-                }
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        legend: {
-            position: 'left',
-            horizontalAlign: 'left',
-            offsetY: 25,
-            offsetX: -20
         }
+    },
+    tooltip: {
+        y: {
+            formatter: function (val: number) {
+                return (val / 1000).toFixed(2) + "kW"
+            }
+        }
+    },
+    fill: {
+        opacity: 1
+    },
+    legend: {
+        position: 'left',
+        horizontalAlign: 'left',
+        offsetY: 25,
+        offsetX: -20
     }
-};
+}
 
 
 export const linear = (text: string, unit: string, color: string) => ({
@@ -377,7 +376,9 @@ export const defaultLogo = (navigate: NavigateFunction) =>
     />
 
 export const getBills = async (id: string, setBills: (arg: any) => void) => {
-    await api.bills.getBillsAggregated(id).then(res => setBills(res)).catch(err => console.log(err))
+    if (id !== undefined && id !== "undefined") {
+        await api.bills.getBillsAggregated(id).then(res => setBills(res)).catch(err => console.log(err))
+    }
 }
 
 export const headerMenu = (type: string, dispatch: AppDispatch): MenuProps['items'] => {
@@ -615,7 +616,7 @@ export const fetchResources = async (
 ) => {
     if (id === oldId) return
     setOldId(id)
-    await api.renewable.fetchResourcesByBuildingId(id).then(res => setResourceApi(res))
+    await api.renewable.fetchResourcesByBuildingId(id).then(res => setResourceApi([res]))
     await api.bills.getBillsRenewable(id).then(res => setBills(res))
 }
 
@@ -628,7 +629,7 @@ interface EnergyBills {
 
 
 export const getTotal = (energySourceType: string | undefined, bills: EnergyBills): number => {
-    if (energySourceType === undefined) return 0;
+    if (energySourceType === undefined || energySourceType === "undefined") return 0;
 
     switch (energySourceType) {
         case "Solar":
@@ -645,7 +646,7 @@ export const getTotal = (energySourceType: string | undefined, bills: EnergyBill
 };
 
 export const getIcon = (resources: any) => {
-    if (resources.resourcesType === undefined)
+    if (resources.resourcesType === undefined || resources.resourcesType === "undefined")
         return
     if (resources.resourcesType.includes("Solar"))
         return (
@@ -663,26 +664,41 @@ export const getIcon = (resources: any) => {
         return <span className={"anticon iconfontMedium2"} style={{ color: "#1196db" }}>&#xe650;</span>
 }
 
+export const sortDate = (array: any) => {
+    array.sort(function (a: any, b: any) {
+        const keyA = new Date(a.x)
+        const keyB = new Date(b.x)
+        if (keyA < keyB) return -1;
+        if (keyA > keyB) return 1;
+        return 0;
+    });
+}
+
 export const getData = (data: any) => {
     if (data === undefined || Object.keys(data).length === 0) return []
     let series = []
     let electric: any = []
     let gas: any = []
     let water: any = []
-    // Object.values(data.aggregated).forEach((el: any) => {
-    //   electric.push({
-    //     x: moment.utc(el.date).local().format(),
-    //     y: el.electric === undefined ? null : el.electric
-    //   })
-    //   gas.push({
-    //     x: moment.utc(el.date).local().format(),
-    //     y: el.gas === undefined ? null : el.gas
-    //   })
-    //   water.push({
-    //     x: moment.utc(el.date).local().format(),
-    //     y: el.water === undefined ? null : el.water
-    //   })
-    // })
+    Object.values(data.aggregated).forEach((el: any) => {
+        electric.push({
+            x: el.date,
+            y: el.electric === undefined ? null : el.electric
+        })
+        gas.push({
+            x: el.date,
+            y: el.gas === undefined ? null : el.gas
+        })
+        water.push({
+            x: el.date,
+            y: el.water === undefined ? null : el.water
+        })
+    })
+
+    sortDate(electric)
+    sortDate(water)
+    sortDate(gas)
+
     electric = {
         type: 'area',
         name: "Electric",
@@ -745,10 +761,10 @@ export const getBillsRenewable = async (
 
         setEnergy({
             ...energy,
-            solar: { name: "Solar", data: sumSolar },
-            wind: { name: "Wind", data: sumWind },
-            hydro: { name: "Hydro", data: sumHydro },
-            geo: { name: "Geo", data: sumGeo },
+            solar: { name: "Solar", data: [sumSolar] },
+            wind: { name: "Wind", data: [sumWind] },
+            hydro: { name: "Hydro", data: [sumHydro] },
+            geo: { name: "Geo", data: [sumGeo] },
         });
 
         setTotalRen(sumSolar + sumGeo + sumHydro + sumWind);
@@ -763,50 +779,52 @@ export const getBillsAggregated = async (
     setEnergy: (...props: any) => void,
 ) => {
     const day = moment().subtract(31, 'days')
+    if (userId !== undefined && userId !== "undefined") {
+        await api.bills.getBillsAggregated(userId).then(res => {
+            setBills(res);
 
-    await api.bills.getBillsAggregated(userId).then(res => {
-        setBills(res);
+            let oldMoment = moment("01/01/17", "MM/D/YYYY");
+            const billDates = Object.values(res.aggregated).filter((el: any) =>
+                moment(el.date).isBetween(day, undefined)
+            );
 
-        let oldMoment = moment("01/01/17", "MM/D/YYYY");
-        const billDates = Object.values(res.aggregated).filter((el: any) =>
-            moment(el.date).isBetween(day, undefined)
-        );
+            let water: number[] = [];
+            let gas: number[] = [];
+            let electric: number[] = [];
+            let sumGas = 0;
+            let sumWater = 0;
+            let sumElectric = 0;
 
-        let water: number[] = [];
-        let gas: number[] = [];
-        let electric: number[] = [];
-        let sumGas = 0;
-        let sumWater = 0;
-        let sumElectric = 0;
+            billDates.forEach((el: any) => {
+                if (moment(el.date).isSame(oldMoment, "day")) {
+                    sumWater += Number(el.water);
+                    sumElectric += Number(el.electric);
+                    sumGas += Number(el.gas);
+                } else {
+                    water.push(Number(sumWater.toFixed(3)));
+                    electric.push(Number(sumElectric.toFixed(3)));
+                    gas.push(Number(sumGas.toFixed(3)));
+                    sumWater = Number(el.water);
+                    sumElectric = Number(el.electric);
+                    sumGas = Number(el.gas);
+                    oldMoment = el.date;
+                }
+            });
 
-        billDates.forEach((el: any) => {
-            if (moment(el.date).isSame(oldMoment, "day")) {
-                sumWater += Number(el.water);
-                sumElectric += Number(el.electric);
-                sumGas += Number(el.gas);
-            } else {
-                water.push(Number(sumWater.toFixed(3)));
-                electric.push(Number(sumElectric.toFixed(3)));
-                gas.push(Number(sumGas.toFixed(3)));
-                sumWater = Number(el.water);
-                sumElectric = Number(el.electric);
-                sumGas = Number(el.gas);
-                oldMoment = el.date;
-            }
-        });
+            water.shift();
+            electric.shift();
+            gas.shift();
+            electric = electric.slice(-3);
+            gas = gas.slice(-3);
+            water = water.slice(-3);
 
-        water.shift();
-        electric.shift();
-        gas.shift();
-        electric = electric.slice(-3);
-        gas = gas.slice(-3);
-        water = water.slice(-3);
+            setEnergy({
+                ...energy,
+                water: { name: "Water", data: water },
+                gas: { name: "Gas", data: gas },
+                electric: { name: "Electric", data: electric },
+            });
+        }).catch(err => console.log(err))
+    }
 
-        setEnergy({
-            ...energy,
-            water: { name: "Water", data: water },
-            gas: { name: "Gas", data: gas },
-            electric: { name: "Electric", data: electric },
-        });
-    }).catch(err => console.log(err))
 };

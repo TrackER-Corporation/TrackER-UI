@@ -7,7 +7,7 @@ import { AppDispatch } from "./store";
 import { logout, updateUser } from "./reducers/user";
 import bcrypt from "bcryptjs"
 import { getItem } from "./globalUtils";
-import { GetItem } from "./types";
+import { GetItem, Organization, UserProps } from "./types";
 import IconFont from "./Iconfont";
 
 
@@ -35,20 +35,20 @@ export const draggerProps: DraggerProps = {
     },
 };
 
-export const confirm = async (user: any, organization: any, current: any, dispatch: AppDispatch, onClose: () => void) => {
+export const confirm = async (user: UserProps, organization: Organization, current: string, dispatch: AppDispatch, onClose: () => void) => {
     try {
         await api.preference.updatePreference(user._id, { avatar: current }).then(data => dispatch(updatePreference(data)))
         await api.organization.update(organization._id, { icon: current }).then(data => dispatch(fetchOrganization(data)))
         message.success("Avatar updated correctly")
     } catch (error) {
-        message.success("Avatar not update")
+        message.error("Avatar not update")
     }
     finally {
         onClose()
     }
 }
 
-export const confirmPreference = async (userPreference: any, current: any, user: any, dispatch: AppDispatch, onClose: () => void) => {
+export const confirmPreference = async (userPreference: any, current: string, user: UserProps, dispatch: AppDispatch, onClose: () => void) => {
     if (userPreference.avatar === current) {
         message.warning("You cannot select the same Avatar")
         return
@@ -58,31 +58,30 @@ export const confirmPreference = async (userPreference: any, current: any, user:
     onClose()
 }
 
-export const updatePref = async (value: boolean, user: any, dispatch: AppDispatch) => {
+export const updatePref = async (value: boolean, user: UserProps, dispatch: AppDispatch) => {
     await api.preference.updatePreference(user._id, { activityLog: value })?.then(data => {
         dispatch((updatePreference(data)))
         message.success("Update Activity Log Preference")
     }).catch(() => message.error("Error on Update Preference"))
 }
-export const deleteAccount = async (user: any, dispatch: AppDispatch, setShow: (arg: boolean) => void) => {
+export const deleteAccount = async (user: UserProps, dispatch: AppDispatch, setShow: (arg: boolean) => void) => {
     await api.user.delete(user._id)
     setShow(true)
     setTimeout(() => {
         message.success('Account deleted');
         dispatch((logout()))
-        // socket?.emit("disconnect")
         setShow(false)
     }, 5000);
 }
 
-export const setNotification = (data: any, user: any, dispatch: AppDispatch) => {
+export const setNotification = (data: any, user: UserProps, dispatch: AppDispatch) => {
     api.preference.updatePreference(user._id, data)?.then(res => {
         dispatch(updatePreference(res))
         message.success("Update Notifications Preference")
     }).catch(() => message.error("Error on Update Preference"))
 }
 
-export const fetchActivity = async (user: any, setData: (arg: any) => void, setLoad: (arg: boolean) => void) => {
+export const fetchActivity = async (user: UserProps, setData: (arg: any) => void, setLoad: (arg: boolean) => void) => {
     await api.activity.fetchActivity(user._id)
         .then(fetchData => {
             setData(fetchData)
@@ -96,7 +95,7 @@ export const fetchActivity = async (user: any, setData: (arg: any) => void, setL
         })
 }
 
-export const updateUserData = async (user: any, name: string, surname: string, email: string, dispatch: AppDispatch, setVisible: (arg: boolean) => void) =>
+export const updateUserData = async (user: UserProps, name: string, surname: string, email: string, dispatch: AppDispatch, setVisible: (arg: boolean) => void) =>
     await api.user.update(user._id, { name, surname, email })
         .then(res => {
             dispatch(updateUser(res.data))

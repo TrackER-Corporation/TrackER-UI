@@ -23,16 +23,17 @@ export const handleLoginSubmit = (email: string, password: string, setError: (ar
     const data = { email, password }
     api.user
         .login(data)
-        .then((data) => {
-            localStorage.setItem("token", data.token)
-            api.preference.fetchPreference(data._id).then(async (res) => {
+        .then((user) => {
+            localStorage.setItem("token", user.token)
+            api.preference.fetchPreference(user._id).then(async (res) => {
                 dispatch(userPreference(res))
-                if (res.activityLog) await api.activity.updateActivity(data._id)
+                if (res.activityLog) await api.activity.updateActivity(user._id)
             })
-            api.buildings.fetchBuildings(data._id).then((res) => {
-                dispatch(fetchBuildings(res))
-            })
-            dispatch(login(data))
+            if (user.type !== "Vendor")
+                api.buildings.fetchBuildingsByUserId(user._id).then((res) => {
+                    dispatch(fetchBuildings(res))
+                })
+            dispatch(login(user))
             navigate("/Dashboard")
 
         })
@@ -41,7 +42,7 @@ export const handleLoginSubmit = (email: string, password: string, setError: (ar
         });
 }
 
-export const handleSignUpSubmit = (
+export const handleSignUpSubmit = async (
     event: any,
     name: string,
     surname: string,
@@ -68,12 +69,12 @@ export const handleSignUpSubmit = (
         name,
         surname,
     }
-    api.user
+    await api.user
         .signUp(data)
-        .then((data) => {
+        .then(async (data) => {
             if (type === "Vendor")
-                api.organization.create({ userId: data._id, name: company })
-            api.preference.createPreference(data._id).then((res) => {
+                await api.organization.create({ userId: data._id, name: company })
+            await api.preference.createPreference(data._id).then((res) => {
                 dispatch(userPreference(res))
                 dispatch(login(data))
                 localStorage.setItem("token", data.token)

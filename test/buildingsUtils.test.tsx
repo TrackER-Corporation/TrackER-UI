@@ -46,7 +46,7 @@ describe('handleCoords', () => {
         const setOptions = vi.fn();
         await handleCoords('New York', setOptions);
         expect(fetch).toHaveBeenCalledWith(
-            'https://api.geoapify.com/v1/geocode/search?text=New York&format=json&apiKey=811f21d574e34738a95aca463b9dfd74',
+            'https://api.geoapify.com/v1/geocode/search?text=New York&format=json&apiKey=e92ee477e1114d5c80988f7fd2d838d6',
             { method: 'GET' }
         );
         expect(setOptions).toHaveBeenCalledWith([
@@ -72,10 +72,10 @@ describe('addBuilding', () => {
             userId: user._id
         };
         api.buildings.addBuilding = vi.fn().mockResolvedValue({});
-        api.buildings.fetchBuildings = vi.fn().mockResolvedValue([]);
+        api.buildings.fetchBuildingsByUserId = vi.fn().mockResolvedValue([]);
         await addBuilding('Building A', 'John Doe', 'New York', '1000', 'Office', 40.7128, -74.006, [1, 2], user, setShow, dispatch);
         expect(api.buildings.addBuilding).toHaveBeenCalledWith(data);
-        expect(api.buildings.fetchBuildings).toHaveBeenCalledWith("1");
+        expect(api.buildings.fetchBuildingsByUserId).toHaveBeenCalledWith("1");
         expect(setShow).toHaveBeenCalledWith(true);
         expect(dispatch).toHaveBeenCalledWith(fetchBuildings([]));
     });
@@ -84,11 +84,11 @@ describe('addBuilding', () => {
         const setShow = vi.fn();
         const dispatch = vi.fn();
         api.buildings.addBuilding = vi.fn().mockResolvedValue({});
-        api.buildings.fetchBuildings = vi.fn().mockResolvedValue([]);
+        api.buildings.fetchBuildingsByUserId = vi.fn().mockResolvedValue([]);
         const messageErrorSpy = vi.spyOn(message, 'error');
         await addBuilding('', '', '', '', '', 0, 0, [1, 2], user, setShow, dispatch);
         expect(api.buildings.addBuilding).toHaveBeenCalled();
-        expect(api.buildings.fetchBuildings).toHaveBeenCalled();
+        expect(api.buildings.fetchBuildingsByUserId).toHaveBeenCalled();
         expect(setShow).toHaveBeenCalledWith(true);
         expect(messageErrorSpy).toHaveBeenCalledWith('Fill the form to submit a building');
     });
@@ -108,10 +108,10 @@ describe('addBuilding', () => {
             userId: user._id
         };
         api.buildings.addBuilding = vi.fn().mockRejectedValue({});
-        api.buildings.fetchBuildings = vi.fn().mockResolvedValue([]);
+        api.buildings.fetchBuildingsByUserId = vi.fn().mockResolvedValue([]);
         await addBuilding('Building A', 'John Doe', 'New York', '1000', 'Office', 40.7128, -74.006, [1, 2], user, setShow, dispatch);
         expect(api.buildings.addBuilding).toHaveBeenCalledWith(data);
-        expect(api.buildings.fetchBuildings).not.toHaveBeenCalled();
+        expect(api.buildings.fetchBuildingsByUserId).not.toHaveBeenCalled();
         expect(setShow).toHaveBeenCalledWith(true);
     });
 });

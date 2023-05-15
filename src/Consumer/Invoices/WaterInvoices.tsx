@@ -21,7 +21,7 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => 
         else filtered?.map((el: any) => setWaterSum(old => old + el[1]))
 
         let totalWater = 0
-        if (aggregated === undefined) {
+        if (aggregated === undefined || aggregated === "undefined") {
             filtered?.forEach((el: any) => totalWater += el[1])
             if (filtered?.length === 0) return
         } else {
@@ -49,7 +49,7 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => 
         }
 
         const tmp: Array<any> = []
-        if (aggregated === undefined) {
+        if (aggregated === undefined || aggregated === "undefined") {
             filtered?.forEach((el: any) => {
                 tmp.push([el[0], el[1]])
             })

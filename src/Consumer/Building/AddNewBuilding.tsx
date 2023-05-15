@@ -3,7 +3,6 @@ import Col from "antd/es/grid/col";
 import Input from "antd/lib/input/Input";
 import { Option } from "antd/lib/mentions";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import api from "../../api";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 import { setAllOrganization } from "../../reducers/allOrganization";
@@ -17,9 +16,10 @@ import { PageHeader } from "@ant-design/pro-components";
 import { Organization, UserProps } from "../../types";
 import { addBuilding, handleCoords, onSelect } from "../../buildingsUtils";
 import IconFont from "../../Iconfont";
+import { useAppDispatch } from "../../hooks";
 
 const AddNewBuildings = (user: UserProps) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const [options, setOptions] = useState([])
     const [name, setName] = useState("")
     const [contact, setContact] = useState("")
@@ -142,7 +142,7 @@ const AddNewBuildings = (user: UserProps) => {
                                     size="large"
                                     allowClear
                                     placeholder="Building Address"
-                                    onSearch={() => handleCoords(address, setOptions)}
+                                    onSearch={(value) => handleCoords(value, setOptions)}
                                     options={options}
                                     onSelect={(value) => onSelect(value, options, setAddress, setLat, setLon)}
                                 />

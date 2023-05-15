@@ -33,7 +33,7 @@ const Header = ({ avatar }: Header) => {
                         <IconFont type="i-zixun" style={{ color: "blue", verticalAlign: "baseline", fontSize: 27 }} />
                     </Col>
                     <p style={{ margin: 0 }}>Do you know the latest update of our 2023? 🎉 </p>
-                    <p style={{ color: "#fea5b1", margin: 0, marginLeft: 5 }}>Check our program for 2022.</p>
+                    <p style={{ color: "#fea5b1", margin: 0, marginLeft: 5 }}>Check our program for 2023.</p>
                 </Row>
                 <Space>
                     <Dropdown

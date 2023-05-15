@@ -336,7 +336,7 @@ export const deleteBuilding = async (
         setMessage("Deleting...");
         setShow(true);
         await api.buildings.deleteBuilding(id);
-        await api.buildings.fetchBuildings(userId).then((updatedBuildings: Array<Building>) => {
+        await api.buildings.fetchBuildingsByUserId(userId).then((updatedBuildings: Array<Building>) => {
             setBuildingsFilter(updatedBuildings);
             dispatch(fetchBuildings(updatedBuildings));
             setShow(false);

@@ -39,7 +39,7 @@ const GasInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => {
             });
         }
         const tmp: any = []
-        if (aggregated === undefined) {
+        if (aggregated === undefined || aggregated === "undefined") {
             filtered?.forEach((el: any) => {
                 tmp.push([el[0], el[1]])
             })

@@ -7,6 +7,7 @@ import { GetItem, UserProps } from './types';
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { MenuProps } from 'antd/lib/menu';
 import moment from 'moment';
+import { ApexOptions } from 'apexcharts';
 
 export const isImg = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?/;
 export const getChildrenToRender = (item: any, i: number) => {
@@ -322,3 +323,37 @@ export const dataInRange = (
 }
 
 export const getWindowSize = () => window.innerWidth
+
+
+export const commonProps: ApexOptions = {
+    stroke: {
+        curve: 'smooth',
+        width: 2,
+
+    },
+    xaxis: {
+        type: 'datetime',
+        tooltip: {
+            enabled: false
+        },
+        labels: {
+            show: true,
+            datetimeUTC: false,
+            datetimeFormatter: {
+                year: 'yyyy',
+                month: "MMM 'yy",
+                day: 'dd MMM',
+                hour: 'HH:mm',
+            },
+        },
+    },
+    tooltip: {
+        enabled: true,
+        followCursor: true,
+        theme: "light",
+        x: {
+            show: true,
+            format: "dd-MM-yyyy HH:mm"
+        },
+    },
+}

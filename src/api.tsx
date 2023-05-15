@@ -56,10 +56,13 @@ export default {
     },
     buildings: {
         fetchBuildingsByUserId: (userId: string) =>
-            axios.get(`${API_URL}/buildings/find/${userId}`)
+            axios.get(`${API_URL}/buildings/user/${userId}`)
                 .then((res) => res.data),
-        fetchBuildings: (id: string) =>
+        getBuilding: (id: string) =>
             axios.get(`${API_URL}/buildings/${id}`)
+                .then((res) => res.data),
+        getBuildingsByOrganizationId: (organizationId: string) =>
+            axios.get(`${API_URL}/buildings/organization/${organizationId}`)
                 .then((res) => res.data),
         addBuilding: (body: any) =>
             axios.post(`${API_URL}/buildings/register`, body)
@@ -72,12 +75,6 @@ export default {
                 .then((res) => res.data),
         deleteBuilding: (userId: string) =>
             axios.delete(`${API_URL}/buildings/${userId}`)
-                .then((res) => res.data),
-        getBuilding: (id: string) =>
-            axios.get(`${API_URL}/buildings/${id}`)
-                .then((res) => res.data),
-        getBuildingsByOrganizationId: (organizationId: string) =>
-            axios.get(`${API_URL}/buildings/organization/${organizationId}`)
                 .then((res) => res.data),
         deleteBuildingByUserId: (userId: string) =>
             axios.delete(`${API_URL}/buildings/user/${userId}`)
@@ -158,7 +155,7 @@ export default {
             axios.delete(`${API_URL}/renewable/${id}`)
                 .then((res) => res.data),
         createResources: (body: string) =>
-            axios.post(`${API_URL}/renewable`, body)
+            axios.post(`${API_URL}/renewable/renewable`, body)
                 .then((res) => res.data),
     },
 };

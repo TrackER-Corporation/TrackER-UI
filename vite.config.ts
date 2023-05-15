@@ -34,7 +34,11 @@ export default defineConfig({
         "src/Consumer/DashboardCards/ExpensiveChart.tsx",
         "src/Consumer/DashboardCards/LineCard.tsx",
         "src/Consumer/DashboardCards/RevenueCard.tsx",
-
+        "src/Vendor/utils.tsx",
+        "src/Vendor/Pages/RenewableDetailsModal.tsx",
+        "src/Vendor/Pages/Electric.tsx",
+        "src/Vendor/Pages/Water.tsx",
+        "src/Vendor/Pages/Gas.tsx"
       ],
       reporter: ['text', 'json-summary', 'json'],
     },

@@ -21,7 +21,7 @@ export const handleCoords = async (address: string, setOptions: (arg: any) => vo
     const requestOptions = {
         method: 'GET',
     };
-    await fetch(`https://api.geoapify.com/v1/geocode/search?text=${address}&format=json&apiKey=811f21d574e34738a95aca463b9dfd74`, requestOptions)
+    await fetch(`https://api.geoapify.com/v1/geocode/search?text=${address}&format=json&apiKey=e92ee477e1114d5c80988f7fd2d838d6`, requestOptions)
         .then(response => response.json())
         .then(({ results }) => {
             const tmp = results.map((element: any) => ({
@@ -69,7 +69,7 @@ export const addBuilding = async (
                 message.success("Building created!")
             }, 1000);
         })
-        await api.buildings.fetchBuildings(user._id).then((res) => {
+        await api.buildings.fetchBuildingsByUserId(user._id).then((res) => {
             dispatch(fetchBuildings(res))
         })
     } catch (error) {

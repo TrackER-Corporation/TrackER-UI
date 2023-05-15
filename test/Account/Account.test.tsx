@@ -30,7 +30,6 @@ describe('Account', () => {
         token: ""
     };
     const avatar = '';
-    const socket = {};
     const updateRoute = vi.fn()
 
     it('renders the profile Buildings', () => {

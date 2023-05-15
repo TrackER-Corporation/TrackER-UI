@@ -13,7 +13,7 @@ const AccountActivity = ({ user }: AccountActivity) => {
 
     useEffect(() => {
         fetchActivity(user, setData, setLoad)
-    }, [])
+    }, [user])
 
 
     return (
@@ -24,9 +24,12 @@ const AccountActivity = ({ user }: AccountActivity) => {
             </Col>
             <Divider />
             {load && <LoadingSpinner />}
-            <ProTable dataSource={data} rowKey="key" pagination={{
-                hideOnSinglePage: true,
-            }} columns={activityColumns}
+            <ProTable
+                dataSource={data}
+                rowKey="key" pagination={{
+                    hideOnSinglePage: true,
+                }}
+                columns={activityColumns}
                 search={false}
                 options={{ setting: false, reload: false, fullScreen: false, density: false, search: false }}
                 dateFormatter="string"

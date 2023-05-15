@@ -41,7 +41,7 @@ describe('BuildingsTab component', () => {
             name: "string"
         }]))
 
-        const { getByText } = render(
+        const { getByText, getAllByRole, getAllByPlaceholderText } = render(
             <Provider store={store}>
                 <BrowserRouter>
                     <BuildingsTab updateRoute={update} />
@@ -52,5 +52,12 @@ describe('BuildingsTab component', () => {
         fireEvent.click(getByText("Delete"))
         fireEvent.click(getByText("No"))
         fireEvent.click(getByText("Yes"))
+        getAllByRole("button").forEach(el => fireEvent.click(el))
+        getAllByPlaceholderText(/Building/).forEach(el => fireEvent.change(el, {
+            target: { value: '123' }
+        }))
+        getAllByPlaceholderText(/Name/).forEach(el => fireEvent.change(el, {
+            target: { value: '123' }
+        }))
     });
 })
