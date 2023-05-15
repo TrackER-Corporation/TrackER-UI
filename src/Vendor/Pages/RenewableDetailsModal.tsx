@@ -6,6 +6,7 @@ import { PageHeader } from "@ant-design/pro-components"
 import { ApexOptions } from "apexcharts"
 import { RenewableDetailsModal } from "../../types"
 import { sortDate } from "../../Consumer/utils"
+import IconFont from "../../Iconfont"
 const optionsBar = {
     chart: {
         type: 'bar',
@@ -111,7 +112,9 @@ const optionsLine = {
 const RenewableDetailsModal = ({ filter, data, setVisible, visible }: RenewableDetailsModal) => {
     const [dataRenewable, setData] = useState<any>({})
     const [dataEarning, setDataEarning] = useState(0)
+    const [totalProduction, setTotalProduction] = useState(0)
     const [metric, setMetric] = useState(false)
+
     const getData = () => {
         if (data.buildings === undefined) {
             return
@@ -122,15 +125,31 @@ const RenewableDetailsModal = ({ filter, data, setVisible, visible }: RenewableD
                 res.renewable.map((el: any) => {
                     el.resources.map((resource: any) => {
                         if (Object.keys(resource).includes(filter))
-                            tmp.push([el.date, Number(Object.values(resource)).toFixed(2)])
+                            tmp.push({ x: el.date, y: Number(Object.values(resource)).toFixed(2) })
                     })
-                    sortDate(tmp)
-                    setData(tmp)
                 })
-                filter === "Solar" && setDataEarning(res.totalSolar / 1000 * data.organization / 100)
-                filter === "Wind" && setDataEarning(res.totalWind / 1000 * data.organization / 100)
-                filter === "Hydro" && setDataEarning(res.totalHydro / 1000 * data.organization / 100)
-                filter === "Geo" && setDataEarning(res.totalGeo / 1000 * data.organization / 100)
+                sortDate(tmp)
+                setData(tmp)
+                switch (filter) {
+                    case "Solar":
+                        setDataEarning(res.totalSolar / 1000 * data.organization / 100)
+                        setTotalProduction(res.totalSolar)
+                        break;
+                    case "Wind":
+                        setDataEarning(res.totalWind / 1000 * data.organization / 100)
+                        setTotalProduction(res.totalSolar)
+                        break;
+                    case "Hydro":
+                        setDataEarning(res.totalHydro / 1000 * data.organization / 100)
+                        setTotalProduction(res.totalHydro)
+                        break;
+                    case "Geo":
+                        setDataEarning(res.totalGeo / 1000 * data.organization / 100)
+                        setTotalProduction(res.totalGeo)
+                        break;
+                    default:
+                        break;
+                }
             }).catch(() => { return })
         })
     }
@@ -178,14 +197,23 @@ const RenewableDetailsModal = ({ filter, data, setVisible, visible }: RenewableD
             <Card style={{ borderRadius: 20, boxShadow: "0 2px 4px rgba(0,0,0,0.2)", }}>
                 <Row align="top" gutter={[32, 32]} >
                     <Col span={12}>
-                        <Statistic title="Total Electric Usage" value={0} suffix={metric ? "Kilowatt (kW)" : "Watt"} precision={2} />
+                        <Statistic title="Total Electric Usage"
+                            value={!metric ? totalProduction : totalProduction / 1000}
+                            suffix={metric ? "Kilowatt (kW)" : "Watt"}
+                            precision={2} />
                         <Row align="middle">
-                            <span onClick={() => setMetric(!metric)} style={{ color: "blue", marginRight: 6, cursor: "pointer" }} className="anticon iconfont">&#xe615;</span>
+                            <IconFont type="i-arrow_up_down_circle"
+                                onClick={() => setMetric(!metric)}
+                                style={{ color: "blue", marginRight: 6, cursor: "pointer" }}
+                                className="anticon iconfont" />
                             <p style={{ color: "grey", fontSize: "18px", fontWeight: "lighter", margin: 0 }}>{!metric ? "Kilowatt (kWh)" : "Watt"}</p>
                         </Row>
                     </Col>
                     <Col span={12}>
-                        <Statistic title="Total Earnings" value={0} suffix={metric ? "Kilowatt (kW)" : "Watt"} precision={2} />
+                        <Statistic title="Total Earnings"
+                            value={dataEarning}
+                            suffix={"€"}
+                            precision={2} />
                     </Col>
                 </Row>
                 <Divider />
