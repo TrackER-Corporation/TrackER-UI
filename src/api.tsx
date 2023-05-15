@@ -155,7 +155,7 @@ export default {
             axios.delete(`${API_URL}/renewable/${id}`)
                 .then((res) => res.data),
         createResources: (body: string) =>
-            axios.post(`${API_URL}/renewable`, body)
+            axios.post(`${API_URL}/renewable/renewable`, body)
                 .then((res) => res.data),
     },
 };
