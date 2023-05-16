@@ -38,14 +38,14 @@ const Dashboard = () => {
   useEffect(() => {
     if (buildings === null || buildings === undefined) return
 
-    const ids = Object.values(buildings).filter((el: any) =>
-      el.resources.length !== 0).map((el: any) => el._id)
-    if (user._id !== undefined && user._id !== "undefined") {
-      getBillsAggregated(user._id, setBills, energy, setEnergy)
-    }
-    console.log(energy)
+    Object.values(buildings).filter((el) =>
+      el.resources.length !== 0).map((el) => el._id)
+      .map(id => getBillsRenewable(id, buildings, energy, user._id, setEnergy, setTotalRen, setBills))
 
-    ids.forEach(id => getBillsRenewable(id, buildings, energy, setEnergy, setTotalRen))
+    // if (user._id !== undefined && user._id !== "undefined") {
+    //   getBillsAggregated(user._id, setBills, energy, setEnergy)
+    // }
+
   }, [user, buildings])
 
   return (

@@ -55,14 +55,13 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => 
             filtered?.forEach((el: any) => {
                 tmp.push({ x: el[0], y: el[1] })
             })
-            setAllWaterLine([{ data: tmp }])
         } else {
             Object.values(aggregated).map((el: any) => {
                 tmp.push({ x: el.date, y: el.gas })
             })
-            sortDate(tmp)
-            setAllWaterLine([{ data: tmp }])
         }
+        sortDate(tmp)
+        setAllWaterLine([{ data: tmp }])
     }, [filtered, aggregated, metricCubic, bills, cost])
 
     return (

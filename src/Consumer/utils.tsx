@@ -3,7 +3,7 @@ import IconFont from "../Iconfont";
 import api from "../api";
 import { Avatar, Col, Menu, Row } from "antd";
 import { LinkHover } from "../Components/CustomComponents";
-import { logout } from "../reducers/user";
+import user, { logout } from "../reducers/user";
 import { AppDispatch } from "../store";
 import { DefaultFooter, ProLayout } from "@ant-design/pro-components";
 import { GithubOutlined } from "@ant-design/icons";
@@ -146,10 +146,8 @@ export const stackedOptions: ApexOptions = {
     },
     chart: {
         type: 'bar',
-        height: 360,
         stacked: true,
-        stackType: '100%',
-        toolbar: { show: false }
+        // toolbar: { show: false }
     },
     plotOptions: {
         bar: {
@@ -727,8 +725,10 @@ export const getBillsRenewable = async (
     id: string,
     buildings: Array<Building>,
     energy: any,
+    userId: string,
     setEnergy: (...props: any) => void,
-    setTotalRen: (arg: number) => void
+    setTotalRen: (arg: number) => void,
+    setBills: (arg: any) => void,
 ) => {
     await api.bills.getBillsRenewable(id).then(res => {
         const building = Object.values(buildings).find((el) => el._id === id);
@@ -738,7 +738,7 @@ export const getBillsRenewable = async (
         let sumGeo = 0;
 
         if (building) {
-            building.resources?.forEach((resource: any) => {
+            building.resources?.map((resource: any) => {
                 const [type, _] = Object.entries(resource)[0];
                 switch (type) {
                     case "Solar":
@@ -758,17 +758,19 @@ export const getBillsRenewable = async (
                 }
             });
         }
-        console.log(energy)
 
-        setEnergy({
+        const newEnergy = {
             ...energy,
-            solar: { name: "Solar", data: [sumSolar] },
-            wind: { name: "Wind", data: [sumWind] },
-            hydro: { name: "Hydro", data: [sumHydro] },
-            geo: { name: "Geo", data: [sumGeo] },
-        });
+            solar: { name: "Solar", data: [sumSolar / 1000] },
+            wind: { name: "Wind", data: [sumWind / 1000] },
+            hydro: { name: "Hydro", data: [sumHydro / 1000] },
+            geo: { name: "Geo", data: [sumGeo / 1000] },
+        }
+        setEnergy(newEnergy);
 
+        getBillsAggregated(userId, setBills, newEnergy, setEnergy)
         setTotalRen(sumSolar + sumGeo + sumHydro + sumWind);
+
     }).catch(err => console.log(err))
 };
 
@@ -780,6 +782,7 @@ export const getBillsAggregated = async (
     setEnergy: (...props: any) => void,
 ) => {
     const day = moment().subtract(31, 'days')
+
     await api.bills.getBillsAggregated(userId).then(res => {
         setBills(res);
 
@@ -817,7 +820,6 @@ export const getBillsAggregated = async (
         electric = electric.slice(-3);
         gas = gas.slice(-3);
         water = water.slice(-3);
-
         setEnergy({
             ...energy,
             water: { name: "Water", data: water },
