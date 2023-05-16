@@ -2,7 +2,6 @@ import { Col, Row } from "antd";
 import { ProCard } from "@ant-design/pro-components";
 import ReactApexChart from "react-apexcharts";
 import { stackedOptions } from "../utils";
-import { ApexOptions } from "apexcharts";
 import Empty from "../../Components/Empty";
 
 interface EarningsCard {
@@ -24,15 +23,14 @@ const EarningsCard = ({ series, total = 0 }: EarningsCard) =>
       </Col>
       <Col lg={18} md={18} xs={24} >
         {
-          total <= 0 ?
+          total === 0 ?
             <Empty />
             :
-            <ReactApexChart options={stackedOptions as ApexOptions} series={series} height={150} />
+            <ReactApexChart options={stackedOptions} series={series} height={150} />
         }
       </Col>
     </Row>
   </ProCard>
-
 
 export default EarningsCard
 

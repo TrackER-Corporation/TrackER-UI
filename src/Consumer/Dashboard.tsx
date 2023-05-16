@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProCard } from "@ant-design/pro-components";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { getBillsAggregated, getBillsRenewable, getData, statebar } from "./utils";
+import { getBillsRenewable, getData, statebar } from "./utils";
 import { useAppSelector } from "../hooks";
 import avatarImages from "../globalUtils";
 import { ApexOptions } from "apexcharts";
@@ -41,10 +41,6 @@ const Dashboard = () => {
     Object.values(buildings).filter((el) =>
       el.resources.length !== 0).map((el) => el._id)
       .map(id => getBillsRenewable(id, buildings, energy, user._id, setEnergy, setTotalRen, setBills))
-
-    // if (user._id !== undefined && user._id !== "undefined") {
-    //   getBillsAggregated(user._id, setBills, energy, setEnergy)
-    // }
 
   }, [user, buildings])
 
