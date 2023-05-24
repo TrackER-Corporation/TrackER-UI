@@ -145,7 +145,7 @@ const ExpensiveChart = ({ bills }: any) => {
                 <CardTitle style={{ marginTop: "32px" }}>By Category</CardTitle>
                 {names.map((el) => {
                     return (
-                        <RowHover justify="space-evenly" align="middle" style={{ padding: 12 }} className="hover" onClick={() => el.action()}>
+                        <RowHover key={el.name+el.icon} justify="space-evenly" align="middle" style={{ padding: 12 }} className="hover" onClick={() => el.action()}>
                             <Col span={4} style={{ color: "blue" }}> {el.icon}</Col>
                             <Col span={16} >
                                 <CardTitle style={{ lineHeight: 1 }} >{el.name}</CardTitle>

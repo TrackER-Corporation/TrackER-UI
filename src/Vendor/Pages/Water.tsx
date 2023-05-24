@@ -92,13 +92,14 @@ const Water = ({ cost }: Pages) => {
     }, [])
 
     return (
-        <Wrapper navigate={navigate} title="Water Supplier Details" 
-        drawer={ {showElectric:false, showGas:false, visible:visible, setVisible:setVisible, buildingId:buildingId} }
-        pages={ {metricCubic: metricCubic, sum:waterSum, title:"Total Water Usage", metricSwap:["Liter/Hours (l/h)", "Gallon"], setMetric:setMetric,
-        totalEarning:totalEarning, delivery:delivery, totalTaxCost:totalTaxCost, supplier:supplier, usage:"Water Usage", allLine:allWaterLine,
-        series:series, all:allWater, labels:labels, setVisible:setVisible, setBuildingId: setBuildingId, resultBills:resultBills, unit:["L", "Gallon"],
-        allBuildings:allBuildings
-        } } />
+        <Wrapper navigate={navigate} title="Water Supplier Details"
+            drawer={{ showElectric: false, showGas: false, visible, setVisible, buildingId }}
+            pages={{
+                metricCubic, sum: waterSum, title: "Total Water Usage", metricSwap: ["Liter/Hours (l/h)", "Gallon"], setMetric,
+                totalEarning, delivery, totalTaxCost, supplier, usage: "Water Usage", allLine: allWaterLine,
+                series, all: allWater, labels, setVisible, setBuildingId, resultBills, unit: ["L", "Gallon"],
+                allBuildings
+            }} />
     )
 }
 export default Water

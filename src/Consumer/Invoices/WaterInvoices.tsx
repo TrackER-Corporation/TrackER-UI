@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import ReactApexChart from "react-apexcharts"
 import { InvoicesProps, optionsLine, pieOptions } from "./utilsInvoices"
 import InvoicesWrapper from "./InvoicesWrapper"
+import { sortDate } from "../utils"
 
 const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => {
     const [metricCubic, setMetric] = useState(true)
@@ -22,14 +23,15 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => 
 
         let totalWater = 0
         if (aggregated === undefined || aggregated === "undefined") {
-            filtered?.forEach((el: any) => totalWater += el[1])
+            filtered?.forEach((el: any) => {
+                totalWater += Number(el[1])
+            })
             if (filtered?.length === 0) return
         } else {
             Object.values(aggregated)?.map((el: any) => {
-                totalWater += el.water
+                totalWater += Number(el.water)
             })
         }
-
         setWaterSum(Number(totalWater.toFixed(2)))
         if (cost !== undefined && Object.keys(cost).length > 0) {
             cost?.forEach((el: any) => {
@@ -51,17 +53,15 @@ const WaterInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => 
         const tmp: Array<any> = []
         if (aggregated === undefined || aggregated === "undefined") {
             filtered?.forEach((el: any) => {
-                tmp.push([el[0], el[1]])
+                tmp.push({ x: el[0], y: el[1] })
             })
-            setAllWaterLine([{ data: tmp }])
         } else {
-            Object.values(aggregated)?.map((el: any) => {
-                tmp.push([el.date, el.water])
+            Object.values(aggregated).map((el: any) => {
+                tmp.push({ x: el.date, y: el.gas })
             })
-            setAllWaterLine([{ data: tmp }])
-
         }
-
+        sortDate(tmp)
+        setAllWaterLine([{ data: tmp }])
     }, [filtered, aggregated, metricCubic, bills, cost])
 
     return (

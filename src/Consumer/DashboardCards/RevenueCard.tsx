@@ -43,9 +43,9 @@ const options: ApexOptions = {
 }
 
 const RevenueCard = ({ bills = {} }) => {
-    const [electric, setElectric]: any = useState({})
-    const [gas, setGas]: any = useState({})
-    const [water, setWater]: any = useState({})
+    const [electric, setElectric] = useState<any>({})
+    const [gas, setGas] = useState<any>({})
+    const [water, setWater] = useState<any>({})
     useEffect(() => {
         if (Object.keys(bills).length === 0)
             return
@@ -59,7 +59,7 @@ const RevenueCard = ({ bills = {} }) => {
         let month
         Object.values(bills).map((el: any) => {
             month = moment(el.date).format('DD MMM');
-            if (moment(el.date).isSame(date, 'day')) {
+            if (moment(el.date).isSame(date, 'week')) {
                 totElectric += Number(el.electric)
                 totWater += Number(el.water)
                 totGas += Number(el.gas)
@@ -69,7 +69,6 @@ const RevenueCard = ({ bills = {} }) => {
                 dataGas.push({ x: month, y: totGas.toFixed(2) })
                 dataWater.push({ x: month, y: totWater.toFixed(2) })
                 date = el.date
-                console.log(totElectric)
                 totElectric = 0
                 totGas = 0
                 totWater = 0
@@ -90,9 +89,14 @@ const RevenueCard = ({ bills = {} }) => {
             </Row>
             <Col span={24}>
                 <Row justify="center">
-                    {
-                        Object.keys(bills).length <= 0 ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> :
-                            <ReactApexChart options={options} series={[electric, gas, water]} type="radar" height={390} />
+                    {Object.keys(bills).length <= 0 ?
+                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                        :
+                        <ReactApexChart
+                            options={options}
+                            series={[electric, gas, water]}
+                            type="radar"
+                            height={500} />
                     }
                 </Row>
             </Col>

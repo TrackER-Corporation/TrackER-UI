@@ -20,8 +20,6 @@ const EditCard = ({ data, type }: EditCard) => {
         name: string,
         type: string,
     ) => {
-        console.log(price)
-
         const newResources = price[type].map((resource: any) =>
             resource.name === name ? { ...resource, price: value } : resource
         );

@@ -19,7 +19,9 @@ const LoadingSpinner = ({ message, size = "large" }: LoadingSpinnerProps) =>
         justifyContent: "center",
         verticalAlign: "middle",
     }}>
-        <Spin size={size} style={{ position: "absolute", top: "50%" }} tip={message} />
+        <Spin size={size} style={{ position: "absolute", top: "50%" }} tip={message} >
+            <div />
+        </Spin>
     </div>
 
 export default LoadingSpinner

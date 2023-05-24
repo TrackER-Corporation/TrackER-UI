@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProCard } from "@ant-design/pro-components";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { getBillsAggregated, getBillsRenewable, getData, statebar } from "./utils";
+import { getBillsRenewable, getData, statebar } from "./utils";
 import { useAppSelector } from "../hooks";
 import avatarImages from "../globalUtils";
 import { ApexOptions } from "apexcharts";
@@ -27,10 +27,10 @@ const Dashboard = () => {
     gas: { name: "Gas", data: [0] },
     water: { name: "Water", data: [0] },
     electric: { name: "Electric", data: [0] },
-    solar: { name: "Solar", data: 0 },
-    wind: { name: "Wind", data: 0 },
-    hydro: { name: "Hydro", data: 0 },
-    geo: { name: "Geo", data: 0 },
+    solar: { name: "Solar", data: [0] },
+    wind: { name: "Wind", data: [0] },
+    hydro: { name: "Hydro", data: [0] },
+    geo: { name: "Geo", data: [0] },
   });
 
   const navigate = useNavigate();
@@ -38,13 +38,10 @@ const Dashboard = () => {
   useEffect(() => {
     if (buildings === null || buildings === undefined) return
 
-    const ids = Object.values(buildings).filter((el: any) =>
-      el.resources.length !== 0).map((el: any) => el._id)
-    if (user._id !== undefined && user._id !== "undefined") {
-      getBillsAggregated(user._id, setBills, energy, setEnergy)
-    }
+    Object.values(buildings).filter((el) =>
+      el.resources.length !== 0).map((el) => el._id)
+      .map(id => getBillsRenewable(id, buildings, energy, user._id, setEnergy, setTotalRen, setBills))
 
-    ids.forEach(id => getBillsRenewable(id, buildings, energy, setEnergy, setTotalRen))
   }, [user, buildings])
 
   return (
@@ -68,7 +65,8 @@ const Dashboard = () => {
             <Col lg={8} md={8} xs={8} >
               <StatsCard
                 color={"#ebfafa"}
-                chart={<ReactApexChart options={statebar("Water", "#008ffb").options as ApexOptions}
+                chart={<ReactApexChart
+                  options={statebar("Water", "#008ffb").options as ApexOptions}
                   series={[energy.water] as ApexAxisChartSeries}
                   type="bar" height={150} />}
               />

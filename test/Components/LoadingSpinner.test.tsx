@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 
 describe('Loading Spinner', () => {
     it('should return the initial state', () => {
-        const {getByText} = render(<LoadingSpinner message="test"></LoadingSpinner>)
+        const { getByText } = render(<LoadingSpinner message="test" />)
         expect(getByText("test")).toBeInTheDocument()
     });
 });

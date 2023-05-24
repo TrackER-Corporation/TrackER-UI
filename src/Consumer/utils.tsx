@@ -3,7 +3,7 @@ import IconFont from "../Iconfont";
 import api from "../api";
 import { Avatar, Col, Menu, Row } from "antd";
 import { LinkHover } from "../Components/CustomComponents";
-import { logout } from "../reducers/user";
+import user, { logout } from "../reducers/user";
 import { AppDispatch } from "../store";
 import { DefaultFooter, ProLayout } from "@ant-design/pro-components";
 import { GithubOutlined } from "@ant-design/icons";
@@ -146,9 +146,7 @@ export const stackedOptions: ApexOptions = {
     },
     chart: {
         type: 'bar',
-        height: 360,
         stacked: true,
-        stackType: '100%',
         toolbar: { show: false }
     },
     plotOptions: {
@@ -727,8 +725,10 @@ export const getBillsRenewable = async (
     id: string,
     buildings: Array<Building>,
     energy: any,
+    userId: string,
     setEnergy: (...props: any) => void,
-    setTotalRen: (arg: number) => void
+    setTotalRen: (arg: number) => void,
+    setBills: (arg: any) => void,
 ) => {
     await api.bills.getBillsRenewable(id).then(res => {
         const building = Object.values(buildings).find((el) => el._id === id);
@@ -738,8 +738,8 @@ export const getBillsRenewable = async (
         let sumGeo = 0;
 
         if (building) {
-            building.resources?.forEach((resource: any) => {
-                const [type, data] = Object.entries(resource)[0];
+            building.resources?.map((resource: any) => {
+                const [type, _] = Object.entries(resource)[0];
                 switch (type) {
                     case "Solar":
                         sumSolar += res.totalSolar;
@@ -759,15 +759,18 @@ export const getBillsRenewable = async (
             });
         }
 
-        setEnergy({
+        const newEnergy = {
             ...energy,
-            solar: { name: "Solar", data: [sumSolar] },
-            wind: { name: "Wind", data: [sumWind] },
-            hydro: { name: "Hydro", data: [sumHydro] },
-            geo: { name: "Geo", data: [sumGeo] },
-        });
+            solar: { name: "Solar", data: [sumSolar / 1000] },
+            wind: { name: "Wind", data: [sumWind / 1000] },
+            hydro: { name: "Hydro", data: [sumHydro / 1000] },
+            geo: { name: "Geo", data: [sumGeo / 1000] },
+        }
+        setEnergy(newEnergy);
 
+        getBillsAggregated(userId, setBills, newEnergy, setEnergy)
         setTotalRen(sumSolar + sumGeo + sumHydro + sumWind);
+
     }).catch(err => console.log(err))
 };
 
@@ -779,52 +782,49 @@ export const getBillsAggregated = async (
     setEnergy: (...props: any) => void,
 ) => {
     const day = moment().subtract(31, 'days')
-    if (userId !== undefined && userId !== "undefined") {
-        await api.bills.getBillsAggregated(userId).then(res => {
-            setBills(res);
 
-            let oldMoment = moment("01/01/17", "MM/D/YYYY");
-            const billDates = Object.values(res.aggregated).filter((el: any) =>
-                moment(el.date).isBetween(day, undefined)
-            );
+    await api.bills.getBillsAggregated(userId).then(res => {
+        setBills(res);
 
-            let water: number[] = [];
-            let gas: number[] = [];
-            let electric: number[] = [];
-            let sumGas = 0;
-            let sumWater = 0;
-            let sumElectric = 0;
+        let oldMoment = moment("01/01/17", "MM/D/YYYY");
+        const billDates = Object.values(res.aggregated).filter((el: any) =>
+            moment(el.date).isBetween(day, undefined)
+        );
 
-            billDates.forEach((el: any) => {
-                if (moment(el.date).isSame(oldMoment, "day")) {
-                    sumWater += Number(el.water);
-                    sumElectric += Number(el.electric);
-                    sumGas += Number(el.gas);
-                } else {
-                    water.push(Number(sumWater.toFixed(3)));
-                    electric.push(Number(sumElectric.toFixed(3)));
-                    gas.push(Number(sumGas.toFixed(3)));
-                    sumWater = Number(el.water);
-                    sumElectric = Number(el.electric);
-                    sumGas = Number(el.gas);
-                    oldMoment = el.date;
-                }
-            });
+        let water: number[] = [];
+        let gas: number[] = [];
+        let electric: number[] = [];
+        let sumGas = 0;
+        let sumWater = 0;
+        let sumElectric = 0;
 
-            water.shift();
-            electric.shift();
-            gas.shift();
-            electric = electric.slice(-3);
-            gas = gas.slice(-3);
-            water = water.slice(-3);
+        billDates.forEach((el: any) => {
+            if (moment(el.date).isSame(oldMoment, "day")) {
+                sumWater += Number(el.water);
+                sumElectric += Number(el.electric);
+                sumGas += Number(el.gas);
+            } else {
+                water.push(Number(sumWater.toFixed(3)));
+                electric.push(Number(sumElectric.toFixed(3)));
+                gas.push(Number(sumGas.toFixed(3)));
+                sumWater = Number(el.water);
+                sumElectric = Number(el.electric);
+                sumGas = Number(el.gas);
+                oldMoment = el.date;
+            }
+        });
 
-            setEnergy({
-                ...energy,
-                water: { name: "Water", data: water },
-                gas: { name: "Gas", data: gas },
-                electric: { name: "Electric", data: electric },
-            });
-        }).catch(err => console.log(err))
-    }
-
+        water.shift();
+        electric.shift();
+        gas.shift();
+        electric = electric.slice(-3);
+        gas = gas.slice(-3);
+        water = water.slice(-3);
+        setEnergy({
+            ...energy,
+            water: { name: "Water", data: water },
+            gas: { name: "Gas", data: gas },
+            electric: { name: "Electric", data: electric },
+        });
+    }).catch(err => console.log(err))
 };

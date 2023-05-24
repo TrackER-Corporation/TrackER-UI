@@ -8,6 +8,7 @@ import api from "../../api"
 import { Building, EnergyType, Organization } from "../../types"
 import { fetchBuildings } from "../../reducers/buildings"
 import { AppDispatch } from "../../store"
+import { sortDate } from "../utils"
 
 export const optionsBar: ApexOptions = {
     chart: {
@@ -128,7 +129,6 @@ export const RenewableCardRender = (
                 <p style={{ fontWeight: "300", fontSize: 17, color: "#1196db" }}>{title}</p>
                 <IconFont
                     type={icon}
-                    className="iconfontMedium3"
                     color="#1196db"
                     style={{
                         color: "#1196db",
@@ -137,6 +137,7 @@ export const RenewableCardRender = (
                         verticalAlign: "middle",
                     }} />
                 <Statistic
+                    style={{ marginTop: 15 }}
                     value={!metric ? totalSum : totalSum / 1000}
                     suffix={metric ? "kW" : "W"}
                     precision={2} />
@@ -256,58 +257,55 @@ export const getAllDataRenewable = async (
             return [];
         }
 
-        const devices = await api.renewable.fetchResourcesByBuildingId(buildingBills.buildingId);
+        const device = await api.renewable.fetchResourcesByBuildingId(buildingBills.buildingId);
 
-        devices.forEach((device: any) => {
-            deviceEarning += device.earning;
-            deviceCost += device.price;
+        deviceEarning += device.earning;
+        deviceCost += device.price;
 
-            buildingBills.bills.forEach((bill: any) => {
-                const resources = bill.resources.find((resource: any) => resArray.includes(Object.keys(resource)[0]));
+        buildingBills.bills.forEach((bill: any) => {
+            const resources = bill.resources.find((resource: any) => resArray.includes(Object.keys(resource)[0]));
 
-                if (!resources) {
-                    return;
-                }
+            if (!resources) {
+                return;
+            }
 
-                const [resourceName, resourceValue] = Object.entries(resources)[0];
+            const [resourceName, resourceValue] = Object.entries(resources)[0];
 
-                switch (resourceName) {
-                    case "Solar":
-                        solarSum += Number(resourceValue);
+            switch (resourceName) {
+                case "Solar":
+                    solarSum += Number(resourceValue);
 
-                        if (device.resourcesType === "Solar" && filter === "Solar") {
-                            totalSum += Number(resourceValue);
-                            allBills.push([bill.date, Number(resourceValue).toFixed(2)]);
-                        }
-                        break;
-                    case "Hydro":
-                        hydroSum += Number(resourceValue);
+                    if (device.resourcesType === "Solar" && filter === "Solar") {
+                        totalSum += Number(resourceValue);
+                        allBills.push([{x:bill.date, y:Number(resourceValue).toFixed(2)}]);
+                    }
+                    break;
+                case "Hydro":
+                    hydroSum += Number(resourceValue);
+                    if (device.resourcesType === "Hydro" && filter === "Hydro") {
+                        totalSum += Number(resourceValue);
+                        allBills.push([{x:bill.date, y:Number(resourceValue).toFixed(2)}]);
+                    }
+                    break;
+                case "Geo":
+                    geoSum += Number(resourceValue);
 
-                        if (device.resourcesType === "Hydro" && filter === "Hydro") {
-                            totalSum += Number(resourceValue);
-                            allBills.push([bill.date, Number(resourceValue).toFixed(2)]);
-                        }
-                        break;
-                    case "Geo":
-                        geoSum += Number(resourceValue);
+                    if (device.resourcesType === "Geo" && filter === "Geo") {
+                        totalSum += Number(resourceValue);
+                        allBills.push({x:bill.date, y:Number(resourceValue).toFixed(2)});
+                    }
+                    break;
+                case "Wind":
+                    windSum += Number(resourceValue);
 
-                        if (device.resourcesType === "Geo" && filter === "Geo") {
-                            totalSum += Number(resourceValue);
-                            allBills.push([bill.date, Number(resourceValue).toFixed(2)]);
-                        }
-                        break;
-                    case "Wind":
-                        windSum += Number(resourceValue);
-
-                        if (device.resourcesType === "Wind" && filter === "Wind") {
-                            totalSum += Number(resourceValue);
-                            allBills.push([bill.date, Number(resourceValue).toFixed(2)]);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            });
+                    if (device.resourcesType === "Wind" && filter === "Wind") {
+                        totalSum += Number(resourceValue);
+                        allBills.push([{x:bill.date, y:Number(resourceValue).toFixed(2)}]);
+                    }
+                    break;
+                default:
+                    break;
+            }
         });
 
         setHydroSum(hydroSum);
@@ -317,6 +315,7 @@ export const getAllDataRenewable = async (
         setTotalSum(totalSum);
         setDeviceEarning(deviceEarning);
         setDeviceCost(deviceCost);
+        sortDate(allBills)
         setAllBills(allBills);
     } catch (error) {
         console.log(error);

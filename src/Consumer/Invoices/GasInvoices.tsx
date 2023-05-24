@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import ReactApexChart from "react-apexcharts"
 import { InvoicesProps, optionsLine, pieOptions } from "./utilsInvoices"
 import InvoicesWrapper from "./InvoicesWrapper"
+import { sortDate } from "../utils"
 
 const GasInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => {
     const [metricCubic, setMetric] = useState(true)
@@ -41,13 +42,16 @@ const GasInvoices = ({ bills, cost, aggregated, filtered }: InvoicesProps) => {
         const tmp: any = []
         if (aggregated === undefined || aggregated === "undefined") {
             filtered?.forEach((el: any) => {
-                tmp.push([el[0], el[1]])
+                tmp.push({ x: el[0], y: el[1] })
             })
+            sortDate(tmp)
             setAllGasLine([{ data: tmp }])
         } else {
-            Object.values(aggregated)?.map((el: any) => tmp.push([el.date, el.gas]))
+            Object.values(aggregated).map((el: any) => {
+                tmp.push({ x: el.date, y: el.gas })
+            })
+            sortDate(tmp)
             setAllGasLine([{ data: tmp }])
-
         }
     }, [filtered, metricCubic, aggregated, cost, bills])
 

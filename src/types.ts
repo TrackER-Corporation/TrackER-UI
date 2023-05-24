@@ -101,7 +101,7 @@ export interface Building {
     sqft?: number;
     lat: string;
     long: string;
-    resources?: Array<any>;
+    resources: Array<any>;
     date: Date;
 }
 
