@@ -147,7 +147,7 @@ export const stackedOptions: ApexOptions = {
     chart: {
         type: 'bar',
         stacked: true,
-        // toolbar: { show: false }
+        toolbar: { show: false }
     },
     plotOptions: {
         bar: {

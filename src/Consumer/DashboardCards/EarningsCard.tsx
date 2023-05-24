@@ -10,10 +10,9 @@ interface EarningsCard {
 }
 
 
+
 const EarningsCard = ({ series, total = 0 }: EarningsCard) =>
-  <ProCard bordered style={{
-    borderRadius: "10px"
-  }}>
+  <ProCard bordered style={{ borderRadius: "10px" }}>
     <Row align="middle" justify="space-between">
       <Col lg={6} md={6} xs={24}>
         <h4 style={{ fontSize: "20px", fontWeight: 500, color: "#2d3436" }}>Renewable Production</h4>
@@ -26,11 +25,10 @@ const EarningsCard = ({ series, total = 0 }: EarningsCard) =>
           total === 0 ?
             <Empty />
             :
-            <ReactApexChart options={stackedOptions} series={series} height={150} />
+            <ReactApexChart type="bar" options={stackedOptions} series={series} height={150} />
         }
       </Col>
     </Row>
   </ProCard>
-
 export default EarningsCard
 

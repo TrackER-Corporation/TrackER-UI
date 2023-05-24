@@ -292,7 +292,7 @@ export const getAllDataRenewable = async (
 
                     if (device.resourcesType === "Geo" && filter === "Geo") {
                         totalSum += Number(resourceValue);
-                        allBills.push([{x:bill.date, y:Number(resourceValue).toFixed(2)}]);
+                        allBills.push({x:bill.date, y:Number(resourceValue).toFixed(2)});
                     }
                     break;
                 case "Wind":
