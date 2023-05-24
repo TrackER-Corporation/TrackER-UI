@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.1](https://github.com/TrackER-Corporation/TrackER-UI/compare/v1.3.0...v1.3.1) (2023-05-24)
+
+
+### Bug Fixes
+
+* bar chart visualization ([261cc84](https://github.com/TrackER-Corporation/TrackER-UI/commit/261cc84e480587ac6dc861f4c4aa399873411444))
+* chart data order ([78cd95c](https://github.com/TrackER-Corporation/TrackER-UI/commit/78cd95c40b3468785e03767f9f40909182eb65b7))
+* chart order data ([bfb0fc3](https://github.com/TrackER-Corporation/TrackER-UI/commit/bfb0fc377af86e2ab86c6c2903d8090035edd603))
+* Chart visualization ([afad65f](https://github.com/TrackER-Corporation/TrackER-UI/commit/afad65ffe3511bf2ce54dd29dacf5b54b4ca57d0))
+* compatibility Loading spinner ([e14e9e6](https://github.com/TrackER-Corporation/TrackER-UI/commit/e14e9e6ec56c326e539f814f2b0aec1665537483))
+* warning and chart sorting date ([0c2ae7b](https://github.com/TrackER-Corporation/TrackER-UI/commit/0c2ae7bad9c54569fedc8030af6a3a75fe8ee2f6))
+
 ## [1.3.0](https://github.com/TrackER-Corporation/TrackER-UI/compare/v1.2.0...v1.3.0) (2023-05-15)
 
 
