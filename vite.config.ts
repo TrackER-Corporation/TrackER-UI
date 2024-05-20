@@ -18,11 +18,15 @@ export default defineConfig({
   test: {
     setupFiles: [resolve(__dirname, './setup.ts')],
     coverage: {
-      lines: 65,
-      branches: 65,
-      functions: 65,
-      statements: 65,
-      provider: "c8",
+      thresholds: {
+        global: {
+          statements: 65,
+          branches: 65,
+          functions: 65,
+          lines: 65,
+        },
+      },
+      provider: "v8",
       all: true,
       include: ["src/**/*.tsx", "src/**/*.ts", "src/**/**/*.ts", "src/**/**/*.tsx"],
       exclude: [
@@ -44,9 +48,6 @@ export default defineConfig({
     },
     globals: true,
     environment: "jsdom",
-    deps: {
-      inline: ['vitest-canvas-mock'],
-    },
   },
   css: {
     preprocessorOptions: {
