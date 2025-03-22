@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/TrackER-Corporation/TrackER-UI/compare/v2.0.0...v2.0.1) (2025-03-22)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([ea5b5c8](https://github.com/TrackER-Corporation/TrackER-UI/commit/ea5b5c8732adbf932c1a4873a8c8f5e58f81705f))
+
 ## 2.0.0 (2024-10-08)
 
 
